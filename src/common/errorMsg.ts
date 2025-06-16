@@ -19,6 +19,9 @@ export const MissingRemoteRepoUrlMsg = '喵呜~ 远程仓库URL不能为空'
 export const MissingProxyUrlMsg = '喵呜~ 代理URL不能为空'
 export const GitTypeNotSupportedMsg = '喵呜~ 这个 Git 类型不支持哦'
 export const UrlProtocoleNotSupportedMsg = '喵呜~ 这个 URL 协议不支持哦'
+export const MissingRepoUrlMsg = (url: string) => `喵呜~ 仓库URL ${url} 不存在哦`
+export const LocalRepoPathNotFoundMsg = (path: string) => `喵呜~ 本地仓库路径 ${path} 不存在哦`
+export const GitClientNotInstalledMsg = '喵呜~ Git 客户端未安装或未正确配置'
 
 /** 授权相关 */
 export const InvalidAccessTokenMsg = '喵呜~ 这个令牌似乎不是有效的'

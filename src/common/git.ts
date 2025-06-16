@@ -2,8 +2,18 @@ import path from 'node:path'
 
 import { simpleGit } from 'simple-git'
 
-import { MissingLocalRepoPathMsg, MissingRemoteRepoUrlMsg } from '@/common/errorMsg'
-import { exec, exists, parse_git_url } from '@/common/utils'
+import {
+  GitClientNotInstalledMsg,
+  LocalRepoPathNotFoundMsg,
+  MissingLocalRepoPathMsg,
+  MissingRemoteRepoUrlMsg,
+  MissingRepoUrlMsg
+} from '@/common/errorMsg'
+import {
+  exec,
+  exists,
+  parse_git_url
+} from '@/common/utils'
 
 /**
  * 获取 Git 版本
@@ -49,17 +59,17 @@ async function is_installed_git (): Promise<boolean> {
 export async function get_local_repo_default_branch (local_path: string): Promise<string> {
   if (!local_path) throw new Error(MissingLocalRepoPathMsg)
   try {
-    if (!await is_installed_git()) throw new Error('喵呜~, Git 未安装或未正确配置')
-    const git_path = path.join(local_path, '.git')
+    if (!await is_installed_git()) throw new Error(GitClientNotInstalledMsg)
+    const git_path = path.join(local_path)
     const isGitRepo = await exists(git_path)
     if (!isGitRepo) {
-      throw new Error(`路径 ${local_path} 不是一个有效的 Git 仓库`)
+      throw new Error(LocalRepoPathNotFoundMsg(git_path))
     }
 
     const repo = simpleGit(local_path)
     const head = await repo.revparse(['--abbrev-ref', 'HEAD'])
     if (!head) {
-      throw new Error('无法获取仓库分支信息，请确保仓库已初始化')
+      throw new Error('喵呜~, 无法获取仓库分支信息，请确保仓库已初始化')
     }
 
     return head.trim()
@@ -81,18 +91,15 @@ export async function get_local_repo_default_branch (local_path: string): Promis
 export async function get_remote_repo_default_branch (remote_url: string): Promise<string> {
   if (!remote_url) throw new Error(MissingRemoteRepoUrlMsg)
   try {
-    if (!await is_installed_git()) throw new Error('喵呜~, Git 未安装或未正确配置')
+    if (!await is_installed_git()) throw new Error(GitClientNotInstalledMsg)
     const git_url = new URL(remote_url)
-    if (git_url.protocol !== 'https:' && git_url.protocol !== 'http:') {
-      throw new Error('远程仓库URL必须是HTTP或HTTPS协议')
-    }
     const { owner, repo: RepoName } = parse_git_url(git_url.href)
-    if (!(owner || RepoName)) throw new Error(`url: ${git_url.href} 不是一个有效的 Git 仓库地址`)
+    if (!(owner || RepoName)) throw new Error(MissingRepoUrlMsg(git_url.href))
     const repo = simpleGit()
     const remoteInfo = await repo.raw(['ls-remote', '--symref', remote_url, 'HEAD'])
     const defaultBranchMatch = remoteInfo.match(/^ref: refs\/heads\/([^\t\n]+)/m)
     if (!defaultBranchMatch) {
-      throw new Error('无法从远程仓库获取默认分支信息')
+      throw new Error('喵呜~, 无法从远程仓库获取默认分支信息')
     }
     return defaultBranchMatch[1]
   } catch (error) {

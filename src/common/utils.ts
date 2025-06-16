@@ -8,7 +8,12 @@ import GitUrlParse from 'git-url-parse'
 import LanguageColors from 'language-colors'
 
 import { basePath } from '@/root'
-import { ContributionResult, ExecOptions, ExecReturn, RepoBaseParamType } from '@/types'
+import type {
+  ContributionResult,
+  ExecOptions,
+  ExecReturn,
+  RepoBaseParamType
+} from '@/types'
 
 const localeCache = new Set<string>(['en'])
 
@@ -128,9 +133,16 @@ export function readJSON (file: string = '', root: string = ''): any {
 }
 
 /**
- * @param options - 初始化 日期
+ * 加载语言配置
+ * @param options 配置对象
+ * -  locale 语言，如：zh-cn, en
+ * @returns 语言配置
+ * @example
+ * ```
+ * const locale = await load_locale('zh-cn')
+ * ```
  */
-async function initDate (locale: string = 'zh-cn') {
+async function load_locale (locale: string = 'zh-cn'): Promise<void> {
   const normalizedLocale = String(locale).toLowerCase()
   if (localeCache.has(normalizedLocale)) {
     dayjs.locale(normalizedLocale)
@@ -157,7 +169,7 @@ export async function format_date (
   locale: string = 'zh-cn',
   format: string = 'YYYY-MM-DD HH:mm:ss'
 ): Promise<string> {
-  await initDate(locale)
+  await load_locale(locale)
   const date = dayjs(dateString).locale(locale)
   return date.format(format)
 }
@@ -177,7 +189,7 @@ export async function get_relative_time (
   dateString: string,
   locale: string = 'zh-cn'):
   Promise<string> {
-  await initDate(locale)
+  await load_locale(locale)
   dayjs.extend(relativeTime)
   return dayjs(dateString).fromNow()
 }
