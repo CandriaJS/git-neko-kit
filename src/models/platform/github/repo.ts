@@ -155,7 +155,7 @@ export class Repo extends GitHubClient {
   }
 
   /**
-   * 查询仓库详细信息
+   * 通过授权用户查询仓库列表
    * 权限: Metadata - read-only , 如果获取公开仓库可无需此权限
    * @param options - 请求参数对象
    * - type - 仓库类型，可选值：可选all， public， private

@@ -24,6 +24,7 @@ import type { Pull_Request } from '@/models/platform/github/pull_request'
 import type { Repo } from '@/models/platform/github/repo'
 import type { User } from '@/models/platform/github/user'
 import type { WebHook } from '@/models/platform/github/webhook'
+import type { Workflow } from '@/models/platform/github/workflow'
 import type {
   ApiResponseType,
   GitHubClientType,
@@ -65,6 +66,7 @@ export class GitHubClient {
   declare issue: Issue
   declare org: Org
   declare pull_request: Pull_Request
+  declare workflow: Workflow
   public base_url: string
   public api_url: string
   public jwtToken: string
@@ -275,6 +277,20 @@ export class GitHubClient {
     const { Pull_Request } = await import('@/models/platform/github/pull_request')
     this.pull_request = new Pull_Request(this)
     return this.pull_request
+  }
+
+  /**
+   * 获取Workflow实例
+   * @returns Workflow实例
+   * @example
+   * ```ts
+   * const workflow = await GitHubClient.get_workflow()
+   * ```
+   */
+  public async get_workflow (): Promise<Workflow> {
+    const { Workflow } = await import('@/models/platform/github/workflow')
+    this.workflow = new Workflow(this)
+    return this.workflow
   }
 
   /**

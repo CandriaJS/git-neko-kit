@@ -47,7 +47,6 @@ export class App extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
-    this.api_url = base.api_url
     this.base_url = get_base_url(this.type, { proxyType: 'original' })
   }
 

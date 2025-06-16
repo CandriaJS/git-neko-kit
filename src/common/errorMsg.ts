@@ -45,6 +45,9 @@ export const RepoOrPermissionDeniedMsg = '喵呜~ 这个仓库不存在或访问
 export const BranchNotFoundMsg = '喵呜~ 这个分支不存在哦'
 export const CommitNotFoundMsg = '喵呜~ 这个提交不存在哦'
 export const CommitOrRepoNotFoundMsg = '喵呜~ 这个提交或仓库不存在哦'
+export const MissingWorkflowIdMsg = '喵呜~ 工作流ID不能为空'
+export const WorkflowNotFoundMsg = '喵呜~ 这个工作流不存在哦'
+export const WorkflowOrRepoNotFoundMsg = '喵呜~ 这个工作流或仓库不存在哦'
 export const FailedToRemoveCollaboratorMsg = (username: string) => `喵呜~ 移除协作者失败${username}哦`
 
 /** 用户相关 */

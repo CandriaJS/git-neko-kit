@@ -81,6 +81,14 @@ export interface PullRequestNumberParamType {
 }
 
 /**
+ * 工作流参数
+ */
+export interface workflowIdParamType {
+  /** 工作流id */
+  workflow_id: number | string;
+}
+
+/**
  * 角色名称参数
  * - 角色名称
  * @default 'member'

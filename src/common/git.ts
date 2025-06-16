@@ -24,9 +24,13 @@ import {
  * -> 'git version 2.39.2.windows.1'
  * ```
  */
-async function get_git_version (): Promise<string> {
-  const { stdout } = await exec('git --version')
-  return stdout.toString().trim()
+async function get_git_version (): Promise<string | null> {
+  try {
+    const git = simpleGit()
+    return await git.raw('--version')
+  } catch {
+    return null
+  }
 }
 
 /**
@@ -39,13 +43,9 @@ async function get_git_version (): Promise<string> {
  * ```
  */
 async function is_installed_git (): Promise<boolean> {
-  try {
-    await get_git_version()
-    return true
-  } catch (error) {
-    return false
-  }
+  return !!await get_git_version()
 }
+
 /**
  * 获取本地仓库的默认分支
  * @param local_path - 本地仓库路径
