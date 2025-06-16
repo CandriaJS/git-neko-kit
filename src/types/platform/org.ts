@@ -1,4 +1,4 @@
-import type { OrgNameParamType, UserNameParamType } from '@/types/platform/base'
+import type { OrgNameParamType, RoleNameType, UserNameParamType } from '@/types/platform/base'
 import { AddCollaboratorResponseType } from '@/types/platform/repo'
 
 /** 组织信息参数类型 */
@@ -18,19 +18,17 @@ export interface OrgInfoResponseType {
   /** 组织地址 */
   html_url: string;
 }
-export type RoleNameType = 'admin' | 'member'
 /** 添加组织成员参数类型 */
 export interface AddMemberParamType extends OrgNameParamType, UserNameParamType {
   /**
    * 角色
-   * @default 'member'
    */
-  role?: 'admin' | 'member'
+  role?: RoleNameType['role']
 }
 /** 添加组织成员响应类型 */
 export interface AddMemberResponseType extends Omit<AddCollaboratorResponseType, 'permissions' | 'html_url'> {
   /** 组织地址 */
   html_url: string;
   /** 角色 */
-  role: 'admin' | 'member'
+  role: RoleNameType['role']
 }

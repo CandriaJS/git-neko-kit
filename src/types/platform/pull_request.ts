@@ -1,7 +1,7 @@
 import type { CommentIdParamType, PullRequestNumberParamType, RepoBaseParamType } from '@/types/platform/base'
-import type { IssueLabelType, MilestoneType } from '@/types/platform/github/issue'
-import type { RepoInfoResponseType } from '@/types/platform/github/repo'
-import type { UserInfoResponseType } from '@/types/platform/github/user'
+import type { IssueLabelType, MilestoneType } from '@/types/platform/issue'
+import type { RepoInfoResponseType } from '@/types/platform/repo'
+import type { UserInfoResponseType } from '@/types/platform/user'
 
 export type PrUser = Pick<UserInfoResponseType, 'id' | 'login' | 'name' | 'avatar_url' | 'html_url'>
 export type PrRepo = Pick<RepoInfoResponseType, 'id' | 'owner' | 'name' | 'full_name'>

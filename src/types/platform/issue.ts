@@ -263,7 +263,7 @@ export interface IssueCommentInfoResponseType {
 }
 
 /** 仓库评论列表参数类型 */
-export interface RepoCommentListParamType extends RepoBaseParamType {
+export interface RepoCommentsListParamType extends RepoBaseParamType {
   /**
    * 排序依据
    * 用于指定结果的排序属性
@@ -310,10 +310,10 @@ export interface RepoCommentListParamType extends RepoBaseParamType {
   page?: number;
 }
 /** 仓库评论列表响应类型 */
-export type RepoCommentListResponseType = IssueCommentInfoResponseType[]
+export type RepoCommentsListResponseType = IssueCommentInfoResponseType[]
 
 /** 议题评论列表参数类型 */
-export interface IssueCommentListParamType extends RepoBaseParamType {
+export interface IssueCommentsListParamType extends RepoBaseParamType {
   /** 议题ID */
   issue_number: number;
 
@@ -340,7 +340,7 @@ export interface IssueCommentListParamType extends RepoBaseParamType {
   page?: number;
 }
 /** 议题评论列表响应类型 */
-export type IssueCommentListResponseType = IssueCommentInfoResponseType[]
+export type IssueCommentsListResponseType = IssueCommentInfoResponseType[]
 
 /** 创建议题评论参数类型 */
 export interface CreteIssueCommentParamType extends RepoBaseParamType {

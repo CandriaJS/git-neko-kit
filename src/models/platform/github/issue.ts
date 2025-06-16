@@ -31,8 +31,8 @@ import type {
   CreteIssueParamType,
   IssueCommentInfoParamType,
   IssueCommentInfoResponseType,
-  IssueCommentListParamType,
-  IssueCommentListResponseType,
+  IssueCommentsListParamType,
+  IssueCommentsListResponseType,
   IssueInfoParamType,
   IssueInfoResponseType,
   IssueLabelType,
@@ -46,8 +46,8 @@ import type {
   RemoveIssueCommentParamType,
   RemoveSubIssueParamType,
   RemoveSubIssueResponseType,
-  RepoCommentListParamType,
-  RepoCommentListResponseType,
+  RepoCommentsListParamType,
+  RepoCommentsListResponseType,
   RepoIssueListParamType,
   ReprioritizeSubIssueParamType,
   ReprioritizeSubIssueResponseType,
@@ -976,8 +976,8 @@ export class Issue extends GitHubClient {
    * ```
    */
   public async get_repo_comments_list (
-    options: RepoCommentListParamType
-  ): Promise<ApiResponseType<RepoCommentListResponseType>> {
+    options: RepoCommentsListParamType
+  ): Promise<ApiResponseType<RepoCommentsListResponseType>> {
     if (!options.owner || !options.repo) {
       throw new Error(MissingRepoOwnerOrNameMsg)
     }
@@ -1006,7 +1006,7 @@ export class Issue extends GitHubClient {
         throw new Error(IssueCommentNotFoundMsg)
       }
       if (res.data) {
-        const IssueData: RepoCommentListResponseType = res.data.map(
+        const IssueData: RepoCommentsListResponseType = res.data.map(
           (comment: Record<string, any>): IssueCommentInfoResponseType => ({
             id: comment.id,
             html_url: comment.html_url,
@@ -1052,8 +1052,8 @@ export class Issue extends GitHubClient {
    * ```
    */
   public async get_issue_comments_list (
-    options: IssueCommentListParamType
-  ): Promise<ApiResponseType<IssueCommentListResponseType>> {
+    options: IssueCommentsListParamType
+  ): Promise<ApiResponseType<IssueCommentsListResponseType>> {
     if (!options.owner || !options.repo) {
       throw new Error(MissingRepoOwnerOrNameMsg)
     }
@@ -1084,7 +1084,7 @@ export class Issue extends GitHubClient {
         throw new Error(IssueCommentNotFoundMsg)
       }
       if (res.data) {
-        const IssueData: IssueCommentListResponseType = res.data.map(
+        const IssueData: IssueCommentsListResponseType = res.data.map(
           (comment: Record<string, any>): IssueCommentInfoResponseType => ({
             id: comment.id,
             html_url: comment.html_url,

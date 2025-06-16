@@ -80,6 +80,17 @@ export interface PullRequestNumberParamType {
   pr_number: number;
 }
 
+/**
+ * 角色名称参数
+ * - 角色名称
+ * @default 'member'
+ * - admin 管理员
+ * - member 成员
+ */
+export interface RoleNameType {
+  role: 'admin' | 'member'
+}
+
 export interface CommentIdParamType {
   /** 评论id */
   comment_id: number | string;

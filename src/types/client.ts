@@ -9,5 +9,6 @@ export type GitHubClientType = GitHubBaseClient & {
 
 /** 客户端类型 */
 export interface ClientType {
+  /** GitHub客户端 */
   github: GitHubClientType;
 }
