@@ -460,13 +460,18 @@ export class Release extends GitHubClient {
       const url = `/repos/${owner}/${repo}/releases/${release_id}`
       const res = await this.delete(url)
       let msg
+      let releaseData: DeleteReleaseResponseType
       if (res.statusCode === 204) {
-        msg = DeleteReleaseSuccessMsg
+        releaseData = {
+          success: true,
+          message: DeleteReleaseSuccessMsg
+        }
       } else {
-        msg = FailedToDeleteReleaseMsg
-      }
-      res.data = {
-        info: msg
+        releaseData = {
+          success: false,
+          message: FailedToDeleteReleaseMsg
+        }
+        res.data = releaseData
       }
       return res
     } catch (error) {

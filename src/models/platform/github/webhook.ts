@@ -47,7 +47,7 @@ export class WebHook extends GitHubClient {
    *   msg: '请求成功'
    *   data: {
    *     success: true,
-   *     info: '验证成功'
+   *     message: '验证成功'
    *   }
    * }
    * ```
@@ -86,7 +86,7 @@ export class WebHook extends GitHubClient {
       msg = '请求成功'
       WebHookdata = {
         success,
-        info: WebHookSignatureSuccessMsg
+        message: WebHookSignatureSuccessMsg
       }
     } else {
       success = false
@@ -95,7 +95,7 @@ export class WebHook extends GitHubClient {
       msg = '请求失败'
       WebHookdata = {
         success,
-        info: WebHookSignatureVerificationFailedMsg
+        message: WebHookSignatureVerificationFailedMsg
       }
     }
     return Promise.resolve(

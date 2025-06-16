@@ -433,6 +433,14 @@ export class App extends GitHubClient {
     }
   }
 
+  /**
+   * 撤销应用程序访问令牌
+   * @returns 撤销应用程序访问令牌
+   * @example
+   * ```ts
+   * const res = await auth.revoke_access_token_for_app()
+   * -> data: { 'success': true, 'message': '喵呜~ 访问令牌撤销成功' }
+   */
   public async revoke_access_token_for_app (
   ): Promise<ApiResponseType<RevokeAccessTokenResponseType>> {
     this.setRequestConfig({
@@ -451,7 +459,7 @@ export class App extends GitHubClient {
       msg = '请求成功'
       RevokeAccessTokenData = {
         success,
-        info: RevokeAccessTokenSuccessMsg
+        message: RevokeAccessTokenSuccessMsg
       }
     } else {
       success = false
@@ -460,7 +468,7 @@ export class App extends GitHubClient {
       msg = '请求失败'
       RevokeAccessTokenData = {
         success,
-        info: FailedRevokeAppAccrssTokenMsg
+        message: FailedRevokeAppAccrssTokenMsg
       }
     }
     return Promise.resolve(

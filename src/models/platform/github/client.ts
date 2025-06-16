@@ -98,6 +98,11 @@ export class GitHubClient {
   /**
    * 获取Git平台类型
    * @returns Git平台类型，如: github,gitee
+   * @example
+   * ```ts
+   * const type = await client.type
+   * -> 'github'
+   * ```
    */
   public get type (): GitType {
     return type
@@ -105,6 +110,12 @@ export class GitHubClient {
 
   /**
    * 是否是App客户端
+   * @returns 是否是App客户端
+   * @example
+   * ```ts
+   * const isAppClient = await client.is_app_client
+   * -> true
+   * ```
    */
   public get is_app_client (): boolean {
     return Boolean((this.Client_ID && this.Client_Secret && this.Private_Key))

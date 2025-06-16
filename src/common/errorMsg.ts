@@ -42,6 +42,7 @@ export const RepoOrPermissionDeniedMsg = '喵呜~ 这个仓库不存在或访问
 export const BranchNotFoundMsg = '喵呜~ 这个分支不存在哦'
 export const CommitNotFoundMsg = '喵呜~ 这个提交不存在哦'
 export const CommitOrRepoNotFoundMsg = '喵呜~ 这个提交或仓库不存在哦'
+export const FailedToRemoveCollaboratorMsg = (username: string) => `喵呜~ 移除协作者失败${username}哦`
 
 /** 用户相关 */
 export const UserNotFoundMsg = '喵呜~ 这个用户不存在哦'
@@ -82,6 +83,8 @@ export const PullRequestMergeMethodNotSupportedMsg = '喵呜~ 拉取请求的合
 export const PullRequestOrRepoNotFoundMsg = '喵呜~ 拉取请求编号或仓库不存在'
 export const PullRequestCommentOrRepoNotFoundMsg = '喵呜~ 拉取请求评论编号或仓库不存在'
 export const ConflictPullRequestShaValueMsg = '喵呜~ 这个SHA值与头部分支的SHA值不匹配'
+export const PullRequestCommentUpdateFailedMsg = '喵呜~ 拉取请求评论更新失败'
+export const PullRequestCommentRemoveFailedMsg = '喵呜~ 拉取请求评论删除失败'
 
 /** 标签与发布相关 */
 export const TagNotFoundMsg = '喵呜~ 这个标签不存在哦'

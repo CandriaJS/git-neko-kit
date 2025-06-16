@@ -9,12 +9,15 @@ export const WebHookSignatureValidMsg = '喵呜~ WebHook 签名成功'
 
 /** 仓库相关 */
 export const RepoOperationSuccessMsg = '喵呜~ 仓库操作成功'
+export const RemoveCollaboratorSuccessMsg = (username: string) => `喵呜~ 移除协作者成功${username}哦`
 
 /** 议题与PR相关 */
 export const IssueLockSuccessMsg = '喵呜~ 议题锁定成功'
 export const IssueUnlockSuccessMsg = '喵呜~ 议题解锁成功'
 export const IssueCommentCreateSuccessMsg = '喵呜~ 议题评论创建成功'
 export const IssueCommentRemoveSuccessMsg = '喵呜~ 议题评论删除成功'
+export const PullRequestCommentUpdateSuccessMsg = '喵呜~ 拉取请求评论更新成功'
+export const PullRequestCommentRemoveSuccessMsg = '喵呜~ 拉取请求评论删除成功'
 
 /** 标签与发布相关 */
 export const DeleteReleaseSuccessMsg = '喵呜~ 发行版本删除成功'

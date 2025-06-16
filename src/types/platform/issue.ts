@@ -232,14 +232,21 @@ export interface LockIssueParamType extends RepoBaseParamType {
 }
 /** 锁定议题响应类型 */
 export interface LockIssueResponseType {
+  /** 是否成功锁定 */
+  success: boolean
   /** 锁定状态信息 */
-  info: string
+  message: string
 }
 
 /** 解锁议题参数类型 */
 export type UnLockIssueParamType = Omit<LockIssueParamType, 'lock_reason'>
 /** 解锁议题响应类型 */
-export type UnLockIssueResponseType = LockIssueResponseType
+export interface UnLockIssueResponseType {
+  /** 是否成功解锁 */
+  success: LockIssueResponseType['success']
+  /** 解锁状态信息 */
+  message: LockIssueResponseType['message']
+}
 
 /** 议题评论信息参数类型 */
 export interface IssueCommentInfoParamType extends RepoBaseParamType {
@@ -367,8 +374,10 @@ export interface RemoveIssueCommentParamType extends RepoBaseParamType {
 }
 /** 删除议题评论响应类型 */
 export interface RemoveIssueCommentResponseType {
-/** 删除状态信息 */
-  info: string
+  /** 是否成功删除议题 */
+  success: boolean;
+  /** 删除状态信息 */
+  message: string
 }
 
 /** 获取子议题列表参数类型 */

@@ -112,6 +112,8 @@ export type UpdateReleaseResponseType = ReleaseInfoResponseType
 export type DeleteReleaseParamType = ReleaseInfoParamType
 /** 删除Release响应类型 */
 export interface DeleteReleaseResponseType {
-  /** 删除信息 */
-  info: string
+  /** 是否删除成功 */
+  success: boolean
+  /** 删除状态信息 */
+  message: string
 }

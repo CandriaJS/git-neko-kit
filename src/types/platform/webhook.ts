@@ -8,5 +8,5 @@ export interface WebHookSignatureResponseType {
   /** 是否验证成功 */
   success: boolean;
   /** 验证信息 */
-  info: string;
+  message: string;
 }

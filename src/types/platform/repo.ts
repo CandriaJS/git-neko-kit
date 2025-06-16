@@ -244,6 +244,8 @@ export type GetCollaboratorListResponseType = CollaboratorInfoResponseType[]
 export type RemoveCollaboratorParamType = RepoBaseParamType & UserNameParamType
 /** 移除协作者响应类型 */
 export interface RemoveCollaboratorResponseType {
+  /** 是否移除成功 */
+  success: boolean;
   /** 状态信息 */
-  info: string;
+  message: string;
 }

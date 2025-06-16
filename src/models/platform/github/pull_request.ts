@@ -11,6 +11,10 @@ import {
   MissingTitleMsg,
   PermissionDeniedMsg,
   PullRequestCommentOrRepoNotFoundMsg,
+  PullRequestCommentRemoveFailedMsg,
+  PullRequestCommentRemoveSuccessMsg,
+  PullRequestCommentUpdateFailedMsg,
+  PullRequestCommentUpdateSuccessMsg,
   PullRequestMergeMethodNotSupportedMsg,
   PullRequestOrRepoNotFoundMsg
 } from '@/common'
@@ -975,11 +979,19 @@ export class Pull_Request extends GitHubClient {
         case 404:
           throw new Error(PullRequestCommentOrRepoNotFoundMsg)
       }
-      let comment_status: boolean = false
+      let commentData: UpdatePullRequestCommentResponseType
       if (res.statusCode === 200) {
-        comment_status = true
+        commentData = {
+          success: true,
+          message: PullRequestCommentUpdateSuccessMsg
+        }
+      } else {
+        commentData = {
+          success: false,
+          message: PullRequestCommentUpdateFailedMsg
+        }
       }
-      res.data = { success: comment_status }
+      res.data = commentData
       return res
     } catch (error) {
       throw new Error(`[GitHub] 更新拉取请求评论失败: ${(error as Error).message}`)
@@ -1029,11 +1041,19 @@ export class Pull_Request extends GitHubClient {
         case 404:
           throw new Error(PullRequestCommentOrRepoNotFoundMsg)
       }
-      let comment_status: boolean = false
+      let commentData: DeletePullRequestCommentResponseType
       if (res.statusCode === 204) {
-        comment_status = true
+        commentData = {
+          success: true,
+          message: PullRequestCommentRemoveSuccessMsg
+        }
+      } else {
+        commentData = {
+          success: false,
+          message: PullRequestCommentRemoveFailedMsg
+        }
+        res.data = commentData
       }
-      res.data = { success: comment_status }
       return res
     } catch (error) {
       throw new Error(`[GitHub] 删除拉取请求评论失败: ${(error as Error).message}`)

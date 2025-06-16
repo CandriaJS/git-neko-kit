@@ -42,8 +42,8 @@ import type {
   LockIssueResponseType,
   OpenIssueParamType,
   OpenIssueResponseType,
-  RemoveCollaboratorResponseType,
   RemoveIssueCommentParamType,
+  RemoveIssueCommentResponseType,
   RemoveSubIssueParamType,
   RemoveSubIssueResponseType,
   RepoCommentsListParamType,
@@ -883,11 +883,13 @@ export class Issue extends GitHubClient {
       let issueData
       if (res.statusCode === 204) {
         issueData = {
-          info: IssueUnlockSuccessMsg
+          success: true,
+          message: IssueUnlockSuccessMsg
         }
       } else {
         issueData = {
-          info: FailedtoLockIssueMsg
+          success: false,
+          message: FailedtoLockIssueMsg
         }
       }
       res.data = issueData
@@ -944,11 +946,13 @@ export class Issue extends GitHubClient {
       let issueData
       if (res.statusCode === 204) {
         issueData = {
-          info: IssueUnlockSuccessMsg
+          success: true,
+          message: IssueUnlockSuccessMsg
         }
       } else {
         issueData = {
-          info: FailedtoUnlockIssueMsg
+          success: false,
+          message: FailedtoUnlockIssueMsg
         }
       }
       res.data = issueData
@@ -1326,7 +1330,7 @@ export class Issue extends GitHubClient {
    */
   public async remove_issue_comment (
     options: RemoveIssueCommentParamType
-  ): Promise<ApiResponseType<RemoveCollaboratorResponseType>> {
+  ): Promise<ApiResponseType<RemoveIssueCommentResponseType>> {
     if (!options.owner || !options.repo) {
       throw new Error(MissingRepoOwnerOrNameMsg)
     }
@@ -1344,14 +1348,16 @@ export class Issue extends GitHubClient {
       if (res.statusCode === 404) {
         throw new Error(IssueCommentNotFoundMsg)
       }
-      let IssueData: RemoveCollaboratorResponseType
+      let IssueData: RemoveIssueCommentResponseType
       if (res.statusCode === 204) {
         IssueData = {
-          info: IssueCommentRemoveSuccessMsg
+          success: true,
+          message: IssueCommentRemoveSuccessMsg
         }
       } else {
         IssueData = {
-          info: FailedtoRemoveIssueMsg
+          success: false,
+          message: FailedtoRemoveIssueMsg
         }
       }
       res.data = IssueData
@@ -1371,7 +1377,7 @@ export class Issue extends GitHubClient {
    */
   public async delete_issue_comment (
     options: RemoveIssueCommentParamType
-  ): Promise<ApiResponseType<RemoveCollaboratorResponseType>> {
+  ): Promise<ApiResponseType<RemoveIssueCommentResponseType>> {
     return this.remove_issue_comment(options)
   }
 

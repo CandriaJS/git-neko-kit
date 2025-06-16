@@ -232,5 +232,5 @@ export interface RevokeAccessTokenResponseType {
   /** 是否撤销成功 */
   success: boolean
   /** 撤销结果信息 */
-  info: string
+  message: string
 }

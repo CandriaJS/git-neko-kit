@@ -1,4 +1,5 @@
 import {
+  FailedToRemoveCollaboratorMsg,
   format_date,
   get_langage_color,
   get_remote_repo_default_branch,
@@ -8,6 +9,7 @@ import {
   OrgOrRepoNotFoundMsg,
   OrgOrUserNotFoundMsg,
   PermissionDeniedMsg,
+  RemoveCollaboratorSuccessMsg,
   RepoNotFoundMsg,
   RepoOrPermissionDeniedMsg,
   UserNotFoundMsg
@@ -810,15 +812,19 @@ export class Repo extends GitHubClient {
       const { owner, repo, username } = options
       const res = await this.delete(`/repos/${owner}/${repo}/collaborators/${username}`)
       if (res.statusCode === 404) throw new Error(RepoOrPermissionDeniedMsg)
+      let repoData: RemoveCollaboratorResponseType
       if (res.status && res.statusCode === 204) {
-        res.data = {
-          info: `移除协作者${username}成功`
+        repoData = {
+          success: true,
+          message: RemoveCollaboratorSuccessMsg(username)
         }
       } else {
-        res.data = {
-          info: `移除协作者${username}失败`
+        repoData = {
+          success: false,
+          message: FailedToRemoveCollaboratorMsg(username)
         }
       }
+      res.data = repoData
       return res
     } catch (error) {
       throw new Error(`[GitHub] 移除协作者失败: ${(error as Error).message}`)

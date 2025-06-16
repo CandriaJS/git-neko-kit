@@ -74,7 +74,7 @@ export class Auth extends GitHubClient {
         }
         const AuthData: TokenResponseType = {
           success: isSuccess,
-          info: AccessTokenSuccessMsg,
+          message: AccessTokenSuccessMsg,
           access_token: res.data.access_token,
           expires_in: res.data.expires_in ?? null,
           refresh_token: res.data.refresh_token ?? null,
@@ -118,13 +118,12 @@ export class Auth extends GitHubClient {
       const res = await this.post(`/applications/${this.Client_ID}/token`, {
         access_token
       })
-      if (res.data) {
-        const status = !((res.status === 'ok' && (res.statusCode === 404 || res.statusCode === 422)))
-        res.data = {
-          success: status,
-          info: status ? AccessTokenValidMsg : ExpiredAccessTokenMsg
-        }
+      const status = !((res.status === 'ok' && (res.statusCode === 404 || res.statusCode === 422)))
+      const authData: CheckTokenResponseType = {
+        success: status,
+        message: status ? AccessTokenValidMsg : ExpiredAccessTokenMsg
       }
+      res.data = authData
       return res
     } catch (error) {
       throw new Error(`[GitHub] 获取访问令牌状态失败: ${(error as Error).message}`)
@@ -178,7 +177,7 @@ export class Auth extends GitHubClient {
         }
         const AuthData: RefreshTokenResponseType = {
           success: isSuccess,
-          info: RefreshAccessTokenSuccessMsg,
+          message: RefreshAccessTokenSuccessMsg,
           access_token: res.data.access_token,
           expires_in: res.data.expires_in ?? null,
           refresh_token: res.data.refresh_token ?? null,

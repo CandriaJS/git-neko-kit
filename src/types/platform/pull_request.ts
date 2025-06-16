@@ -315,8 +315,10 @@ export interface UpdatePullRequestCommentParamType extends RepoBaseParamType, Co
 
 /** 更新拉取请求评论响应类型 */
 export interface UpdatePullRequestCommentResponseType {
-  /** 是否评论成功 */
+  /** 是否更新评论信息成功 */
   success: boolean
+  /** 更新评论状态信息 */
+  message: string
 }
 
 /** 删除拉取请求评论参数类型 */
@@ -326,4 +328,6 @@ export type DeletePullRequestCommentParamType = RepoBaseParamType & CommentIdPar
 export interface DeletePullRequestCommentResponseType {
   /** 是否删除成功 */
   success: boolean
+  /** 删除状态信息 */
+  message: string
 }
