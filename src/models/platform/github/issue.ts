@@ -129,7 +129,7 @@ export class Issue extends GitHubClient {
             avatar_url: res.data.user.avatar_url
           },
           labels: res.data.labels
-            ? res.data.labels.map((label: IssueLabelType) => ({
+            ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
@@ -146,7 +146,8 @@ export class Issue extends GitHubClient {
               }
             : null,
           assignees: res.data.assignees
-            ? res.data.assignees.map((assignee: IssueUser) => ({
+            ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
+              id: assignee.id,
               login: assignee.login,
               name: assignee.name,
               email: assignee.email,
@@ -256,7 +257,7 @@ export class Issue extends GitHubClient {
               avatar_url: issue.user.avatar_url
             },
             labels: issue.labels
-              ? issue.labels.map((label: IssueLabelType) => ({
+              ? issue.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
@@ -273,7 +274,7 @@ export class Issue extends GitHubClient {
                 }
               : null,
             assignees: issue.assignees
-              ? issue.assignees.map((assignee: IssueUser) => ({
+              ? issue.assignees.map((assignee: Record<string, any>): IssueUser => ({
                 id: assignee.id,
                 login: assignee.login,
                 name: assignee.name,
@@ -386,7 +387,7 @@ export class Issue extends GitHubClient {
               avatar_url: res.data.user.avatar_url
             },
             labels: res.data.labels
-              ? res.data.labels.map((label: IssueLabelType) => ({
+              ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
@@ -403,7 +404,8 @@ export class Issue extends GitHubClient {
                 }
               : null,
             assignees: res.data.assignees
-              ? res.data.assignees.map((assignee: IssueUser) => ({
+              ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
+                id: assignee.id,
                 login: assignee.login,
                 name: assignee.name,
                 email: assignee.email,
@@ -521,7 +523,7 @@ export class Issue extends GitHubClient {
               avatar_url: res.data.user.avatar_url
             },
             labels: res.data.labels
-              ? res.data.labels.map((label: IssueLabelType) => ({
+              ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
@@ -538,7 +540,7 @@ export class Issue extends GitHubClient {
                 }
               : null,
             assignees: res.data.assignees
-              ? res.data.assignees.map((assignee: IssueUser) => ({
+              ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
                 id: assignee.id,
                 login: assignee.login,
                 name: assignee.name,
@@ -640,7 +642,7 @@ export class Issue extends GitHubClient {
               avatar_url: res.data.user.avatar_url
             },
             labels: res.data.labels
-              ? res.data.labels.map((label: IssueLabelType) => ({
+              ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
@@ -657,7 +659,8 @@ export class Issue extends GitHubClient {
                 }
               : null,
             assignees: res.data.assignees
-              ? res.data.assignees.map((assignee: IssueUser) => ({
+              ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
+                id: assignee.id,
                 login: assignee.login,
                 name: assignee.name,
                 email: assignee.email,
@@ -773,7 +776,7 @@ export class Issue extends GitHubClient {
               avatar_url: res.data.user.avatar_url
             },
             labels: res.data.labels
-              ? res.data.labels.map((label: IssueLabelType) => ({
+              ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
@@ -790,7 +793,8 @@ export class Issue extends GitHubClient {
                 }
               : null,
             assignees: res.data.assignees
-              ? res.data.assignees.map((assignee: IssueUser) => ({
+              ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
+                id: assignee.id,
                 login: assignee.login,
                 name: assignee.name,
                 email: assignee.email,
@@ -1439,7 +1443,7 @@ export class Issue extends GitHubClient {
               avatar_url: issue.user.avatar_url
             },
             labels: issue.labels
-              ? issue.labels.map((label: IssueLabelType) => ({
+              ? issue.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
@@ -1456,7 +1460,7 @@ export class Issue extends GitHubClient {
                 }
               : null,
             assignees: issue.assignees
-              ? issue.assignees.map((assignee: IssueUser) => ({
+              ? issue.assignees.map((assignee: Record<string, any>): IssueUser => ({
                 id: assignee.id,
                 login: assignee.login,
                 name: assignee.name,
@@ -1559,7 +1563,7 @@ export class Issue extends GitHubClient {
             avatar_url: res.data.user.avatar_url
           },
           labels: res.data.labels
-            ? res.data.labels.map((label: IssueLabelType) => ({
+            ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
@@ -1576,7 +1580,8 @@ export class Issue extends GitHubClient {
               }
             : null,
           assignees: res.data.assignees
-            ? res.data.assignees.map((assignee: IssueUser) => ({
+            ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
+              id: assignee.id,
               login: assignee.login,
               name: assignee.name,
               email: assignee.email,
@@ -1687,7 +1692,7 @@ export class Issue extends GitHubClient {
             avatar_url: res.data.user.avatar_url
           },
           labels: res.data.labels
-            ? res.data.labels.map((label: IssueLabelType) => ({
+            ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
@@ -1704,7 +1709,8 @@ export class Issue extends GitHubClient {
               }
             : null,
           assignees: res.data.assignees
-            ? res.data.assignees.map((assignee: IssueUser) => ({
+            ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
+              id: assignee.id,
               login: assignee.login,
               name: assignee.name,
               email: assignee.email,
@@ -1823,7 +1829,7 @@ export class Issue extends GitHubClient {
             avatar_url: res.data.user.avatar_url
           },
           labels: res.data.labels
-            ? res.data.labels.map((label: IssueLabelType) => ({
+            ? res.data.labels.map((label: Record<string, any>):IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
@@ -1840,7 +1846,8 @@ export class Issue extends GitHubClient {
               }
             : null,
           assignees: res.data.assignees
-            ? res.data.assignees.map((assignee: IssueUser) => ({
+            ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
+              id: assignee.id,
               login: assignee.login,
               name: assignee.name,
               email: assignee.email,

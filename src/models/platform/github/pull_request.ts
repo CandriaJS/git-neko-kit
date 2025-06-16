@@ -302,12 +302,11 @@ export class Pull_Request extends GitHubClient {
               }
             : null,
           assignees: pr.assignees && pr.assignees.length > 0
-            ? pr.assignees.map((assignee: Record<string, any>) => ({
+            ? pr.assignees.map((assignee: Record<string, any>): PrUser => ({
               id: assignee.id,
               name: assignee.name,
               login: assignee.login,
               html_url: assignee.html_url,
-              email: assignee.email,
               avatar_url: assignee.avatar_url
             }))
             : null,
@@ -328,7 +327,7 @@ export class Pull_Request extends GitHubClient {
               }
             : null,
           labels: pr.labels && pr.labels.length > 0
-            ? pr.labels.map((label: Record<string, any>) => ({
+            ? pr.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
@@ -492,7 +491,7 @@ export class Pull_Request extends GitHubClient {
               }
             : null,
           labels: res.data.labels && res.data.labels.length > 0
-            ? res.data.labels.map((label: IssueLabelType) => ({
+            ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
@@ -635,7 +634,7 @@ export class Pull_Request extends GitHubClient {
               }
             : null,
           labels: res.data.labels && res.data.labels.length > 0
-            ? res.data.labels.map((label: IssueLabelType) => ({
+            ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
