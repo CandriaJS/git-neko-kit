@@ -1,5 +1,23 @@
 # 变更日志
 
+## [0.8.7](https://github.com/CandriaJS/git-neko-kit/compare/v0.8.6...v0.8.7) (2025-06-16)
+
+
+### 🐛 错误修复
+
+* **common:** 修复获取本地仓库默认分支函数 ([f65ab00](https://github.com/CandriaJS/git-neko-kit/commit/f65ab0098ae1ea1a98aa9d49588d94b42794daaf))
+* **pull-request:** 优化 PR 状态显示并处理时间字段 ([4c8acf0](https://github.com/CandriaJS/git-neko-kit/commit/4c8acf00412e29a65e5b085f26da1dc1f7e41840))
+
+
+### ♻️ 代码重构
+
+* **github:** 优化 GitHub 客户端并更新相关模型 ([588caa0](https://github.com/CandriaJS/git-neko-kit/commit/588caa0a26b1b517799668988642fc9ede61b1a4))
+* **github:** 优化类型定义和代码结构 ([eca5f32](https://github.com/CandriaJS/git-neko-kit/commit/eca5f32f256701411b80c668e6a8ae7f755e9b1f))
+* **github:** 移除议题状态原因字段 ([fca4e16](https://github.com/CandriaJS/git-neko-kit/commit/fca4e16539f57c65caec4a7f532895203f95c1b9))
+* **github:** 重构 GitHub API 响应处理 ([6f6281c](https://github.com/CandriaJS/git-neko-kit/commit/6f6281c881294a752b658386c8c300dbaa28651e))
+* **types:** 重构平台类型定义 ([293362f](https://github.com/CandriaJS/git-neko-kit/commit/293362fa16182575b71265ad231a9c85ead45062))
+* **types:** 重构平台类型定义 ([e8f8de0](https://github.com/CandriaJS/git-neko-kit/commit/e8f8de0ffd784ac598720d9b36648e49d8fb2ca3))
+
 ## [0.8.6](https://github.com/CandriaJS/git-neko-kit/compare/v0.8.5...v0.8.6) (2025-06-15)
 
 
