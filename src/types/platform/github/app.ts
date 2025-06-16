@@ -1,6 +1,6 @@
-import { OrgNameParamType, UserNameParamType } from '@/types/platform/base'
-import type { RepoInfoParamType, RepoInfoResponseType } from '@/types/platform/github/repo'
-import type { UserInfoResponseType } from '@/types/platform/github/user'
+import type { OrgNameParamType, UserNameParamType } from '@/types/platform/base'
+import type { RepoInfoParamType, RepoInfoResponseType } from '@/types/platform/repo'
+import type { UserInfoResponseType } from '@/types/platform/user'
 
 export type AppUser = Omit<UserInfoResponseType, 'bio' | 'blog' | 'followers' | 'following' | 'public_repos'>
 

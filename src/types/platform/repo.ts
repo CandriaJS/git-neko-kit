@@ -4,7 +4,7 @@ import type {
   RepoOwnerParamType,
   UserNameParamType
 } from '@/types/platform/base'
-import type { UserInfoResponseType } from '@/types/platform/github/user'
+import type { UserInfoResponseType } from '@/types/platform/user'
 
 /** 仓库所有者参数类型 */
 export type RepoUser = Omit<UserInfoResponseType, 'followers' | 'following' | 'blog' | 'bio' | 'public_repos'>

@@ -37,7 +37,6 @@ export class WebHook extends GitHubClient {
    * @example
    * ```ts
    * const res = await check_webhook_signature({
-   *   secret: 'your_secret',
    *   payload: 'your_payload',
    *   signature: 'your_signature'
    * })
