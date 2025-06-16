@@ -171,10 +171,11 @@ export class Auth extends GitHubClient {
           break
       }
 
+      if (!isSuccess) {
+        throw new Error(errorMsg)
+      }
+
       if (res.data) {
-        if (!isSuccess) {
-          throw new Error(errorMsg)
-        }
         const AuthData: RefreshTokenResponseType = {
           success: isSuccess,
           message: RefreshAccessTokenSuccessMsg,

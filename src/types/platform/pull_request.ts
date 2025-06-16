@@ -17,7 +17,7 @@ export interface PullRequestInfoResponseType {
   /** 拉取请求的编号 */
   number: number
   /** 拉取请求的状态 (open/closed) */
-  state: 'open' | 'closed'
+  state: 'open' | 'closed' | 'merged'
   /** 是否被锁定 */
   locked: boolean
   /** 拉取请求的标题 */
@@ -29,7 +29,7 @@ export interface PullRequestInfoResponseType {
   /** 创建时间 */
   created_at: string
   /** 更新时间 */
-  updated_at: string
+  updated_at: string | null
   /** 关闭时间 */
   closed_at: string | null
   /** 合并时间 */
@@ -90,14 +90,12 @@ export interface PullRequestListParamType extends RepoBaseParamType {
    * - all: 所有拉取请求
    */
   state?: 'open' | 'closed' | 'all'
-
   /**
    * 基础分支名称
    * 用于筛选指定目标分支的拉取请求
    * @example "main"
    */
   base?: string
-
   /**
    * 排序依据
    * @default "created"
