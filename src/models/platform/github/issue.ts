@@ -323,22 +323,22 @@ export class Issue extends GitHubClient {
                   description: issue.milestone.description,
                   open_issues: issue.milestone.open_issues,
                   closed_issues: issue.milestone.closed_issues,
-                  created_at: this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-                  updated_at: this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-                  closed_at: res.data.milestone.closed_at
+                  created_at: this.format ? await format_date(issue.milestone.created_at) : issue.milestone.created_at,
+                  updated_at: this.format ? await format_date(issue.milestone.updated_at) : issue.milestone.updated_at,
+                  closed_at: issue.milestone.closed_at
                     ? this.format
-                      ? await format_date(res.data.milestone.closed_at)
-                      : res.data.milestone.closed_at
+                      ? await format_date(issue.milestone.closed_at)
+                      : issue.milestone.closed_at
                     : null,
-                  due_on: res.data.milestone.due_on
+                  due_on: issue.milestone.due_on
                     ? this.format
-                      ? await format_date(res.data.milestone.due_on)
-                      : res.data.milestone.due_on
+                      ? await format_date(issue.milestone.due_on)
+                      : issue.milestone.due_on
                     : null
                 }
               : null,
-            created_at: this.format ? format_date(res.data.created_at) : res.data.created_at,
-            updated_at: this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+            created_at: this.format ? await format_date(res.data.created_at) : res.data.created_at,
+            updated_at: this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
             closed_at: res.data.closed_at
               ? this.format
                 ? await format_date(res.data.closed_at)
@@ -413,6 +413,35 @@ export class Issue extends GitHubClient {
       }
       if (res.data) {
         if (res.data) {
+          const [
+            createdAt,
+            updatedAt,
+            closedAt,
+            milestoneCreatedAt,
+            milestoneUpdatedAt,
+            milestoneClosedAt,
+            milestoneDueOn
+          ] = await Promise.all([
+            this.format ? await format_date(res.data.created_at) : res.data.created_at,
+            this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+            res.data.closed_at
+              ? this.format
+                ? await format_date(res.data.closed_at)
+                : res.data.closed_at
+              : null,
+            this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+            this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+            res.data.milestone.closed_at
+              ? this.format
+                ? await format_date(res.data.milestone.closed_at)
+                : res.data.milestone.closed_at
+              : null,
+            res.data.milestone.due_on
+              ? this.format
+                ? await format_date(res.data.milestone.due_on)
+                : res.data.milestone.due_on
+              : null
+          ])
           const IssueData: CreateIssueResponseType = {
             id: res.data.id,
             html_url: res.data.html_url,
@@ -465,15 +494,15 @@ export class Issue extends GitHubClient {
                   description: res.data.milestone.description,
                   open_issues: res.data.milestone.open_issues,
                   closed_issues: res.data.milestone.closed_issues,
-                  created_at: res.data.milestone.created_at,
-                  updated_at: res.data.milestone.updated_at,
-                  closed_at: res.data.milestone.closed_at,
-                  due_on: res.data.milestone.due_on
+                  created_at: milestoneCreatedAt,
+                  updated_at: milestoneUpdatedAt,
+                  closed_at: milestoneClosedAt,
+                  due_on: milestoneDueOn
                 }
               : null,
-            closed_at: res.data.closed_at,
-            created_at: res.data.created_at,
-            updated_at: res.data.updated_at
+            created_at: createdAt,
+            updated_at: updatedAt,
+            closed_at: closedAt
           }
           res.data = IssueData
         }
@@ -549,6 +578,35 @@ export class Issue extends GitHubClient {
       }
       if (res.data) {
         if (res.data) {
+          const [
+            createdAt,
+            updatedAt,
+            closedAt,
+            milestoneCreatedAt,
+            milestoneUpdatedAt,
+            milestoneClosedAt,
+            milestoneDueOn
+          ] = await Promise.all([
+            this.format ? await format_date(res.data.created_at) : res.data.created_at,
+            this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+            res.data.closed_at
+              ? this.format
+                ? await format_date(res.data.closed_at)
+                : res.data.closed_at
+              : null,
+            this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+            this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+            res.data.milestone.closed_at
+              ? this.format
+                ? await format_date(res.data.milestone.closed_at)
+                : res.data.milestone.closed_at
+              : null,
+            res.data.milestone.due_on
+              ? this.format
+                ? await format_date(res.data.milestone.due_on)
+                : res.data.milestone.due_on
+              : null
+          ])
           const IssueData: UpdateIssueResponseType = {
             id: res.data.id,
             html_url: res.data.html_url,
@@ -601,15 +659,15 @@ export class Issue extends GitHubClient {
                   description: res.data.milestone.description,
                   open_issues: res.data.milestone.open_issues,
                   closed_issues: res.data.milestone.closed_issues,
-                  created_at: res.data.milestone.created_at,
-                  updated_at: res.data.milestone.updated_at,
-                  closed_at: res.data.milestone.closed_at,
-                  due_on: res.data.milestone.due_on
+                  created_at: milestoneCreatedAt,
+                  updated_at: milestoneUpdatedAt,
+                  closed_at: milestoneClosedAt,
+                  due_on: milestoneDueOn
                 }
               : null,
-            closed_at: res.data.closed_at,
-            created_at: res.data.created_at,
-            updated_at: res.data.updated_at
+            created_at: createdAt,
+            updated_at: updatedAt,
+            closed_at: closedAt
           }
           res.data = IssueData
         }
@@ -668,6 +726,35 @@ export class Issue extends GitHubClient {
       }
       if (res.data) {
         if (res.data) {
+          const [
+            createdAt,
+            updatedAt,
+            closedAt,
+            milestoneCreatedAt,
+            milestoneUpdatedAt,
+            milestoneClosedAt,
+            milestoneDueOn
+          ] = await Promise.all([
+            this.format ? await format_date(res.data.created_at) : res.data.created_at,
+            this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+            res.data.closed_at
+              ? this.format
+                ? await format_date(res.data.closed_at)
+                : res.data.closed_at
+              : null,
+            this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+            this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+            res.data.milestone.closed_at
+              ? this.format
+                ? await format_date(res.data.milestone.closed_at)
+                : res.data.milestone.closed_at
+              : null,
+            res.data.milestone.due_on
+              ? this.format
+                ? await format_date(res.data.milestone.due_on)
+                : res.data.milestone.due_on
+              : null
+          ])
           const IssueData: OpenIssueResponseType = {
             id: res.data.id,
             html_url: res.data.html_url,
@@ -720,15 +807,15 @@ export class Issue extends GitHubClient {
                   description: res.data.milestone.description,
                   open_issues: res.data.milestone.open_issues,
                   closed_issues: res.data.milestone.closed_issues,
-                  created_at: res.data.milestone.created_at,
-                  updated_at: res.data.milestone.updated_at,
-                  closed_at: res.data.milestone.closed_at,
-                  due_on: res.data.milestone.due_on
+                  created_at: milestoneCreatedAt,
+                  updated_at: milestoneUpdatedAt,
+                  closed_at: milestoneClosedAt,
+                  due_on: milestoneDueOn
                 }
               : null,
-            closed_at: res.data.closed_at,
-            created_at: res.data.created_at,
-            updated_at: res.data.updated_at
+            created_at: createdAt,
+            updated_at: updatedAt,
+            closed_at: closedAt
           }
           res.data = IssueData
         }
@@ -801,71 +888,98 @@ export class Issue extends GitHubClient {
           throw new Error(RepoNotFoundMsg)
       }
       if (res.data) {
-        if (res.data) {
-          const IssueData: CloseIssueResponseType = {
-            id: res.data.id,
-            html_url: res.data.html_url,
-            number: res.data.number,
-            state: res.data.state,
-            title: res.data.title,
-            body: res.data.body,
-            user: {
-              id: res.data.user.id,
-              login: res.data.user.login,
-              name: res.data.user.name,
-              email: res.data.user.email,
-              html_url: res.data.user.html_url,
-              avatar_url: res.data.user.avatar_url
-            },
-            labels: res.data.labels
-              ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
-                id: label.id,
-                name: label.name,
-                color: label.color
-              }))
-              : null,
-            assignee: res.data.assignee
-              ? {
-                  id: res.data.assignee.id,
-                  login: res.data.assignee.login,
-                  name: res.data.assignee.name,
-                  email: res.data.assignee.email,
-                  html_url: res.data.assignee.html_url,
-                  avatar_url: res.data.assignee.avatar_url
-                }
-              : null,
-            assignees: res.data.assignees
-              ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
-                id: assignee.id,
-                login: assignee.login,
-                name: assignee.name,
-                email: assignee.email,
-                html_url: assignee.html_url,
-                avatar_url: assignee.avatar_url
-              }))
-              : null,
-            milestone: res.data.milestone
-              ? {
-                  id: res.data.milestone.id,
-                  url: res.data.milestone.url,
-                  number: res.data.milestone.number,
-                  state: res.data.milestone.state,
-                  title: res.data.milestone.title,
-                  description: res.data.milestone.description,
-                  open_issues: res.data.milestone.open_issues,
-                  closed_issues: res.data.milestone.closed_issues,
-                  created_at: res.data.milestone.created_at,
-                  updated_at: res.data.milestone.updated_at,
-                  closed_at: res.data.milestone.closed_at,
-                  due_on: res.data.milestone.due_on
-                }
-              : null,
-            closed_at: res.data.closed_at,
-            created_at: res.data.created_at,
-            updated_at: res.data.updated_at
-          }
-          res.data = IssueData
+        const [
+          createdAt,
+          updatedAt,
+          closedAt,
+          milestoneCreatedAt,
+          milestoneUpdatedAt,
+          milestoneClosedAt,
+          milestoneDueOn
+        ] = await Promise.all([
+          this.format ? await format_date(res.data.created_at) : res.data.created_at,
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+          res.data.closed_at
+            ? this.format
+              ? await format_date(res.data.closed_at)
+              : res.data.closed_at
+            : null,
+          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+          res.data.milestone.closed_at
+            ? this.format
+              ? await format_date(res.data.milestone.closed_at)
+              : res.data.milestone.closed_at
+            : null,
+          res.data.milestone.due_on
+            ? this.format
+              ? await format_date(res.data.milestone.due_on)
+              : res.data.milestone.due_on
+            : null
+        ])
+        const IssueData: CloseIssueResponseType = {
+          id: res.data.id,
+          html_url: res.data.html_url,
+          number: res.data.number,
+          state: res.data.state,
+          title: res.data.title,
+          body: res.data.body,
+          user: {
+            id: res.data.user.id,
+            login: res.data.user.login,
+            name: res.data.user.name,
+            email: res.data.user.email,
+            html_url: res.data.user.html_url,
+            avatar_url: res.data.user.avatar_url
+          },
+          labels: res.data.labels
+            ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
+              id: label.id,
+              name: label.name,
+              color: label.color
+            }))
+            : null,
+          assignee: res.data.assignee
+            ? {
+                id: res.data.assignee.id,
+                login: res.data.assignee.login,
+                name: res.data.assignee.name,
+                email: res.data.assignee.email,
+                html_url: res.data.assignee.html_url,
+                avatar_url: res.data.assignee.avatar_url
+              }
+            : null,
+          assignees: res.data.assignees
+            ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
+              id: assignee.id,
+              login: assignee.login,
+              name: assignee.name,
+              email: assignee.email,
+              html_url: assignee.html_url,
+              avatar_url: assignee.avatar_url
+            }))
+            : null,
+          milestone: res.data.milestone
+            ? {
+                id: res.data.milestone.id,
+                url: res.data.milestone.url,
+                number: res.data.milestone.number,
+                state: res.data.milestone.state,
+                title: res.data.milestone.title,
+                description: res.data.milestone.description,
+                open_issues: res.data.milestone.open_issues,
+                closed_issues: res.data.milestone.closed_issues,
+                created_at: milestoneCreatedAt,
+                updated_at: milestoneUpdatedAt,
+                closed_at: milestoneClosedAt,
+                due_on: milestoneDueOn
+              }
+            : null,
+          created_at: createdAt,
+          updated_at: updatedAt,
+          closed_at: closedAt
         }
+        res.data = IssueData
       }
       return res
     } catch (error) {
@@ -1056,8 +1170,8 @@ export class Issue extends GitHubClient {
         throw new Error(IssueCommentNotFoundMsg)
       }
       if (res.data) {
-        const IssueData: RepoCommentsListResponseType = res.data.map(
-          (comment: Record<string, any>): IssueCommentInfoResponseType => ({
+        const IssueData: RepoCommentsListResponseType = await Promise.all(res.data.map(
+          async (comment: Record<string, any>): Promise<IssueCommentInfoResponseType> => ({
             id: comment.id,
             html_url: comment.html_url,
             body: comment.body,
@@ -1069,10 +1183,10 @@ export class Issue extends GitHubClient {
               html_url: comment.user.html_url,
               avatar_url: comment.user.avatar_url
             },
-            created_at: comment.created_at,
-            updated_at: comment.updated_at
+            created_at: this.format ? await format_date(comment.created_at) : comment.created_at,
+            updated_at: this.format ? await format_date(comment.updated_at) : comment.updated_at
           })
-        )
+        ))
         res.data = IssueData
       }
       return res
@@ -1134,8 +1248,8 @@ export class Issue extends GitHubClient {
         throw new Error(IssueCommentNotFoundMsg)
       }
       if (res.data) {
-        const IssueData: IssueCommentsListResponseType = res.data.map(
-          (comment: Record<string, any>): IssueCommentInfoResponseType => ({
+        const IssueData: IssueCommentsListResponseType = await Promise.all(res.data.map(
+          async (comment: Record<string, any>): Promise<IssueCommentInfoResponseType> => ({
             id: comment.id,
             html_url: comment.html_url,
             body: comment.body,
@@ -1147,10 +1261,10 @@ export class Issue extends GitHubClient {
               html_url: comment.user.html_url,
               avatar_url: comment.user.avatar_url
             },
-            created_at: comment.created_at,
-            updated_at: comment.updated_at
+            created_at: this.format ? await format_date(comment.created_at) : comment.created_at,
+            updated_at: this.format ? await format_date(comment.updated_at) : comment.updated_at
           })
-        )
+        ))
         res.data = IssueData
       }
       return res
@@ -1197,6 +1311,13 @@ export class Issue extends GitHubClient {
         throw new Error(IssueCommentNotFoundMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? await format_date(res.data.created_at) : res.data.created_at,
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const IssueData: IssueCommentInfoResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -1209,8 +1330,8 @@ export class Issue extends GitHubClient {
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = IssueData
       }
@@ -1266,9 +1387,16 @@ export class Issue extends GitHubClient {
         throw new Error(IssueCommentNotFoundMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? await format_date(res.data.created_at) : res.data.created_at,
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const IssueData: CreteIssueCommentResponseType = {
           id: res.data.id,
-          html_url: `${get_base_url(this.type)}/${owner}/${repo}/issues/${issue_number}#${res.data.id}`,
+          html_url: `${get_base_url(this.type, { proxyType: 'original' })}/${owner}/${repo}/issues/${issue_number}#${res.data.id}`,
           body: res.data.body,
           user: {
             id: res.data.user.id,
@@ -1278,8 +1406,8 @@ export class Issue extends GitHubClient {
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = IssueData
       }
@@ -1330,6 +1458,13 @@ export class Issue extends GitHubClient {
         throw new Error(IssueCommentNotFoundMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? await format_date(res.data.created_at) : res.data.created_at,
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const IssueData: UpdateIssueCommentResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -1342,8 +1477,8 @@ export class Issue extends GitHubClient {
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = IssueData
       }
@@ -1474,8 +1609,8 @@ export class Issue extends GitHubClient {
         throw new Error(IssueNotFoundMsg)
       }
       if (res.data) {
-        const IssueData: SubIssueListResponseType = res.data.map(
-          (issue: Record<string, any>): IssueInfoResponseType => ({
+        const IssueData: SubIssueListResponseType = await Promise.all(res.data.map(
+          async (issue: Record<string, any>): Promise<IssueInfoResponseType> => ({
             id: issue.id,
             html_url: issue.html_url,
             number: issue.number,
@@ -1527,17 +1662,29 @@ export class Issue extends GitHubClient {
                   description: issue.milestone.description,
                   open_issues: issue.milestone.open_issues,
                   closed_issues: issue.milestone.closed_issues,
-                  created_at: issue.milestone.created_at,
-                  updated_at: issue.milestone.updated_at,
-                  closed_at: issue.milestone.closed_at,
+                  created_at: this.format ? await format_date(issue.milestone.created_at) : issue.milestone.created_at,
+                  updated_at: this.format ? await format_date(issue.milestone.updated_at) : issue.milestone.updated_at,
+                  closed_at: issue.milestone.closed_at
+                    ? this.format
+                      ? await format_date(issue.milestone.closed_at)
+                      : issue.milestone.closed_at
+                    : null,
                   due_on: issue.milestone.due_on
+                    ? this.format
+                      ? await format_date(issue.milestone.due_on)
+                      : issue.milestone.due_on
+                    : null
                 }
               : null,
-            closed_at: issue.closed_at,
-            created_at: issue.created_at,
-            updated_at: issue.updated_at
+            created_at: this.format ? await format_date(issue.created_at) : issue.created_at,
+            updated_at: this.format ? await format_date(issue.updated_at) : issue.updated_at,
+            closed_at: issue.closed_at
+              ? this.format
+                ? await format_date(issue.closed_at)
+                : issue.closed_at
+              : null
           })
-        )
+        ))
         res.data = IssueData
       }
       return res
@@ -1595,6 +1742,35 @@ export class Issue extends GitHubClient {
         throw new Error(IssueNotFoundMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt,
+          closedAt,
+          milestoneCreatedAt,
+          milestoneUpdatedAt,
+          milestoneClosedAt,
+          milestoneDueOn
+        ] = await Promise.all([
+          this.format ? await format_date(res.data.created_at) : res.data.created_at,
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+          res.data.closed_at
+            ? this.format
+              ? await format_date(res.data.closed_at)
+              : res.data.closed_at
+            : null,
+          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+          res.data.milestone.closed_at
+            ? this.format
+              ? await format_date(res.data.milestone.closed_at)
+              : res.data.milestone.closed_at
+            : null,
+          res.data.milestone.due_on
+            ? this.format
+              ? await format_date(res.data.milestone.due_on)
+              : res.data.milestone.due_on
+            : null
+        ])
         const IssueData: CreateSubIssueResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -1647,15 +1823,15 @@ export class Issue extends GitHubClient {
                 description: res.data.milestone.description,
                 open_issues: res.data.milestone.open_issues,
                 closed_issues: res.data.milestone.closed_issues,
-                created_at: res.data.milestone.created_at,
-                updated_at: res.data.milestone.updated_at,
-                closed_at: res.data.milestone.closed_at,
-                due_on: res.data.milestone.due_on
+                created_at: milestoneCreatedAt,
+                updated_at: milestoneUpdatedAt,
+                closed_at: milestoneClosedAt,
+                due_on: milestoneDueOn
               }
             : null,
-          closed_at: res.data.closed_at,
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt,
+          closed_at: closedAt
         }
         res.data = IssueData
       }
@@ -1724,6 +1900,35 @@ export class Issue extends GitHubClient {
         throw new Error(IssueNotFoundMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt,
+          closedAt,
+          milestoneCreatedAt,
+          milestoneUpdatedAt,
+          milestoneClosedAt,
+          milestoneDueOn
+        ] = await Promise.all([
+          this.format ? await format_date(res.data.created_at) : res.data.created_at,
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+          res.data.closed_at
+            ? this.format
+              ? await format_date(res.data.closed_at)
+              : res.data.closed_at
+            : null,
+          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+          res.data.milestone.closed_at
+            ? this.format
+              ? await format_date(res.data.milestone.closed_at)
+              : res.data.milestone.closed_at
+            : null,
+          res.data.milestone.due_on
+            ? this.format
+              ? await format_date(res.data.milestone.due_on)
+              : res.data.milestone.due_on
+            : null
+        ])
         const IssueData: RemoveSubIssueResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -1776,15 +1981,15 @@ export class Issue extends GitHubClient {
                 description: res.data.milestone.description,
                 open_issues: res.data.milestone.open_issues,
                 closed_issues: res.data.milestone.closed_issues,
-                created_at: res.data.milestone.created_at,
-                updated_at: res.data.milestone.updated_at,
-                closed_at: res.data.milestone.closed_at,
-                due_on: res.data.milestone.due_on
+                created_at: milestoneCreatedAt,
+                updated_at: milestoneUpdatedAt,
+                closed_at: milestoneClosedAt,
+                due_on: milestoneDueOn
               }
             : null,
-          closed_at: res.data.closed_at,
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt,
+          closed_at: closedAt
         }
         res.data = IssueData
       }
@@ -1861,6 +2066,35 @@ export class Issue extends GitHubClient {
         throw new Error(IssueNotFoundMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt,
+          closedAt,
+          milestoneCreatedAt,
+          milestoneUpdatedAt,
+          milestoneClosedAt,
+          milestoneDueOn
+        ] = await Promise.all([
+          this.format ? await format_date(res.data.created_at) : res.data.created_at,
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+          res.data.closed_at
+            ? this.format
+              ? await format_date(res.data.closed_at)
+              : res.data.closed_at
+            : null,
+          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+          res.data.milestone.closed_at
+            ? this.format
+              ? await format_date(res.data.milestone.closed_at)
+              : res.data.milestone.closed_at
+            : null,
+          res.data.milestone.due_on
+            ? this.format
+              ? await format_date(res.data.milestone.due_on)
+              : res.data.milestone.due_on
+            : null
+        ])
         const IssueData: ReprioritizeSubIssueResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -1913,15 +2147,15 @@ export class Issue extends GitHubClient {
                 description: res.data.milestone.description,
                 open_issues: res.data.milestone.open_issues,
                 closed_issues: res.data.milestone.closed_issues,
-                created_at: res.data.milestone.created_at,
-                updated_at: res.data.milestone.updated_at,
-                closed_at: res.data.milestone.closed_at,
-                due_on: res.data.milestone.due_on
+                created_at: milestoneCreatedAt,
+                updated_at: milestoneUpdatedAt,
+                closed_at: milestoneClosedAt,
+                due_on: milestoneDueOn
               }
             : null,
-          closed_at: res.data.closed_at,
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt,
+          closed_at: closedAt
         }
         res.data = IssueData
       }

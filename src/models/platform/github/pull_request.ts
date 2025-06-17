@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import {
   ConflictPullRequestShaValueMsg,
+  format_date,
   MissingBaseBranchMsg,
   MissingHeadBranchMsg,
   MissingLinkedIssueIdentifierMsg,
@@ -92,6 +92,41 @@ export class Pull_Request extends GitHubClient {
       })
       const res = await this.get(`/repos/${options.owner}/${options.repo}/pulls/${options.pr_number}`)
       if (res.data) {
+        const [
+          createdAt,
+          mergeddAt,
+          updatedAt,
+          closedAt,
+          milestoneCreatedAt,
+          milestoneUpdatedAt,
+          milestoneClosedAt,
+          milestoneDueOn
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+          res.data.merged_at
+            ? this.format
+              ? await format_date(res.data.merged_at)
+              : res.data.merged_at
+            : null,
+          res.data.closed_at
+            ? this.format
+              ? await format_date(res.data.closed_at)
+              : res.data.closed_at
+            : null,
+          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+          res.data.milestone.closed_at
+            ? this.format
+              ? await format_date(res.data.milestone.closed_at)
+              : res.data.milestone.closed_at
+            : null,
+          res.data.milestone.due_on
+            ? this.format
+              ? await format_date(res.data.milestone.due_on)
+              : res.data.milestone.due_on
+            : null
+        ])
         const PrData: PullRequestInfoResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -101,10 +136,10 @@ export class Pull_Request extends GitHubClient {
           title: res.data.title,
           body: res.data.body,
           draft: res.data.draft,
-          created_at: res.data.created_at,
-          merged_at: res.data.merged_at || null,
-          updated_at: res.data.updated_at || null,
-          closed_at: res.data.closed_at || null,
+          created_at: createdAt,
+          merged_at: mergeddAt,
+          updated_at: updatedAt,
+          closed_at: closedAt,
           user: {
             id: res.data.user.id,
             name: res.data.user.name,
@@ -176,10 +211,10 @@ export class Pull_Request extends GitHubClient {
                 description: res.data.milestone.description,
                 open_issues: res.data.milestone.open_issues,
                 closed_issues: res.data.milestone.closed_issues,
-                created_at: res.data.milestone.created_at,
-                updated_at: res.data.milestone.updated_at,
-                due_on: res.data.milestone.due_on,
-                closed_at: res.data.milestone.closed_at
+                created_at: milestoneCreatedAt,
+                updated_at: milestoneUpdatedAt,
+                closed_at: milestoneClosedAt,
+                due_on: milestoneDueOn
               }
             : null,
           labels: res.data.labels && res.data.labels.length > 0
@@ -241,7 +276,7 @@ export class Pull_Request extends GitHubClient {
       if (queryOptions.page) params.page = queryOptions.page.toString()
       const res = await this.get(`/repos/${owner}/${repo}/pulls`, params)
       if (res.data) {
-        const PrData: PullRequestListResponseType = res.data.map((pr: Record<string, any>): PullRequestInfoResponseType => ({
+        const PrData: PullRequestListResponseType = await Promise.all(res.data.map(async (pr: Record<string, any>): Promise<PullRequestInfoResponseType> => ({
           id: pr.id,
           html_url: pr.html_url,
           number: pr.number,
@@ -250,10 +285,18 @@ export class Pull_Request extends GitHubClient {
           title: pr.title,
           body: pr.body,
           draft: pr.draft,
-          created_at: pr.created_at,
-          updated_at: pr.updated_at || null,
-          closed_at: pr.closed_at || null,
-          merged_at: pr.merged_at || null,
+          created_at: this.format ? format_date(pr.created_at) : pr.created_at,
+          merged_at: pr.merged_at
+            ? this.format
+              ? await format_date(pr.merged_at)
+              : pr.merged_at
+            : null,
+          updated_at: this.format ? format_date(pr.updated_at) : pr.updated_at,
+          closed_at: pr.closed_at
+            ? this.format
+              ? await format_date(pr.closed_at)
+              : pr.closed_at
+            : null,
           user: {
             id: pr.user.id,
             name: pr.user.name,
@@ -325,10 +368,18 @@ export class Pull_Request extends GitHubClient {
                 description: pr.milestone.description,
                 open_issues: pr.milestone.open_issues,
                 closed_issues: pr.milestone.closed_issues,
-                created_at: pr.milestone.created_at,
-                updated_at: pr.milestone.updated_at,
-                closed_at: pr.milestone.closed_at,
+                created_at: this.format ? await format_date(pr.milestone.created_at) : pr.milestone.created_at,
+                updated_at: this.format ? await format_date(pr.milestone.updated_at) : pr.milestone.updated_at,
+                closed_at: pr.milestone.closed_at
+                  ? this.format
+                    ? await format_date(pr.milestone.closed_at)
+                    : pr.milestone.closed_at
+                  : null,
                 due_on: pr.milestone.due_on
+                  ? this.format
+                    ? await format_date(pr.milestone.due_on)
+                    : pr.milestone.due_on
+                  : null
               }
             : null,
           labels: pr.labels && pr.labels.length > 0
@@ -343,7 +394,7 @@ export class Pull_Request extends GitHubClient {
           deletions: pr.deletions,
           changed_files: pr.changed_files
         })
-        )
+        ))
         res.data = PrData
       }
       return res
@@ -405,6 +456,41 @@ export class Pull_Request extends GitHubClient {
       )
       if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
       if (res.data) {
+        const [
+          createdAt,
+          mergeddAt,
+          updatedAt,
+          closedAt,
+          milestoneCreatedAt,
+          milestoneUpdatedAt,
+          milestoneClosedAt,
+          milestoneDueOn
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+          res.data.merged_at
+            ? this.format
+              ? await format_date(res.data.merged_at)
+              : res.data.merged_at
+            : null,
+          res.data.closed_at
+            ? this.format
+              ? await format_date(res.data.closed_at)
+              : res.data.closed_at
+            : null,
+          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+          res.data.milestone.closed_at
+            ? this.format
+              ? await format_date(res.data.milestone.closed_at)
+              : res.data.milestone.closed_at
+            : null,
+          res.data.milestone.due_on
+            ? this.format
+              ? await format_date(res.data.milestone.due_on)
+              : res.data.milestone.due_on
+            : null
+        ])
         const PrData: CreatePullRequestResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -414,10 +500,10 @@ export class Pull_Request extends GitHubClient {
           title: res.data.title,
           body: res.data.body,
           draft: res.data.draft,
-          created_at: res.data.created_at,
-          merged_at: res.data.merged_at,
-          updated_at: res.data.updated_at,
-          closed_at: res.data.closed_at,
+          created_at: createdAt,
+          merged_at: mergeddAt,
+          updated_at: updatedAt,
+          closed_at: closedAt,
           user: {
             id: res.data.user.id,
             name: res.data.user.name,
@@ -489,10 +575,10 @@ export class Pull_Request extends GitHubClient {
                 description: res.data.milestone.description,
                 open_issues: res.data.milestone.open_issues,
                 closed_issues: res.data.milestone.closed_issues,
-                created_at: res.data.milestone.created_at,
-                updated_at: res.data.milestone.updated_at,
-                due_on: res.data.milestone.due_on,
-                closed_at: res.data.milestone.closed_at
+                created_at: milestoneCreatedAt,
+                updated_at: milestoneUpdatedAt,
+                closed_at: milestoneClosedAt,
+                due_on: milestoneDueOn
               }
             : null,
           labels: res.data.labels && res.data.labels.length > 0
@@ -548,6 +634,41 @@ export class Pull_Request extends GitHubClient {
       const res = await this.patch(`/repos/${owner}/${repo}/pulls/${pr_number}`, null, body)
       if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
       if (res.data) {
+        const [
+          createdAt,
+          mergeddAt,
+          updatedAt,
+          closedAt,
+          milestoneCreatedAt,
+          milestoneUpdatedAt,
+          milestoneClosedAt,
+          milestoneDueOn
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+          res.data.merged_at
+            ? this.format
+              ? await format_date(res.data.merged_at)
+              : res.data.merged_at
+            : null,
+          res.data.closed_at
+            ? this.format
+              ? await format_date(res.data.closed_at)
+              : res.data.closed_at
+            : null,
+          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
+          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
+          res.data.milestone.closed_at
+            ? this.format
+              ? await format_date(res.data.milestone.closed_at)
+              : res.data.milestone.closed_at
+            : null,
+          res.data.milestone.due_on
+            ? this.format
+              ? await format_date(res.data.milestone.due_on)
+              : res.data.milestone.due_on
+            : null
+        ])
         const PrData: UpdatePullRequestResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -557,10 +678,10 @@ export class Pull_Request extends GitHubClient {
           title: res.data.title,
           body: res.data.body,
           draft: res.data.draft,
-          created_at: res.data.created_at,
-          merged_at: res.data.merged_at,
-          updated_at: res.data.updated_at,
-          closed_at: res.data.closed_at,
+          created_at: createdAt,
+          merged_at: mergeddAt,
+          updated_at: updatedAt,
+          closed_at: closedAt,
           user: {
             id: res.data.user.id,
             name: res.data.user.name,
@@ -632,10 +753,10 @@ export class Pull_Request extends GitHubClient {
                 description: res.data.milestone.description,
                 open_issues: res.data.milestone.open_issues,
                 closed_issues: res.data.milestone.closed_issues,
-                created_at: res.data.milestone.created_at,
-                updated_at: res.data.milestone.updated_at,
-                due_on: res.data.milestone.due_on,
-                closed_at: res.data.milestone.closed_at
+                created_at: milestoneCreatedAt,
+                updated_at: milestoneUpdatedAt,
+                closed_at: milestoneClosedAt,
+                due_on: milestoneDueOn
               }
             : null,
           labels: res.data.labels && res.data.labels.length > 0
@@ -815,6 +936,13 @@ export class Pull_Request extends GitHubClient {
           throw new Error(PullRequestCommentOrRepoNotFoundMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const PrData: GetPullRequestCommentInfoResponseType = {
           id: res.data.id,
           body: res.data.body,
@@ -825,8 +953,8 @@ export class Pull_Request extends GitHubClient {
             avatar_url: res.data.user.avatar_url,
             html_url: res.data.user.html_url
           },
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = PrData
       }
@@ -887,8 +1015,8 @@ export class Pull_Request extends GitHubClient {
               html_url: comment.user.html_url,
               avatar_url: comment.user.avatar_url
             },
-            created_at: comment.created_at,
-            updated_at: comment.updated_at
+            created_at: this.format ? format_date(comment.created_at) : comment.created_at,
+            updated_at: this.format ? format_date(comment.updated_at) : comment.updated_at
           }
         })
         res.data = PrData
