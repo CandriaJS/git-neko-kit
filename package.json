@@ -22,6 +22,11 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs"
     },
+    "./exec": {
+      "types": "./dist/exports/exec.d.ts",
+      "import": "./dist/exports/exec.mjs",
+      "require": "./dist/exports/exec.cjs"
+    },
     "./axios": {
       "types": "./dist/exports/axios.d.ts",
       "import": "./dist/exports/axios.mjs",
