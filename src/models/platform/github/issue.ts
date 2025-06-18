@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash'
+
 import {
   FailedtoLockIssueMsg,
   FailedtoRemoveIssueMsg,
@@ -19,46 +21,47 @@ import {
 } from '@/common'
 import { get_base_url } from '@/models/base'
 import { GitHubClient } from '@/models/platform/github/client'
-import type {
-  ApiResponseType,
-  CloseIssueParamType,
-  CloseIssueResponseType,
-  CreateIssueResponseType,
-  CreateSubIssueParamType,
-  CreateSubIssueResponseType,
-  CreteIssueCommentParamType,
-  CreteIssueCommentResponseType,
-  CreteIssueParamType,
-  IssueCommentInfoParamType,
-  IssueCommentInfoResponseType,
-  IssueCommentsListParamType,
-  IssueCommentsListResponseType,
-  IssueInfoParamType,
-  IssueInfoResponseType,
-  IssueLabelType,
-  IssueListResponseType,
-  IssueUser,
-  LockIssueParamType,
-  LockIssueResponseType,
-  OpenIssueParamType,
-  OpenIssueResponseType,
-  RemoveIssueCommentParamType,
-  RemoveIssueCommentResponseType,
-  RemoveSubIssueParamType,
-  RemoveSubIssueResponseType,
-  RepoCommentsListParamType,
-  RepoCommentsListResponseType,
-  RepoIssueListParamType,
-  ReprioritizeSubIssueParamType,
-  ReprioritizeSubIssueResponseType,
-  SubIssueListParamType,
-  SubIssueListResponseType,
-  UnLockIssueParamType,
-  UnLockIssueResponseType,
-  UpdateIssueCommentParamType,
-  UpdateIssueCommentResponseType,
-  UpdateIssueParamType,
-  UpdateIssueResponseType
+import {
+  type ApiResponseType,
+  type CloseIssueParamType,
+  type CloseIssueResponseType,
+  type CreateIssueResponseType,
+  type CreateSubIssueParamType,
+  type CreateSubIssueResponseType,
+  type CreteIssueCommentParamType,
+  type CreteIssueCommentResponseType,
+  type CreteIssueParamType,
+  type IssueCommentInfoParamType,
+  type IssueCommentInfoResponseType,
+  type IssueCommentsListParamType,
+  type IssueCommentsListResponseType,
+  type IssueInfoParamType,
+  type IssueInfoResponseType,
+  type IssueLabelType,
+  type IssueListResponseType,
+  type IssueUser,
+  type LockIssueParamType,
+  type LockIssueResponseType,
+  type OpenIssueParamType,
+  type OpenIssueResponseType,
+  ProxyType,
+  type RemoveIssueCommentParamType,
+  type RemoveIssueCommentResponseType,
+  type RemoveSubIssueParamType,
+  type RemoveSubIssueResponseType,
+  type RepoCommentsListParamType,
+  type RepoCommentsListResponseType,
+  type RepoIssueListParamType,
+  type ReprioritizeSubIssueParamType,
+  type ReprioritizeSubIssueResponseType,
+  type SubIssueListParamType,
+  type SubIssueListResponseType,
+  type UnLockIssueParamType,
+  type UnLockIssueResponseType,
+  type UpdateIssueCommentParamType,
+  type UpdateIssueCommentResponseType,
+  type UpdateIssueParamType,
+  type UpdateIssueResponseType
 } from '@/types'
 
 /**
@@ -124,19 +127,19 @@ export class Issue extends GitHubClient {
         ] = await Promise.all([
           this.format ? format_date(res.data.created_at) : res.data.created_at,
           this.format ? format_date(res.data.updated_at) : res.data.updated_at,
-          res.data.closed_at
+          !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
           this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
           this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          res.data.milestone.closed_at
+          !isEmpty(res.data.milestone.closed_at)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          res.data.milestone.due_on
+          !isEmpty(res.data.milestone.due_on)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -153,39 +156,39 @@ export class Issue extends GitHubClient {
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            email: isEmpty(res.data.user.email) ? null : res.data.user.email,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
-          labels: res.data.labels
+          labels: !isEmpty(res.data.labels)
             ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
             }))
             : null,
-          assignee: res.data.assignee
+          assignee: !isEmpty(res.data.assignee)
             ? {
                 id: res.data.assignee.id,
                 login: res.data.assignee.login,
-                name: res.data.assignee.name,
-                email: res.data.assignee.email,
+                name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                email: isEmpty(res.data.assignee.email) ? null : res.data.assignee.email,
                 html_url: res.data.assignee.html_url,
                 avatar_url: res.data.assignee.avatar_url
               }
             : null,
-          assignees: res.data.assignees
+          assignees: !isEmpty(res.data.assignees)
             ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
               id: assignee.id,
               login: assignee.login,
-              name: assignee.name,
-              email: assignee.email,
+              name: isEmpty(assignee.name) ? null : assignee.name,
+              email: isEmpty(assignee.email) ? null : assignee.email,
               html_url: assignee.html_url,
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: res.data.milestone
+          milestone: !isEmpty(res.data.milestone)
             ? {
                 id: res.data.milestone.id,
                 url: res.data.milestone.url,
@@ -281,39 +284,39 @@ export class Issue extends GitHubClient {
             user: {
               id: issue.user.id,
               login: issue.user.login,
-              name: issue.user.name,
-              email: issue.user.email,
+              name: isEmpty(issue.user.name) ? null : issue.user.name,
+              email: isEmpty(issue.user.email) ? null : issue.user.email,
               html_url: issue.user.html_url,
               avatar_url: issue.user.avatar_url
             },
-            labels: issue.labels
+            labels: !isEmpty(issue.labels)
               ? issue.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
               }))
               : null,
-            assignee: issue.assignee
+            assignee: !isEmpty(issue.assignee)
               ? {
                   id: issue.assignee.id,
                   login: issue.assignee.login,
-                  name: issue.assignee.name,
-                  email: issue.assignee.email,
+                  name: isEmpty(issue.assignee.name) ? null : issue.assignee.name,
+                  email: isEmpty(issue.assignee.email) ? null : issue.assignee.email,
                   html_url: issue.assignee.html_url,
                   avatar_url: issue.assignee.avatar_url
                 }
               : null,
-            assignees: issue.assignees
+            assignees: !isEmpty(issue.assignees)
               ? issue.assignees.map((assignee: Record<string, any>): IssueUser => ({
                 id: assignee.id,
                 login: assignee.login,
-                name: assignee.name,
-                email: assignee.email,
+                name: isEmpty(assignee.name) ? null : assignee.name,
+                email: isEmpty(assignee.email) ? null : assignee.email,
                 html_url: assignee.html_url,
                 avatar_url: assignee.avatar_url
               }))
               : null,
-            milestone: issue.milestone
+            milestone: !isEmpty(issue.milestone)
               ? {
                   id: issue.milestone.id,
                   url: issue.milestone.url,
@@ -422,21 +425,21 @@ export class Issue extends GitHubClient {
             milestoneClosedAt,
             milestoneDueOn
           ] = await Promise.all([
-            this.format ? await format_date(res.data.created_at) : res.data.created_at,
-            this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
-            res.data.closed_at
+            this.format ? format_date(res.data.created_at) : res.data.created_at,
+            this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+            !isEmpty(res.data.closed_at)
               ? this.format
                 ? await format_date(res.data.closed_at)
                 : res.data.closed_at
               : null,
             this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
             this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-            res.data.milestone.closed_at
+            !isEmpty(res.data.milestone.closed_at)
               ? this.format
                 ? await format_date(res.data.milestone.closed_at)
                 : res.data.milestone.closed_at
               : null,
-            res.data.milestone.due_on
+            !isEmpty(res.data.milestone.due_on)
               ? this.format
                 ? await format_date(res.data.milestone.due_on)
                 : res.data.milestone.due_on
@@ -452,39 +455,39 @@ export class Issue extends GitHubClient {
             user: {
               id: res.data.user.id,
               login: res.data.user.login,
-              name: res.data.user.name,
-              email: res.data.user.email,
+              name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+              email: isEmpty(res.data.user.email) ? null : res.data.user.email,
               html_url: res.data.user.html_url,
               avatar_url: res.data.user.avatar_url
             },
-            labels: res.data.labels
+            labels: !isEmpty(res.data.labels)
               ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
               }))
               : null,
-            assignee: res.data.assignee
+            assignee: !isEmpty(res.data.assignee)
               ? {
                   id: res.data.assignee.id,
                   login: res.data.assignee.login,
-                  name: res.data.assignee.name,
-                  email: res.data.assignee.email,
+                  name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                  email: isEmpty(res.data.assignee.email) ? null : res.data.assignee.email,
                   html_url: res.data.assignee.html_url,
                   avatar_url: res.data.assignee.avatar_url
                 }
               : null,
-            assignees: res.data.assignees
+            assignees: !isEmpty(res.data.assignees)
               ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
                 id: assignee.id,
                 login: assignee.login,
-                name: assignee.name,
-                email: assignee.email,
+                name: isEmpty(assignee.name) ? null : assignee.name,
+                email: isEmpty(assignee.email) ? null : assignee.email,
                 html_url: assignee.html_url,
                 avatar_url: assignee.avatar_url
               }))
               : null,
-            milestone: res.data.milestone
+            milestone: !isEmpty(res.data.milestone)
               ? {
                   id: res.data.milestone.id,
                   url: res.data.milestone.url,
@@ -587,21 +590,21 @@ export class Issue extends GitHubClient {
             milestoneClosedAt,
             milestoneDueOn
           ] = await Promise.all([
-            this.format ? await format_date(res.data.created_at) : res.data.created_at,
-            this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
-            res.data.closed_at
+            this.format ? format_date(res.data.created_at) : res.data.created_at,
+            this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+            !isEmpty(res.data.closed_at)
               ? this.format
                 ? await format_date(res.data.closed_at)
                 : res.data.closed_at
               : null,
             this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
             this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-            res.data.milestone.closed_at
+            !isEmpty(res.data.milestone.closed_at)
               ? this.format
                 ? await format_date(res.data.milestone.closed_at)
                 : res.data.milestone.closed_at
               : null,
-            res.data.milestone.due_on
+            !isEmpty(res.data.milestone.due_on)
               ? this.format
                 ? await format_date(res.data.milestone.due_on)
                 : res.data.milestone.due_on
@@ -617,39 +620,39 @@ export class Issue extends GitHubClient {
             user: {
               id: res.data.user.id,
               login: res.data.user.login,
-              name: res.data.user.name,
-              email: res.data.user.email,
+              name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+              email: isEmpty(res.data.user.email) ? null : res.data.user.email,
               html_url: res.data.user.html_url,
               avatar_url: res.data.user.avatar_url
             },
-            labels: res.data.labels
+            labels: !isEmpty(res.data.labels)
               ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
               }))
               : null,
-            assignee: res.data.assignee
+            assignee: !isEmpty(res.data.assignee)
               ? {
                   id: res.data.assignee.id,
                   login: res.data.assignee.login,
-                  name: res.data.assignee.name,
-                  email: res.data.assignee.email,
+                  name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                  email: isEmpty(res.data.assignee.email) ? null : res.data.assignee,
                   html_url: res.data.assignee.html_url,
                   avatar_url: res.data.assignee.avatar_url
                 }
               : null,
-            assignees: res.data.assignees
+            assignees: !isEmpty(res.data.assignees)
               ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
                 id: assignee.id,
                 login: assignee.login,
-                name: assignee.name,
-                email: assignee.email,
+                name: isEmpty(assignee.name) ? null : assignee.name,
+                email: isEmpty(assignee.email) ? null : assignee.email,
                 html_url: assignee.html_url,
                 avatar_url: assignee.avatar_url
               }))
               : null,
-            milestone: res.data.milestone
+            milestone: !isEmpty(res.data.milestone)
               ? {
                   id: res.data.milestone.id,
                   url: res.data.milestone.url,
@@ -735,21 +738,21 @@ export class Issue extends GitHubClient {
             milestoneClosedAt,
             milestoneDueOn
           ] = await Promise.all([
-            this.format ? await format_date(res.data.created_at) : res.data.created_at,
-            this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
-            res.data.closed_at
+            this.format ? format_date(res.data.created_at) : res.data.created_at,
+            this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+            !isEmpty(res.data.closed_at)
               ? this.format
                 ? await format_date(res.data.closed_at)
                 : res.data.closed_at
               : null,
             this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
             this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-            res.data.milestone.closed_at
+            !isEmpty(res.data.milestone.closed_at)
               ? this.format
                 ? await format_date(res.data.milestone.closed_at)
                 : res.data.milestone.closed_at
               : null,
-            res.data.milestone.due_on
+            !isEmpty(res.data.milestone.due_on)
               ? this.format
                 ? await format_date(res.data.milestone.due_on)
                 : res.data.milestone.due_on
@@ -765,39 +768,39 @@ export class Issue extends GitHubClient {
             user: {
               id: res.data.user.id,
               login: res.data.user.login,
-              name: res.data.user.name,
-              email: res.data.user.email,
+              name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+              email: isEmpty(res.data.user.email) ? null : res.data.user.email,
               html_url: res.data.user.html_url,
               avatar_url: res.data.user.avatar_url
             },
-            labels: res.data.labels
+            labels: !isEmpty(res.data.labels)
               ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
               }))
               : null,
-            assignee: res.data.assignee
+            assignee: !isEmpty(res.data.assignee)
               ? {
                   id: res.data.assignee.id,
                   login: res.data.assignee.login,
-                  name: res.data.assignee.name,
-                  email: res.data.assignee.email,
+                  name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                  email: isEmpty(res.data.assignee.email) ? null : res.data.assignee.email,
                   html_url: res.data.assignee.html_url,
                   avatar_url: res.data.assignee.avatar_url
                 }
               : null,
-            assignees: res.data.assignees
+            assignees: !isEmpty(res.data.assignees)
               ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
                 id: assignee.id,
                 login: assignee.login,
-                name: assignee.name,
-                email: assignee.email,
+                name: isEmpty(assignee.name) ? null : assignee.name,
+                email: isEmpty(assignee.email) ? null : assignee.email,
                 html_url: assignee.html_url,
                 avatar_url: assignee.avatar_url
               }))
               : null,
-            milestone: res.data.milestone
+            milestone: !isEmpty(res.data.milestone)
               ? {
                   id: res.data.milestone.id,
                   url: res.data.milestone.url,
@@ -897,21 +900,21 @@ export class Issue extends GitHubClient {
           milestoneClosedAt,
           milestoneDueOn
         ] = await Promise.all([
-          this.format ? await format_date(res.data.created_at) : res.data.created_at,
-          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
-          res.data.closed_at
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+          !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
           this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
           this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          res.data.milestone.closed_at
+          !isEmpty(res.data.milestone.closed_at)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          res.data.milestone.due_on
+          !isEmpty(res.data.milestone.due_on)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -927,39 +930,39 @@ export class Issue extends GitHubClient {
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            email: isEmpty(res.data.user.email) ? null : res.data.user.email,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
-          labels: res.data.labels
+          labels: !isEmpty(res.data.labels)
             ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
             }))
             : null,
-          assignee: res.data.assignee
+          assignee: !isEmpty(res.data.assignee)
             ? {
                 id: res.data.assignee.id,
                 login: res.data.assignee.login,
-                name: res.data.assignee.name,
-                email: res.data.assignee.email,
+                name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                email: isEmpty(res.data.assignee.email) ? null : res.data.assignee.email,
                 html_url: res.data.assignee.html_url,
                 avatar_url: res.data.assignee.avatar_url
               }
             : null,
-          assignees: res.data.assignees
+          assignees: !isEmpty(res.data.assignees)
             ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
               id: assignee.id,
               login: assignee.login,
-              name: assignee.name,
-              email: assignee.email,
+              name: isEmpty(assignee.name) ? null : assignee.name,
+              email: isEmpty(assignee.email) ? null : assignee.email,
               html_url: assignee.html_url,
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: res.data.milestone
+          milestone: !isEmpty(res.data.milestone)
             ? {
                 id: res.data.milestone.id,
                 url: res.data.milestone.url,
@@ -1178,8 +1181,8 @@ export class Issue extends GitHubClient {
             user: {
               id: comment.user.id,
               login: comment.user.login,
-              name: comment.user.name,
-              email: comment.user.email,
+              name: isEmpty(comment.user.name) ? null : comment.user.name,
+              email: isEmpty(comment.user.email) ? null : comment.user.email,
               html_url: comment.user.html_url,
               avatar_url: comment.user.avatar_url
             },
@@ -1256,8 +1259,8 @@ export class Issue extends GitHubClient {
             user: {
               id: comment.user.id,
               login: comment.user.login,
-              name: comment.user.name,
-              email: comment.user.email,
+              name: isEmpty(comment.user.name) ? null : comment.user.name,
+              email: isEmpty(comment.user.email) ? null : comment.user.email,
               html_url: comment.user.html_url,
               avatar_url: comment.user.avatar_url
             },
@@ -1325,8 +1328,8 @@ export class Issue extends GitHubClient {
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            email: isEmpty(res.data.user.email) ? null : res.data.user.email,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
@@ -1396,13 +1399,13 @@ export class Issue extends GitHubClient {
         ])
         const IssueData: CreteIssueCommentResponseType = {
           id: res.data.id,
-          html_url: `${get_base_url(this.type, { proxyType: 'original' })}/${owner}/${repo}/issues/${issue_number}#${res.data.id}`,
+          html_url: `${get_base_url(this.type, { proxyType: ProxyType.Original })}/${owner}/${repo}/issues/${issue_number}#${res.data.id}`,
           body: res.data.body,
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            email: isEmpty(res.data.user.email) ? null : res.data.user.email,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
@@ -1472,8 +1475,8 @@ export class Issue extends GitHubClient {
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            email: isEmpty(res.data.user.email) ? null : res.data.user.email,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
@@ -1620,39 +1623,39 @@ export class Issue extends GitHubClient {
             user: {
               id: issue.user.id,
               login: issue.user.login,
-              name: issue.user.name,
-              email: issue.user.email,
+              name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+              email: isEmpty(res.data.user.email) ? null : res.data.user.email,
               html_url: issue.user.html_url,
               avatar_url: issue.user.avatar_url
             },
-            labels: issue.labels
+            labels: !isEmpty(issue.labels)
               ? issue.labels.map((label: Record<string, any>): IssueLabelType => ({
                 id: label.id,
                 name: label.name,
                 color: label.color
               }))
               : null,
-            assignee: issue.assignee
+            assignee: !isEmpty(issue.assignee)
               ? {
                   id: issue.assignee.id,
                   login: issue.assignee.login,
-                  name: issue.assignee.name,
-                  email: issue.assignee.email,
+                  name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                  email: isEmpty(res.data.assignee.email) ? null : res.data.assignee.email,
                   html_url: issue.assignee.html_url,
                   avatar_url: issue.assignee.avatar_url
                 }
               : null,
-            assignees: issue.assignees
+            assignees: !isEmpty(issue.assignees)
               ? issue.assignees.map((assignee: Record<string, any>): IssueUser => ({
                 id: assignee.id,
                 login: assignee.login,
-                name: assignee.name,
-                email: assignee.email,
+                name: isEmpty(assignee.name) ? null : assignee.name,
+                email: isEmpty(assignee.email) ? null : assignee.email,
                 html_url: assignee.html_url,
                 avatar_url: assignee.avatar_url
               }))
               : null,
-            milestone: issue.milestone
+            milestone: !isEmpty(issue.milestone)
               ? {
                   id: issue.milestone.id,
                   url: issue.milestone.url,
@@ -1678,7 +1681,7 @@ export class Issue extends GitHubClient {
               : null,
             created_at: this.format ? await format_date(issue.created_at) : issue.created_at,
             updated_at: this.format ? await format_date(issue.updated_at) : issue.updated_at,
-            closed_at: issue.closed_at
+            closed_at: !isEmpty(issue.closed_at)
               ? this.format
                 ? await format_date(issue.closed_at)
                 : issue.closed_at
@@ -1751,21 +1754,21 @@ export class Issue extends GitHubClient {
           milestoneClosedAt,
           milestoneDueOn
         ] = await Promise.all([
-          this.format ? await format_date(res.data.created_at) : res.data.created_at,
-          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
-          res.data.closed_at
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+          !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
           this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
           this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          res.data.milestone.closed_at
+          !isEmpty(res.data.milestone.closed_at)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          res.data.milestone.due_on
+          !isEmpty(res.data.milestone.due_on)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -1781,39 +1784,39 @@ export class Issue extends GitHubClient {
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            email: isEmpty(res.data.user.email) ? null : res.data.user.email,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
-          labels: res.data.labels
+          labels: !isEmpty(res.data.labels)
             ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
             }))
             : null,
-          assignee: res.data.assignee
+          assignee: !isEmpty(res.data.assignee)
             ? {
                 id: res.data.assignee.id,
                 login: res.data.assignee.login,
-                name: res.data.assignee.name,
-                email: res.data.assignee.email,
+                name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                email: isEmpty(res.data.assignee.email) ? null : res.data.assignee.email,
                 html_url: res.data.assignee.html_url,
                 avatar_url: res.data.assignee.avatar_url
               }
             : null,
-          assignees: res.data.assignees
+          assignees: !isEmpty(res.data.assignees)
             ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
               id: assignee.id,
               login: assignee.login,
-              name: assignee.name,
-              email: assignee.email,
+              name: isEmpty(assignee.name) ? null : assignee.name,
+              email: isEmpty(assignee.email) ? null : assignee.email,
               html_url: assignee.html_url,
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: res.data.milestone
+          milestone: !isEmpty(res.data.milestone)
             ? {
                 id: res.data.milestone.id,
                 url: res.data.milestone.url,
@@ -1909,21 +1912,21 @@ export class Issue extends GitHubClient {
           milestoneClosedAt,
           milestoneDueOn
         ] = await Promise.all([
-          this.format ? await format_date(res.data.created_at) : res.data.created_at,
-          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
-          res.data.closed_at
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+          !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
           this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
           this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          res.data.milestone.closed_at
+          !isEmpty(res.data.milestone.closed_at)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          res.data.milestone.due_on
+          !isEmpty(res.data.milestone.due_on)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -1939,39 +1942,39 @@ export class Issue extends GitHubClient {
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            email: isEmpty(res.data.user.email) ? null : res.data.user.email,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
-          labels: res.data.labels
+          labels: !isEmpty(res.data.labels)
             ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
             }))
             : null,
-          assignee: res.data.assignee
+          assignee: !isEmpty(res.data.assignee)
             ? {
                 id: res.data.assignee.id,
                 login: res.data.assignee.login,
-                name: res.data.assignee.name,
-                email: res.data.assignee.email,
+                name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                email: isEmpty(res.data.assignee.email) ? null : res.data.assignee.email,
                 html_url: res.data.assignee.html_url,
                 avatar_url: res.data.assignee.avatar_url
               }
             : null,
-          assignees: res.data.assignees
+          assignees: !isEmpty(res.data.assignees)
             ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
               id: assignee.id,
               login: assignee.login,
-              name: assignee.name,
-              email: assignee.email,
+              name: isEmpty(assignee.name) ? null : assignee.name,
+              email: isEmpty(assignee.email) ? null : assignee.email,
               html_url: assignee.html_url,
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: res.data.milestone
+          milestone: !isEmpty(res.data.milestone)
             ? {
                 id: res.data.milestone.id,
                 url: res.data.milestone.url,
@@ -2075,21 +2078,21 @@ export class Issue extends GitHubClient {
           milestoneClosedAt,
           milestoneDueOn
         ] = await Promise.all([
-          this.format ? await format_date(res.data.created_at) : res.data.created_at,
-          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
-          res.data.closed_at
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
+          !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
           this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
           this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          res.data.milestone.closed_at
+          !isEmpty(res.data.milestone.closed_at)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          res.data.milestone.due_on
+          !isEmpty(res.data.milestone.due_on)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -2105,39 +2108,39 @@ export class Issue extends GitHubClient {
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
-            email: res.data.user.email,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            email: isEmpty(res.data.user.email) ? null : res.data.user.email,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
-          labels: res.data.labels
+          labels: !isEmpty(res.data.labels)
             ? res.data.labels.map((label: Record<string, any>):IssueLabelType => ({
               id: label.id,
               name: label.name,
               color: label.color
             }))
             : null,
-          assignee: res.data.assignee
+          assignee: !isEmpty(res.data.assignee)
             ? {
                 id: res.data.assignee.id,
                 login: res.data.assignee.login,
-                name: res.data.assignee.name,
-                email: res.data.assignee.email,
+                name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
+                email: isEmpty(res.data.assignee.email) ? null : res.data.assignee.email,
                 html_url: res.data.assignee.html_url,
                 avatar_url: res.data.assignee.avatar_url
               }
             : null,
-          assignees: res.data.assignees
+          assignees: !isEmpty(res.data.assignees)
             ? res.data.assignees.map((assignee: Record<string, any>): IssueUser => ({
               id: assignee.id,
               login: assignee.login,
-              name: assignee.name,
-              email: assignee.email,
+              name: isEmpty(assignee.name) ? null : assignee.name,
+              email: isEmpty(assignee.email) ? null : assignee.email,
               html_url: assignee.html_url,
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: res.data.milestone
+          milestone: !isEmpty(res.data.milestone)
             ? {
                 id: res.data.milestone.id,
                 url: res.data.milestone.url,

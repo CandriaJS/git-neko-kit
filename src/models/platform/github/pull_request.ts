@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash'
+
 import {
   ConflictPullRequestShaValueMsg,
   format_date,
@@ -90,7 +92,8 @@ export class Pull_Request extends GitHubClient {
       this.setRequestConfig({
         token: this.userToken
       })
-      const res = await this.get(`/repos/${options.owner}/${options.repo}/pulls/${options.pr_number}`)
+      const { owner, repo, pr_number } = options
+      const res = await this.get(`/repos/${owner}/${repo}/pulls/${pr_number}`)
       if (res.data) {
         const [
           createdAt,
@@ -104,24 +107,24 @@ export class Pull_Request extends GitHubClient {
         ] = await Promise.all([
           this.format ? format_date(res.data.created_at) : res.data.created_at,
           this.format ? format_date(res.data.updated_at) : res.data.updated_at,
-          res.data.merged_at
+          !isEmpty(res.data.merged_at)
             ? this.format
               ? await format_date(res.data.merged_at)
               : res.data.merged_at
             : null,
-          res.data.closed_at
+          !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
           this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
           this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          res.data.milestone.closed_at
+          !isEmpty(res.data.milestone.closed_at)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          res.data.milestone.due_on
+          !isEmpty(res.data.milestone.due_on)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -131,7 +134,7 @@ export class Pull_Request extends GitHubClient {
           id: res.data.id,
           html_url: res.data.html_url,
           number: res.data.number,
-          state: res.data.merged_at ? 'merged' : res.data.state,
+          state: res.data.merged_at && !isEmpty(res.data.merged_at) ? 'merged' : res.data.state,
           locked: res.data.locked,
           title: res.data.title,
           body: res.data.body,
@@ -142,8 +145,8 @@ export class Pull_Request extends GitHubClient {
           closed_at: closedAt,
           user: {
             id: res.data.user.id,
-            name: res.data.user.name,
             login: res.data.user.login,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
@@ -153,8 +156,8 @@ export class Pull_Request extends GitHubClient {
             sha: res.data.base.sha,
             user: {
               id: res.data.base.user.id,
-              name: res.data.base.user.name,
               login: res.data.base.user.login,
+              name: isEmpty(res.data.base.user.name) ? null : res.data.base.user.name,
               html_url: res.data.base.user.html_url,
               avatar_url: res.data.base.user.avatar_url
             },
@@ -171,8 +174,8 @@ export class Pull_Request extends GitHubClient {
             sha: res.data.head.sha,
             user: {
               id: res.data.head.user.id,
-              name: res.data.head.user.name,
               login: res.data.head.user.login,
+              name: isEmpty(res.data.head.user.name) ? null : res.data.head.user.name,
               html_url: res.data.head.user.html_url,
               avatar_url: res.data.head.user.avatar_url
             },
@@ -183,25 +186,25 @@ export class Pull_Request extends GitHubClient {
               full_name: res.data.head.repo.full_name
             }
           },
-          assignee: res.data.assignee
+          assignee: !isEmpty(res.data.assignee)
             ? {
                 id: res.data.assignee.id,
-                name: res.data.assignee.name,
                 login: res.data.assignee.login,
+                name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
                 html_url: res.data.assignee.html_url,
                 avatar_url: res.data.assignee.avatar_url
               }
             : null,
-          assignees: res.data.assignees && res.data.assignees.length > 0
+          assignees: !isEmpty(res.data.assignees)
             ? res.data.assignees.map((assignee: Record<string, any>): PrUser => ({
               id: assignee.id,
-              name: assignee.name,
               login: assignee.login,
+              name: isEmpty(assignee.name) ? null : assignee.name,
               html_url: assignee.html_url,
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: res.data.milestone
+          milestone: !isEmpty(res.data.milestone)
             ? {
                 id: res.data.milestone.id,
                 url: res.data.milestone.url,
@@ -217,7 +220,7 @@ export class Pull_Request extends GitHubClient {
                 due_on: milestoneDueOn
               }
             : null,
-          labels: res.data.labels && res.data.labels.length > 0
+          labels: !isEmpty(res.data.labels)
             ? res.data.labels.map((label: IssueLabelType) => ({
               id: label.id,
               name: label.name,
@@ -280,27 +283,27 @@ export class Pull_Request extends GitHubClient {
           id: pr.id,
           html_url: pr.html_url,
           number: pr.number,
-          state: pr.merged_at ? 'merged' : pr.state,
+          state: !isEmpty(pr.merged_at) ? 'merged' : pr.state,
           locked: pr.locked,
           title: pr.title,
           body: pr.body,
           draft: pr.draft,
           created_at: this.format ? format_date(pr.created_at) : pr.created_at,
-          merged_at: pr.merged_at
+          merged_at: !isEmpty(pr.merged_at)
             ? this.format
               ? await format_date(pr.merged_at)
               : pr.merged_at
             : null,
           updated_at: this.format ? format_date(pr.updated_at) : pr.updated_at,
-          closed_at: pr.closed_at
+          closed_at: !isEmpty(pr.closed_at)
             ? this.format
               ? await format_date(pr.closed_at)
               : pr.closed_at
             : null,
           user: {
             id: pr.user.id,
-            name: pr.user.name,
             login: pr.user.login,
+            name: isEmpty(pr.user.name) ? null : pr.user.name,
             html_url: pr.user.html_url,
             avatar_url: pr.user.avatar_url
           },
@@ -310,8 +313,8 @@ export class Pull_Request extends GitHubClient {
             sha: pr.base.sha,
             user: {
               id: pr.base.user.id,
-              name: pr.base.user.name,
               login: pr.base.user.login,
+              name: isEmpty(pr.base.user.name) ? pr.base.user.login : pr.base.user.name,
               html_url: pr.base.user.html_url,
               avatar_url: pr.base.user.avatar_url
             },
@@ -328,8 +331,8 @@ export class Pull_Request extends GitHubClient {
             sha: pr.head.sha,
             user: {
               id: pr.head.user.id,
-              name: pr.head.user.name,
               login: pr.head.user.login,
+              name: isEmpty(pr.head.user.name) ? null : pr.head.user.name,
               html_url: pr.head.user.html_url,
               avatar_url: pr.head.user.avatar_url
             },
@@ -340,7 +343,7 @@ export class Pull_Request extends GitHubClient {
               full_name: pr.head.repo.full_name
             }
           },
-          assignee: pr.assignee
+          assignee: !isEmpty(pr.assignee)
             ? {
                 id: pr.assignee.id,
                 name: pr.assignee.name,
@@ -349,7 +352,7 @@ export class Pull_Request extends GitHubClient {
                 avatar_url: pr.assignee.avatar_url
               }
             : null,
-          assignees: pr.assignees && pr.assignees.length > 0
+          assignees: !isEmpty(pr.assignees)
             ? pr.assignees.map((assignee: Record<string, any>): PrUser => ({
               id: assignee.id,
               name: assignee.name,
@@ -358,7 +361,7 @@ export class Pull_Request extends GitHubClient {
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: pr.milestone
+          milestone: !isEmpty(pr.milestone)
             ? {
                 id: pr.milestone.id,
                 url: pr.milestone.url,
@@ -382,7 +385,7 @@ export class Pull_Request extends GitHubClient {
                   : null
               }
             : null,
-          labels: pr.labels && pr.labels.length > 0
+          labels: !isEmpty(pr.labels)
             ? pr.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
@@ -495,7 +498,7 @@ export class Pull_Request extends GitHubClient {
           id: res.data.id,
           html_url: res.data.html_url,
           number: res.data.number,
-          state: res.data.merged_at ? 'merged' : res.data.state,
+          state: !isEmpty(res.data.merged_at) ? 'merged' : res.data.state,
           locked: res.data.locked,
           title: res.data.title,
           body: res.data.body,
@@ -506,8 +509,8 @@ export class Pull_Request extends GitHubClient {
           closed_at: closedAt,
           user: {
             id: res.data.user.id,
-            name: res.data.user.name,
             login: res.data.user.login,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
@@ -517,8 +520,8 @@ export class Pull_Request extends GitHubClient {
             sha: res.data.base.sha,
             user: {
               id: res.data.base.user.id,
-              name: res.data.base.user.name,
               login: res.data.base.user.login,
+              name: isEmpty(res.data.base.user.name) ? null : res.data.base.user.name,
               html_url: res.data.base.user.html_url,
               avatar_url: res.data.base.user.avatar_url
             },
@@ -535,8 +538,8 @@ export class Pull_Request extends GitHubClient {
             sha: res.data.head.sha,
             user: {
               id: res.data.head.user.id,
-              name: res.data.head.user.name,
               login: res.data.head.user.login,
+              name: isEmpty(res.data.head.user.name) ? null : res.data.head.user.name,
               html_url: res.data.head.user.html_url,
               avatar_url: res.data.head.user.avatar_url
             },
@@ -547,25 +550,25 @@ export class Pull_Request extends GitHubClient {
               full_name: res.data.head.repo.full_name
             }
           },
-          assignee: res.data.assignee
+          assignee: !isEmpty(res.data.assignee)
             ? {
                 id: res.data.assignee.id,
-                name: res.data.assignee.name,
                 login: res.data.assignee.login,
+                name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
                 html_url: res.data.assignee.html_url,
                 avatar_url: res.data.assignee.avatar_url
               }
             : null,
-          assignees: res.data.assignees && res.data.assignees.length > 0
+          assignees: !isEmpty(res.data.assignees)
             ? res.data.assignees.map((assignee: Record<string, any>): PrUser => ({
               id: assignee.id,
-              name: assignee.name,
               login: assignee.login,
+              name: isEmpty(assignee.name) ? null : assignee.name,
               html_url: assignee.html_url,
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: res.data.milestone
+          milestone: !isEmpty(res.data.milestone)
             ? {
                 id: res.data.milestone.id,
                 url: res.data.milestone.url,
@@ -581,7 +584,7 @@ export class Pull_Request extends GitHubClient {
                 due_on: milestoneDueOn
               }
             : null,
-          labels: res.data.labels && res.data.labels.length > 0
+          labels: !isEmpty(res.data.labels)
             ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
@@ -673,7 +676,7 @@ export class Pull_Request extends GitHubClient {
           id: res.data.id,
           html_url: res.data.html_url,
           number: res.data.number,
-          state: res.data.merged_at ? 'merged' : res.data.state,
+          state: !isEmpty(res.data.merged_at) ? 'merged' : res.data.state,
           locked: res.data.locked,
           title: res.data.title,
           body: res.data.body,
@@ -684,8 +687,8 @@ export class Pull_Request extends GitHubClient {
           closed_at: closedAt,
           user: {
             id: res.data.user.id,
-            name: res.data.user.name,
             login: res.data.user.login,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
             html_url: res.data.user.html_url,
             avatar_url: res.data.user.avatar_url
           },
@@ -695,8 +698,8 @@ export class Pull_Request extends GitHubClient {
             sha: res.data.base.sha,
             user: {
               id: res.data.base.user.id,
-              name: res.data.base.user.name,
               login: res.data.base.user.login,
+              name: isEmpty(res.data.base.user.name) ? null : res.data.base.user.name,
               html_url: res.data.base.user.html_url,
               avatar_url: res.data.base.user.avatar_url
             },
@@ -713,8 +716,8 @@ export class Pull_Request extends GitHubClient {
             sha: res.data.head.sha,
             user: {
               id: res.data.head.user.id,
-              name: res.data.head.user.name,
               login: res.data.head.user.login,
+              name: isEmpty(res.data.head.user.name) ? null : res.data.head.user.name,
               html_url: res.data.head.user.html_url,
               avatar_url: res.data.head.user.avatar_url
             },
@@ -725,25 +728,25 @@ export class Pull_Request extends GitHubClient {
               full_name: res.data.head.repo.full_name
             }
           },
-          assignee: res.data.assignee
+          assignee: !isEmpty(res.data.assignee)
             ? {
                 id: res.data.assignee.id,
-                name: res.data.assignee.name,
                 login: res.data.assignee.login,
+                name: isEmpty(res.data.assignee.name) ? null : res.data.assignee.name,
                 html_url: res.data.assignee.html_url,
                 avatar_url: res.data.assignee.avatar_url
               }
             : null,
-          assignees: res.data.assignees && res.data.assignees.length > 0
+          assignees: !isEmpty(res.data.assignees)
             ? res.data.assignees.map((assignee: Record<string, any>): PrUser => ({
               id: assignee.id,
-              name: assignee.name,
               login: assignee.login,
+              name: isEmpty(assignee.name) ? null : assignee.name,
               html_url: assignee.html_url,
               avatar_url: assignee.avatar_url
             }))
             : null,
-          milestone: res.data.milestone
+          milestone: !isEmpty(res.data.milestone)
             ? {
                 id: res.data.milestone.id,
                 url: res.data.milestone.url,
@@ -759,7 +762,7 @@ export class Pull_Request extends GitHubClient {
                 due_on: milestoneDueOn
               }
             : null,
-          labels: res.data.labels && res.data.labels.length > 0
+          labels: !isEmpty(res.data.labels)
             ? res.data.labels.map((label: Record<string, any>): IssueLabelType => ({
               id: label.id,
               name: label.name,
@@ -949,7 +952,7 @@ export class Pull_Request extends GitHubClient {
           user: {
             id: res.data.user.id,
             login: res.data.user.login,
-            name: res.data.user.name,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
             avatar_url: res.data.user.avatar_url,
             html_url: res.data.user.html_url
           },
@@ -1004,21 +1007,21 @@ export class Pull_Request extends GitHubClient {
           throw new Error(PullRequestCommentOrRepoNotFoundMsg)
       }
       if (res.data) {
-        const PrData: GetPullRequestCommentsListResponseType = res.data.map((comment: Record<string, any>): GetPullRequestCommentInfoResponseType => {
+        const PrData: GetPullRequestCommentsListResponseType = await Promise.all(res.data.map(async (comment: Record<string, any>): Promise<GetPullRequestCommentInfoResponseType> => {
           return {
             id: comment.id,
             body: comment.body,
             user: {
               id: comment.user.id,
               login: comment.user.login,
-              name: comment.user.name,
+              name: isEmpty(comment.user.name) ? null : comment.user.name,
               html_url: comment.user.html_url,
               avatar_url: comment.user.avatar_url
             },
-            created_at: this.format ? format_date(comment.created_at) : comment.created_at,
-            updated_at: this.format ? format_date(comment.updated_at) : comment.updated_at
+            created_at: this.format ? await format_date(comment.created_at) : comment.created_at,
+            updated_at: this.format ? await format_date(comment.updated_at) : comment.updated_at
           }
-        })
+        }))
         res.data = PrData
       }
       return res

@@ -4,6 +4,7 @@ import {
   ExpiredAccessTokenMsg,
   FailedToFetchAccessTokenMsg,
   FailedToRefreshAccessTokenMsg,
+  format_date,
   InvalidAccessTokenMsg,
   MissingAccessCodeMsg,
   MissingAccessTokenMsg,
@@ -67,11 +68,10 @@ export class Auth extends GitHubClient {
         code: options.code
       }, { Accept: 'application/json' })
       const isSuccess = res.status === 'ok' && res.statusCode === 200 && !(res.data).error
-
+      if (!isSuccess) {
+        throw new Error(FailedToFetchAccessTokenMsg)
+      }
       if (res.data) {
-        if (!isSuccess) {
-          throw new Error(FailedToFetchAccessTokenMsg)
-        }
         const AuthData: TokenResponseType = {
           success: isSuccess,
           message: AccessTokenSuccessMsg,

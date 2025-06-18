@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash'
+
 import {
   FailedToRemoveCollaboratorMsg,
   format_date,
@@ -16,35 +18,36 @@ import {
 } from '@/common'
 import { get_base_url } from '@/models/base'
 import { GitHubClient } from '@/models/platform/github/client'
-import type {
-  AddCollaboratorResponseType,
-  ApiResponseType,
-  CollaboratorInfoResponseType,
-  CollaboratorParamType,
-  GetCollaboratorListParamType,
-  GetCollaboratorListResponseType,
-  GetRepoDefaultBranchParamType,
-  GetRepoDefaultBranchResponseType,
-  GetRepoMainLanguageParamType,
-  GetRepoMainLanguageResponseType,
-  GetRepoVisibilityParamType,
-  GetRepoVisibilityResponseType,
-  LanguageInfo,
-  OrgRepoCreateParamType,
-  OrgRepoCreateResponseType,
-  OrgRepoListParmType,
-  OrgRepoListResponseType,
-  RemoveCollaboratorParamType,
-  RemoveCollaboratorResponseType,
-  RepoInfoParamType,
-  RepoInfoResponseType,
-  RepoLanguagesListParamType,
-  RepoLanguagesListResponseType,
-  UserByTokenRepoListParamType,
-  UserRepoCreateParamType,
-  UserRepoCreateResponseType,
-  UserRepoListParamType,
-  UserRepoListType
+import {
+  type AddCollaboratorResponseType,
+  type ApiResponseType,
+  type CollaboratorInfoResponseType,
+  type CollaboratorParamType,
+  type GetCollaboratorListParamType,
+  type GetCollaboratorListResponseType,
+  type GetRepoDefaultBranchParamType,
+  type GetRepoDefaultBranchResponseType,
+  type GetRepoMainLanguageParamType,
+  type GetRepoMainLanguageResponseType,
+  type GetRepoVisibilityParamType,
+  type GetRepoVisibilityResponseType,
+  type LanguageInfo,
+  type OrgRepoCreateParamType,
+  type OrgRepoCreateResponseType,
+  type OrgRepoListParmType,
+  type OrgRepoListResponseType,
+  ProxyType,
+  type RemoveCollaboratorParamType,
+  type RemoveCollaboratorResponseType,
+  type RepoInfoParamType,
+  type RepoInfoResponseType,
+  type RepoLanguagesListParamType,
+  type RepoLanguagesListResponseType,
+  type UserByTokenRepoListParamType,
+  type UserRepoCreateParamType,
+  type UserRepoCreateResponseType,
+  type UserRepoListParamType,
+  type UserRepoListType
 } from '@/types'
 
 /**
@@ -61,7 +64,7 @@ export class Repo extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
-    this.base_url = get_base_url(this.type, { proxyType: 'original' })
+    this.base_url = get_base_url(this.type, { proxyType: ProxyType.Original })
   }
 
   /**
@@ -108,18 +111,17 @@ export class Repo extends GitHubClient {
       }
       if (res.data) {
         const RepoData: OrgRepoListResponseType = await Promise.all(
-          res.data.map(async (repo: Record<string, any>):Promise<RepoInfoResponseType> => ({
+          res.data.map(async (repo: Record<string, any>): Promise<RepoInfoResponseType> => ({
             id: repo.id,
             name: repo.name,
             full_name: repo.full_name,
             owner: {
               id: repo.owner.id,
               login: repo.owner.login,
-              name: repo.owner.name ?? null,
+              name: isEmpty(repo.owner.name) ? null : repo.owner.name,
               avatar_url: repo.owner.avatar_url,
               type: repo.owner.type,
-              html_url: repo.owner.html_url,
-              email: repo.owner.email ?? null
+              html_url: repo.owner.html_url
             },
             public: !repo.private,
             private: repo.private,
@@ -209,11 +211,10 @@ export class Repo extends GitHubClient {
             owner: {
               id: repo.owner.id,
               login: repo.owner.login,
-              name: repo.owner.name,
+              name: isEmpty(repo.owner.name) ? null : repo.owner.name,
               avatar_url: repo.owner.avatar_url,
               type: repo.owner.type,
-              html_url: repo.owner.html_url,
-              email: repo.owner.email
+              html_url: repo.owner.html_url
             },
             public: !repo.private,
             private: repo.private,
@@ -304,11 +305,10 @@ export class Repo extends GitHubClient {
             owner: {
               id: repo.owner.id,
               login: repo.owner.login,
-              name: repo.owner.name,
+              name: isEmpty(repo.owner.name) ? null : repo.owner.name,
               avatar_url: repo.owner.avatar_url,
               type: repo.owner.type,
-              html_url: repo.owner.html_url,
-              email: repo.owner.email
+              html_url: repo.owner.html_url
             },
             public: !repo.private,
             private: repo.private,
@@ -382,11 +382,10 @@ export class Repo extends GitHubClient {
           owner: {
             id: res.data.owner.id,
             login: res.data.owner.login,
-            name: res.data.owner.name,
+            name: isEmpty(res.data.owner.name) ? null : res.data.owner.name,
             avatar_url: res.data.owner.avatar_url,
             type: res.data.owner.type,
-            html_url: res.data.owner.html_url,
-            email: res.data.owner.email
+            html_url: res.data.owner.html_url
           },
           public: !res.data.private,
           private: res.data.private,
@@ -515,11 +514,10 @@ export class Repo extends GitHubClient {
           owner: {
             id: res.data.owner.id,
             login: res.data.owner.login,
-            name: res.data.owner.name,
+            name: isEmpty(res.data.owner.name) ? null : res.data.owner.name,
             avatar_url: res.data.owner.avatar_url,
             type: res.data.owner.type,
-            html_url: res.data.owner.html_url,
-            email: res.data.owner.email
+            html_url: res.data.owner.html_url
           },
           public: !res.data.private,
           private: res.data.private,
@@ -598,11 +596,10 @@ export class Repo extends GitHubClient {
           owner: {
             id: res.data.owner.id,
             login: res.data.owner.login,
-            name: res.data.owner.name,
+            name: isEmpty(res.data.owner.name) ? null : res.data.owner.name,
             avatar_url: res.data.owner.avatar_url,
             type: res.data.owner.type,
-            html_url: res.data.owner.html_url,
-            email: res.data.owner.email
+            html_url: res.data.owner.html_url
           },
           public: !res.data.private,
           private: res.data.private,
@@ -701,7 +698,7 @@ export class Repo extends GitHubClient {
             login: repo.login,
             avatar_url: repo.avatar_url,
             email: repo.email,
-            name: repo.name,
+            name: isEmpty(repo.name) ? null : repo.owner.name,
             permissions: repo.permissions === 'triage' || repo.permissions === 'maintain'
               ? 'admin'
               : repo.permissions
@@ -770,7 +767,7 @@ export class Repo extends GitHubClient {
         const collaboratorData: AddCollaboratorResponseType = {
           id: res.data.inviter.id,
           login: res.data.inviter.login,
-          name: res.data.inviter.name,
+          name: isEmpty(res.data.inviter.name) ? null : res.data.inviter.name,
           html_url: res.data.repository.html_url,
           permissions: res.data.permissions
         }

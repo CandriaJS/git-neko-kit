@@ -1,4 +1,4 @@
-import type { OrgNameParamType, UserNameParamType } from '@/types/platform/base'
+import type { OrgNameParamType, RepoBaseParamType, UserNameParamType } from '@/types/platform/base'
 import type { RepoInfoParamType, RepoInfoResponseType } from '@/types/platform/repo'
 import type { UserInfoResponseType } from '@/types/platform/user'
 
@@ -217,7 +217,7 @@ export interface CreateAccessTokenForAppParamType {
 export interface CreateAccessTokenForAppResponseType {
   /** 访问令牌 */
   token: string;
-  /** 访问令牌过期时间 */
+  /** 访问令牌过期时间, UTC 时间格式 */
   expires_at: string;
   /** 访问令牌权限 */
   permissions: Record<string, string>
@@ -234,3 +234,6 @@ export interface RevokeAccessTokenResponseType {
   /** 撤销结果信息 */
   message: string
 }
+
+/** 判断应用程序是否安装在仓库中参数类型 */
+export type isAppInstalledInRepo = RepoBaseParamType

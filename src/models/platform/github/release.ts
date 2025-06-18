@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash-es'
+import { capitalize, isEmpty } from 'lodash'
 
 import {
   DeleteReleaseSuccessMsg,
@@ -75,14 +75,13 @@ export class Release extends GitHubClient {
           id: res.data.id,
           tag_name: res.data.tag_name,
           target_commitish: res.data.target_commitish,
-          name: res.data.name ?? null,
-          body: res.data.body ?? null,
+          name: isEmpty(res.data.name) ? null : res.data.name,
+          body: isEmpty(res.data.body) ? null : res.data.body,
           prerelease: Boolean(res.data.prerelease),
           author: {
             id: res.data.author.id,
             login: res.data.author.login,
-            name: res.data.author.name,
-            email: res.data.author.email,
+            name: isEmpty(res.data.author.name) ? null : res.data.author.name,
             html_url: res.data.author.html_url,
             avatar_url: res.data.author.avatar_url,
             type: capitalize((res.data.author).type.toLowerCase())
@@ -135,14 +134,13 @@ export class Release extends GitHubClient {
           id: res.data.id,
           tag_name: res.data.tag_name,
           target_commitish: res.data.target_commitish,
-          name: res.data.name ?? null,
-          body: res.data.body ?? null,
+          name: isEmpty(res.data.name) ? null : res.data.name,
+          body: isEmpty(res.data.body) ? null : res.data.body,
           prerelease: Boolean(res.data.prerelease),
           author: {
             id: res.data.author.id,
             login: res.data.author.login,
-            name: res.data.author.name,
-            email: res.data.author.email,
+            name: isEmpty(res.data.author.name) ? null : res.data.author.name,
             html_url: res.data.author.html_url,
             avatar_url: res.data.author.avatar_url,
             type: capitalize((res.data.author).type.toLowerCase())
@@ -195,14 +193,13 @@ export class Release extends GitHubClient {
           id: res.data.id,
           tag_name: res.data.tag_name,
           target_commitish: res.data.target_commitish,
-          name: res.data.name ?? null,
-          body: res.data.body ?? null,
+          name: isEmpty(res.data.name) ? null : res.data.name,
+          body: isEmpty(res.data.body) ? null : res.data.body,
           prerelease: Boolean(res.data.prerelease),
           author: {
             id: res.data.author.id,
             login: res.data.author.login,
-            name: res.data.author.name,
-            email: res.data.author.email,
+            name: isEmpty(res.data.author.name) ? null : res.data.author.name,
             html_url: res.data.author.html_url,
             avatar_url: res.data.author.avatar_url,
             type: capitalize((res.data.author).type.toLowerCase())
@@ -263,14 +260,13 @@ export class Release extends GitHubClient {
           id: release.id,
           tag_name: release.tag_name,
           target_commitish: release.target_commitish,
-          name: release.name ?? null,
-          body: release.body ?? null,
+          name: isEmpty(res.data.name) ? null : res.data.name,
+          body: isEmpty(res.data.body) ? null : res.data.body,
           prerelease: Boolean(release.prerelease),
           author: {
             id: release.author.id,
             login: release.author.login,
-            name: release.author.name,
-            email: release.author.email,
+            name: isEmpty(release.author.name) ? null : release.author.name,
             html_url: release.author.html_url,
             avatar_url: release.author.avatar_url,
             type: capitalize((release.author).type.toLowerCase())
@@ -331,14 +327,13 @@ export class Release extends GitHubClient {
           id: res.data.id,
           tag_name: res.data.tag_name,
           target_commitish: res.data.target_commitish,
-          name: res.data.name ?? null,
-          body: res.data.body ?? null,
+          name: isEmpty(res.data.name) ? null : res.data.name,
+          body: isEmpty(res.data.body) ? null : res.data.body,
           prerelease: Boolean(res.data.prerelease),
           author: {
             id: res.data.author.id,
             login: res.data.author.login,
-            name: res.data.author.name,
-            email: res.data.author.email,
+            name: isEmpty(res.data.author.name) ? null : res.data.author.name,
             html_url: res.data.author.html_url,
             avatar_url: res.data.author.avatar_url,
             type: capitalize((res.data.author).type.toLowerCase())
@@ -403,14 +398,13 @@ export class Release extends GitHubClient {
           id: res.data.id,
           tag_name: res.data.tag_name,
           target_commitish: res.data.target_commitish,
-          name: res.data.name ?? null,
-          body: res.data.body ?? null,
+          name: isEmpty(res.data.name) ? null : res.data.name,
+          body: isEmpty(res.data.body) ? null : res.data.body,
           prerelease: Boolean(res.data.prerelease),
           author: {
             id: res.data.author.id,
             login: res.data.author.login,
-            name: res.data.author.name,
-            email: res.data.author.email,
+            name: isEmpty(res.data.author.name) ? null : res.data.author.name,
             html_url: res.data.author.html_url,
             avatar_url: res.data.author.avatar_url,
             type: capitalize((res.data.author).type.toLowerCase())
@@ -459,7 +453,6 @@ export class Release extends GitHubClient {
       const { release_id } = options
       const url = `/repos/${owner}/${repo}/releases/${release_id}`
       const res = await this.delete(url)
-      let msg
       let releaseData: DeleteReleaseResponseType
       if (res.statusCode === 204) {
         releaseData = {

@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash'
+
 import {
   MissingOrgParamMsg,
   MissingUserNameParamMsg,
@@ -58,7 +60,7 @@ export class Org extends GitHubClient {
         const OrgData: OrgInfoResponseType = {
           id: res.data.id,
           login: res.data.login,
-          name: res.data.name,
+          name: isEmpty(res.data.name) ? null : res.data.name,
           avatar_url: res.data.avatar_url,
           description: res.data.description,
           html_url: res.data.html_url

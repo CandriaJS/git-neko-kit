@@ -1,7 +1,7 @@
 import type { RepoBaseParamType } from '@/types/platform/base'
 import type { UserInfoResponseType } from '@/types/platform/user'
 
-export type ReleaseUser = Omit<UserInfoResponseType, 'bio' | 'blog' | 'followers' | 'following' | 'public_repos'>
+export type ReleaseUser = Omit<UserInfoResponseType, 'bio' | 'blog' | 'followers' | 'following' | 'public_repos' | 'email'>
 /** 反应信息类型 */
 export interface ReactionInfoType {
   /** 反应 API URL */

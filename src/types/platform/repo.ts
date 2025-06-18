@@ -7,7 +7,7 @@ import type {
 import type { UserInfoResponseType } from '@/types/platform/user'
 
 /** 仓库所有者参数类型 */
-export type RepoUser = Omit<UserInfoResponseType, 'followers' | 'following' | 'blog' | 'bio' | 'public_repos'>
+export type RepoUser = Omit<UserInfoResponseType, 'followers' | 'following' | 'blog' | 'bio' | 'public_repos' | 'email'>
 
 /** 仓库列表参数类型 */
 export interface RepoListBaseParamType {

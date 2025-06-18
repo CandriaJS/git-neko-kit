@@ -10,7 +10,6 @@ import {
   MissingRepoUrlMsg
 } from '@/common/errorMsg'
 import {
-  exec,
   exists,
   parse_git_url
 } from '@/common/utils'
@@ -26,8 +25,7 @@ import {
  */
 async function get_git_version (): Promise<string | null> {
   try {
-    const git = simpleGit()
-    return await git.raw('--version')
+    return await simpleGit().raw(['--version'])
   } catch {
     return null
   }

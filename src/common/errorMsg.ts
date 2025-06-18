@@ -12,13 +12,16 @@ export const MissingRefreshTokenMsg = '喵呜~ 刷新令牌不能为空'
 export const MissingTitleMsg = '喵呜~ 请提供标题'
 export const MissingIssueOrTitleMsg = '喵呜~ 请提供Issue编号或标题'
 export const InvalidParamMsg = '喵呜~ 参数好像不太对呢'
+export const InvalidProxyMsg = '喵呜~ 代码配置不正确呢'
 export const InvalidProxyAddressMsg = '喵呜~ 代理地址格式不正确哦'
 export const MissingUrlParamMsg = '喵呜~ 仓库URL不能为空'
 export const MissingLocalRepoPathMsg = '喵呜~ 本地仓库路径不能为空'
 export const MissingRemoteRepoUrlMsg = '喵呜~ 远程仓库URL不能为空'
 export const MissingProxyUrlMsg = '喵呜~ 代理URL不能为空'
 export const GitTypeNotSupportedMsg = '喵呜~ 这个 Git 类型不支持哦'
-export const UrlProtocoleNotSupportedMsg = '喵呜~ 这个 URL 协议不支持哦'
+export const UrlProtocolNotSupportedMsg = '喵呜~ 这个 URL 协议不支持哦'
+export const ProxyTypeNotSupportedMsg = (type: string) => `喵呜~ 代理类型 ${type} 不支持哦`
+export const ProxyProtocoleNotSupportedMsg = (protocol: string) => `喵呜~ 代理类型 ${protocol} 不支持哦`
 export const MissingRepoUrlMsg = (url: string) => `喵呜~ 仓库URL ${url} 不存在哦`
 export const LocalRepoPathNotFoundMsg = (path: string) => `喵呜~ 本地仓库路径 ${path} 不存在哦`
 export const GitClientNotInstalledMsg = '喵呜~ Git 客户端未安装或未正确配置'

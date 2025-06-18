@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { GitTypeNotSupportedMsg, MissingProxyUrlMsg, UrlProtocoleNotSupportedMsg } from '@/common'
+import { GitTypeNotSupportedMsg, MissingProxyUrlMsg, UrlProtocolNotSupportedMsg } from '@/common'
 import { GitType, ProxyType, ProxyUrlType } from '@/types'
 
 /**
@@ -48,7 +48,7 @@ export function get_api_base_url (
       throw new Error(MissingProxyUrlMsg)
     }
     if (!proxyUrl.startsWith('http')) {
-      throw new Error(UrlProtocoleNotSupportedMsg)
+      throw new Error(UrlProtocolNotSupportedMsg)
     }
 
     const cleanedProxy = proxyUrl.replace(/(^\/|\/$)/g, '')
@@ -102,7 +102,7 @@ export function get_base_url (
       throw new Error(MissingProxyUrlMsg)
     }
     if (!proxyUrl.startsWith('http')) {
-      throw new Error(UrlProtocoleNotSupportedMsg)
+      throw new Error(UrlProtocolNotSupportedMsg)
     }
 
     const cleanedProxy = proxyUrl.replace(/(^\/|\/$)/g, '')

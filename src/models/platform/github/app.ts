@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash-es'
+import { capitalize, isEmpty } from 'lodash'
 
 import {
   FailedRevokeAppAccrssTokenMsg,
@@ -16,22 +16,23 @@ import {
 } from '@/common'
 import { get_base_url } from '@/models/base'
 import { GitHubClient } from '@/models/platform/github/client'
-import type {
-  AccessTokenPermissionsType,
-  ApiResponseType,
-  AppInfoParamType,
-  AppInfoResponseType,
-  CreateAccessTokenForAppParamType,
-  CreateAccessTokenForAppResponseType,
-  GetAppInfoByOrgParamType,
-  GetAppInfoByOrgResponseType,
-  GetAppInfoByRepoParamType,
-  GetAppInfoByRepoResponseType,
-  GetAppInfoByUserParamType,
-  GetAppInfoByUserResponseType,
-  RepoBaseParamType,
-  RepoInfoResponseType,
-  RevokeAccessTokenResponseType
+import {
+  type AccessTokenPermissionsType,
+  type ApiResponseType,
+  type AppInfoParamType,
+  type AppInfoResponseType,
+  type CreateAccessTokenForAppParamType,
+  type CreateAccessTokenForAppResponseType,
+  type GetAppInfoByOrgParamType,
+  type GetAppInfoByOrgResponseType,
+  type GetAppInfoByRepoParamType,
+  type GetAppInfoByRepoResponseType,
+  type GetAppInfoByUserParamType,
+  type GetAppInfoByUserResponseType,
+  type isAppInstalledInRepo,
+  ProxyType,
+  type RepoInfoResponseType,
+  type RevokeAccessTokenResponseType
 } from '@/types'
 
 /**
@@ -47,7 +48,7 @@ export class App extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
-    this.base_url = get_base_url(this.type, { proxyType: 'original' })
+    this.base_url = get_base_url(this.type, { proxyType: ProxyType.Original })
   }
 
   /**
@@ -73,8 +74,16 @@ export class App extends GitHubClient {
         {
           token: this.userToken
         })
-      const res = await this.get(`/apps/${options.app_slug}`)
-      if (res.statusCode === 200) {
+      const { app_slug } = options
+      const res = await this.get(`/apps/${app_slug}`)
+      if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const AppData: AppInfoResponseType = {
           id: res.data.id,
           name: res.data.name,
@@ -83,8 +92,8 @@ export class App extends GitHubClient {
           owner: {
             id: res.data.owner.id,
             login: res.data.owner.login,
-            name: res.data.owner.name,
-            email: res.data.owner.email,
+            name: isEmpty(res.data.owner.name) ? null : res.data.owner.name,
+            email: isEmpty(res.data.owner.email) ? null : res.data.owner.email,
             html_url: res.data.owner.html_url,
             avatar_url: res.data.owner.avatar_url,
             type: capitalize(res.data.owner.type.toLowerCase())
@@ -94,8 +103,8 @@ export class App extends GitHubClient {
           html_url: res.data.html_url,
           permissions: res.data.permissions,
           events: res.data.events,
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = AppData
       }
@@ -126,7 +135,14 @@ export class App extends GitHubClient {
           token: this.jwtToken
         })
       const res = await this.get('/app')
-      if (res.statusCode === 200) {
+      if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const AppData: AppInfoResponseType = {
           id: res.data.id,
           name: res.data.name,
@@ -135,8 +151,8 @@ export class App extends GitHubClient {
           owner: {
             id: res.data.owner.id,
             login: res.data.owner.login,
-            name: res.data.owner.name,
-            email: res.data.owner.email,
+            name: isEmpty(res.data.owner.name) ? null : res.data.owner.name,
+            email: isEmpty(res.data.owner.email) ? null : res.data.owner.email,
             html_url: res.data.owner.html_url,
             avatar_url: res.data.owner.avatar_url,
             type: capitalize(res.data.owner.type.toLowerCase())
@@ -146,8 +162,8 @@ export class App extends GitHubClient {
           html_url: res.data.html_url,
           permissions: res.data.permissions,
           events: res.data.events,
-          created_at: res.data.created_at,
-          updated_at: res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = AppData
       }
@@ -191,6 +207,13 @@ export class App extends GitHubClient {
           throw new Error(RepoMovedMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const AppData: GetAppInfoByRepoResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -201,8 +224,8 @@ export class App extends GitHubClient {
           account: {
             id: res.data.account.id,
             login: res.data.account.login,
-            name: res.data.account.name,
-            email: res.data.account.email,
+            name: isEmpty(res.data.account.name) ? null : res.data.account.name,
+            email: isEmpty(res.data.account.email) ? null : res.data.account.email,
             html_url: res.data.account.html_url,
             avatar_url: res.data.account.avatar_url,
             type: capitalize(res.data.account.type.toLowerCase())
@@ -212,8 +235,8 @@ export class App extends GitHubClient {
           repositories_url: res.data.repositories_url,
           permissions: res.data.permissions,
           events: res.data.events,
-          created_at: this.format ? await format_date(res.data.created_at) : res.data.created_at,
-          updated_at: this.format ? await format_date(res.data.updated_at) : res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = AppData
       }
@@ -257,6 +280,13 @@ export class App extends GitHubClient {
           throw new Error(RepoMovedMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const AppData: GetAppInfoByUserResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -267,8 +297,8 @@ export class App extends GitHubClient {
           account: {
             id: res.data.account.id,
             login: res.data.account.login,
-            name: res.data.account.name,
-            email: res.data.account.email,
+            name: isEmpty(res.data.account.name) ? null : res.data.account.name,
+            email: isEmpty(res.data.account.email) ? null : res.data.account.email,
             html_url: res.data.account.html_url,
             avatar_url: res.data.account.avatar_url,
             type: capitalize(res.data.account.type.toLowerCase())
@@ -278,8 +308,8 @@ export class App extends GitHubClient {
           repositories_url: res.data.repositories_url,
           permissions: res.data.permissions,
           events: res.data.events,
-          created_at: this.format ? await format_date(res.data.created_at) : res.data.created_at,
-          updated_at: this.format ? await format_date(res.data.updated_at) : res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = AppData
       }
@@ -323,6 +353,13 @@ export class App extends GitHubClient {
           throw new Error(RepoMovedMsg)
       }
       if (res.data) {
+        const [
+          createdAt,
+          updatedAt
+        ] = await Promise.all([
+          this.format ? format_date(res.data.created_at) : res.data.created_at,
+          this.format ? format_date(res.data.updated_at) : res.data.updated_at
+        ])
         const AppData: GetAppInfoByOrgResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -333,8 +370,8 @@ export class App extends GitHubClient {
           account: {
             id: res.data.account.id,
             login: res.data.account.login,
-            name: res.data.account.name,
-            email: res.data.account.email,
+            name: isEmpty(res.data.account.name) ? null : res.data.account.name,
+            email: isEmpty(res.data.account.email) ? null : res.data.account.email,
             html_url: res.data.account.html_url,
             avatar_url: res.data.account.avatar_url,
             type: capitalize(res.data.account.type.toLowerCase())
@@ -344,8 +381,8 @@ export class App extends GitHubClient {
           repositories_url: res.data.repositories_url,
           permissions: res.data.permissions,
           events: res.data.events,
-          created_at: this.format ? await format_date(res.data.created_at) : res.data.created_at,
-          updated_at: this.format ? await format_date(res.data.updated_at) : res.data.updated_at
+          created_at: createdAt,
+          updated_at: updatedAt
         }
         res.data = AppData
       }
@@ -380,23 +417,23 @@ export class App extends GitHubClient {
       if (options.permissions) body.permissions = options.permissions
       const res = await this.post(`app/installations/${options.installation_id}/access_tokens`, body)
       if (res.statusCode === 201 && res.data) {
+        const expiresAt = this.format ? await format_date(res.data.expires_at) : res.data.expires_at
         const AppData: CreateAccessTokenForAppResponseType = {
           token: res.data.token,
-          expires_at: this.format ? await format_date(res.data.expires_at) : res.data.expires_at,
+          expires_at: expiresAt,
           permissions: res.data.permissions,
           repository_selection: res.data.repository_selection,
-          repositories: res.data.repositories.map(async (repo: Record<string, any>): Promise<RepoInfoResponseType> => ({
+          repositories: await Promise.all(res.data.repositories.map(async (repo: Record<string, any>): Promise<RepoInfoResponseType> => ({
             id: repo.id,
             name: repo.name,
             full_name: repo.full_name,
             owner: {
               id: repo.owner.id,
               login: repo.owner.login,
-              name: repo.owner.name ?? null,
+              name: isEmpty(res.data.owner.name) ? null : res.data.owner.name,
               avatar_url: repo.owner.avatar_url,
               type: repo.owner.type,
-              html_url: repo.owner.html_url,
-              email: repo.owner.email ?? null
+              html_url: repo.owner.html_url
             },
             public: !repo.private,
             private: repo.private,
@@ -422,7 +459,7 @@ export class App extends GitHubClient {
               ? await format_date(repo.pushed_at)
               : repo.pushed_at
           })
-          )
+          ))
         }
         res.data = AppData
       }
@@ -557,7 +594,7 @@ export class App extends GitHubClient {
    * -> false
    */
   public async is_app_installed_in_repo (
-    options: RepoBaseParamType
+    options: isAppInstalledInRepo
   ): Promise<boolean> {
     try {
       const res = await this.get_app_installation_by_repo({

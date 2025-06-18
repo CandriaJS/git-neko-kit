@@ -3,9 +3,5 @@
   "compilerOptions": {
     "outDir": "./dist/exports",
     "rootDir": "./src/exports",
-    "types": [
-      "@types/node",
-      "@types/lodash-es"
-    ],
   }
 }

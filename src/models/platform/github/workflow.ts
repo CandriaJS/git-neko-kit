@@ -6,12 +6,13 @@ import {
 } from '@/common'
 import { get_base_url } from '@/models/base'
 import { GitHubClient } from '@/models/platform/github/client'
-import type {
-  ApiResponseType,
-  GetRepoWorkflowsList,
-  GetRepoWorkflowsListResponseType,
-  WorkflowInfoParamType,
-  WorkflowInfoResponseType
+import {
+  type ApiResponseType,
+  type GetRepoWorkflowsList,
+  type GetRepoWorkflowsListResponseType,
+  ProxyType,
+  type WorkflowInfoParamType,
+  type WorkflowInfoResponseType
 } from '@/types'
 
 /**
@@ -25,7 +26,7 @@ export class Workflow extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
-    this.base_url = get_base_url(this.type, { proxyType: 'original' })
+    this.base_url = get_base_url(this.type, { proxyType: ProxyType.Original })
   }
 
   /**

@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 
 import {
   InvalidProxyAddressMsg,
+  InvalidProxyMsg,
   MissingAccessTokenMsg,
   MissingAppClientCredentialsMsg,
   MissingAppClientMsg,
@@ -11,6 +12,7 @@ import {
   MissingClientSecretMsg,
   MissingPrivateKeyMsg,
   MissingRequestPathMsg,
+  ProxyTypeNotSupportedMsg,
   RateLimitExceededMsg
 } from '@/common'
 import { get_api_base_url, get_base_url } from '@/models/base/common'
@@ -25,12 +27,14 @@ import type { Repo } from '@/models/platform/github/repo'
 import type { User } from '@/models/platform/github/user'
 import type { WebHook } from '@/models/platform/github/webhook'
 import type { Workflow } from '@/models/platform/github/workflow'
-import type {
-  ApiResponseType,
-  GitHubClientType,
-  GitType,
-  ProxyParamsType,
-  RequestConfigType
+import {
+  type ApiResponseType,
+  type GitHubClientType,
+  type GitType,
+  type ProxyParamsType,
+  ProxyProtocol,
+  ProxyType,
+  type RequestConfigType
 } from '@/types'
 
 const type = 'github'
@@ -86,8 +90,8 @@ export class GitHubClient {
     this.WebHook_Secret = 'WebHook_Secret' in options ? options.WebHook_Secret : null
     this.validateAppClient()
     this.jwtToken = this.generate_jwt()
-    this.base_url = get_base_url(type, { proxyType: 'original' })
-    this.api_url = get_api_base_url(type, { proxyType: 'original' })
+    this.base_url = get_base_url(type, { proxyType: ProxyType.Original })
+    this.api_url = get_api_base_url(type, { proxyType: ProxyType.Original })
     this.userToken = 'access_token' in options ? options.access_token : null
     this.currentRequestConfig = {
       url: this.api_url,
@@ -122,6 +126,11 @@ export class GitHubClient {
   public get is_app_client (): boolean {
     return Boolean((this.Client_ID && this.Client_Secret && this.Private_Key))
   }
+
+  /**
+   * 检查App客户端参数是否完整
+   * @returns
+   */
 
   private validateAppClient (): void {
     if (!this.is_app_client) return
@@ -304,30 +313,44 @@ export class GitHubClient {
    * })
    * ```
    */
+  /**
+ * 设置请求代理
+ * @param proxy 代理参数
+ * @example
+ *  setProxy({
+ *    type: 'http',
+ *    address: 'http://127.0.0.1:7890'
+ * })
+ */
   public setProxy (proxy: ProxyParamsType): void {
-    if (!proxy?.address) {
+    if (!proxy?.address || !proxy?.type) {
       this.proxy = null
-      return
+      throw new Error(InvalidProxyMsg)
     }
+
     try {
       const url = new URL(proxy.address)
 
-      switch (url.protocol) {
-        case 'http:':
-        case 'https:':
-        case 'socks:':
-        case 'socks5:':
-          proxy.address = `${url.protocol}//${url.host}`
-          break
-        default:
-          throw new Error(InvalidProxyAddressMsg)
+      if (!(
+        Object.values(ProxyType).includes(proxy.type as ProxyType) ||
+        Object.values(ProxyProtocol).includes(proxy.type as ProxyProtocol))
+      ) {
+        throw new Error(ProxyTypeNotSupportedMsg(proxy.type))
       }
 
-      switch (proxy?.type) {
-        case 'common':
-        case 'reverse':
-          this.base_url = get_base_url(type, { proxyUrl: proxy.address, proxyType: proxy.type })
-          this.api_url = get_api_base_url(type, { proxyUrl: proxy.address, proxyType: proxy.type })
+      switch (proxy.type) {
+        case ProxyType.Common:
+        case ProxyType.Reverse: {
+          const proxyType = proxy.type
+          this.base_url = get_base_url(type, { proxyUrl: proxy.address, proxyType })
+          this.api_url = get_api_base_url(type, { proxyUrl: proxy.address, proxyType })
+          break
+        }
+        case ProxyProtocol.HTTP:
+        case ProxyProtocol.HTTPS:
+        case ProxyProtocol.SOCKS:
+        case ProxyProtocol.SOCKS5:
+          proxy.address = `${url.protocol}//${url.host}`
           break
       }
 
@@ -340,7 +363,7 @@ export class GitHubClient {
 
   /**
    * 设置 token
-   * 传入的 token 必须以 ghu_ 或ghp_开头，否则会抛出错误
+   * 传入的 token 必须以 ghu_ 或 ghp_ 或 ghs_ 开头，否则会抛出错误
    * @param token 传入的 token
    * @example
    * ```ts

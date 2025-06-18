@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-import { capitalize } from 'lodash-es'
+import { capitalize } from 'lodash'
 
 import {
   get_contribution_data,
@@ -16,6 +16,7 @@ import { GitHubClient } from '@/models/platform/github/client'
 import {
   ApiResponseType,
   ContributionResult,
+  ProxyType,
   UserInfoByIdParamType,
   UserInfoParamType,
   UserInfoResponseType,
@@ -33,7 +34,7 @@ export class User extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
-    this.base_url = get_base_url(this.type, { proxyType: 'original' })
+    this.base_url = get_base_url(this.type, { proxyType: ProxyType.Original })
   }
 
   /**

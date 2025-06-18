@@ -87,7 +87,6 @@ export type RepoIssueListParamType = RepoBaseParamType & {
   /**
    * 里程碑筛选
    * @default *
-   * @enum {string | number}
    * - 传入数字时：按里程碑编号筛选
    * - 传入 "*"：接受任何里程碑的议题
    * - 传入 "none"：返回没有里程碑的议题
@@ -97,7 +96,6 @@ export type RepoIssueListParamType = RepoBaseParamType & {
   /**
    * 议题状态
    * @default "open"
-   * @enum {string}
    * - open: 打开的议题
    * - closed: 关闭的议题
    * - all: 所有议题
@@ -134,7 +132,6 @@ export type RepoIssueListParamType = RepoBaseParamType & {
   /**
    * 排序方式
    * @default "created"
-   * @enum {string}
    * - created: 按创建时间排序
    * - updated: 按更新时间排序
    * - comments: 按评论数排序
@@ -144,7 +141,6 @@ export type RepoIssueListParamType = RepoBaseParamType & {
   /**
    * 排序方向
    * @default "desc"
-   * @enum {string}
    * - asc: 升序
    * - desc: 降序
    */
@@ -275,7 +271,6 @@ export interface RepoCommentsListParamType extends RepoBaseParamType {
    * 排序依据
    * 用于指定结果的排序属性
    * @default created
-   * @enum {string}
    * - created: 按创建时间排序
    * - updated: 按更新时间排序
    */
@@ -286,7 +281,6 @@ export interface RepoCommentsListParamType extends RepoBaseParamType {
    * 指定结果的排序方向
    * 注意：如果没有指定 sort 参数，此参数将被忽略
    * @default desc 当 sort 参数存在时
-   * @enum {string}
    * - asc: 升序
    * - desc: 降序
    */

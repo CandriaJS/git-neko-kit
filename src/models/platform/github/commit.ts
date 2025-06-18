@@ -1,4 +1,4 @@
-import { capitalize } from 'lodash-es'
+import { capitalize, isEmpty } from 'lodash'
 
 import {
   CommitNotFoundMsg,
@@ -83,7 +83,18 @@ export class Commit extends GitHubClient {
       }
 
       if (res.data) {
-        const message = res.data?.commit?.message ?? ''
+        const [
+          authorDate,
+          committerDate
+        ] = await Promise.all([
+          this.format
+            ? await format_date(res.data.commit.author.date)
+            : res.data.commit.author.date,
+          this.format
+            ? await format_date(res.data.commit.committer.date)
+            : res.data.commit.committer.date
+        ])
+        const message: string = res.data?.commit?.message
         const [title, ...bodyParts] = message.split('\n')
         const CommitData: CommitInfoResponseType = {
           html_url: res.data.html_url,
@@ -94,26 +105,22 @@ export class Commit extends GitHubClient {
             author: {
               id: res.data.author.id,
               login: res.data.author.login,
-              name: res.data.commit.author.name,
+              name: isEmpty(res.data.commit.author.name) ? null : res.data.commit.author.name,
+              email: isEmpty(res.data.commit.author.email) ? null : res.data.commit.author.email,
               avatar_url: res.data.author.avatar_url,
-              email: res.data.commit.author.email,
               html_url: res.data.author.html_url,
               type: capitalize(String(res.data.author.type).toLowerCase()),
-              date: this.format
-                ? await format_date(res.data.commit.author.date)
-                : res.data.commit.author.date
+              date: authorDate
             },
             committer: {
               id: res.data.committer.id,
               login: res.data.committer.login,
-              name: res.data.commit.committer.name,
+              name: isEmpty(res.data.commit.committer.name) ? null : res.data.commit.committer.name,
+              email: isEmpty(res.data.commit.committer.email) ? null : res.data.commit.committer.email,
               avatar_url: res.data.committer.avatar_url,
-              email: res.data.commit.committer.email,
               html_url: res.data.committer.html_url,
               type: capitalize(String(res.data.committer.type).toLowerCase()),
-              date: this.format
-                ? await format_date(res.data.commit.committer.date)
-                : res.data.commit.committer.date
+              date: committerDate
             },
             message: res.data.commit.message,
             ...(this.format && {
@@ -229,9 +236,9 @@ export class Commit extends GitHubClient {
               author: {
                 id: commit.author.id,
                 login: commit.author.login,
-                name: commit.commit.author.name,
+                name: isEmpty(commit.committer.name) ? null : commit.committer.name,
+                email: isEmpty(commit.committer.email) ? null : commit.committer.email,
                 avatar_url: commit.author.avatar_url,
-                email: commit.commit.author.email,
                 html_url: commit.author.html_url,
                 type: capitalize(String(commit.author.type).toLowerCase()),
                 date: this.format
@@ -241,9 +248,9 @@ export class Commit extends GitHubClient {
               committer: {
                 id: commit.committer.id,
                 login: commit.committer.login,
-                name: commit.commit.committer.name,
+                name: isEmpty(commit.committer.name) ? null : commit.committer.name,
+                email: isEmpty(commit.committer.email) ? null : commit.committer.email,
                 avatar_url: commit.committer.avatar_url,
-                email: commit.commit.committer.email,
                 html_url: commit.committer.html_url,
                 type: capitalize(String(commit.committer.type).toLowerCase()),
                 date: this.format
