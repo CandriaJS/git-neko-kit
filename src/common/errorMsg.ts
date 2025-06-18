@@ -52,6 +52,12 @@ export const MissingWorkflowIdMsg = '喵呜~ 工作流ID不能为空'
 export const WorkflowNotFoundMsg = '喵呜~ 这个工作流不存在哦'
 export const WorkflowOrRepoNotFoundMsg = '喵呜~ 这个工作流或仓库不存在哦'
 export const FailedToRemoveCollaboratorMsg = (username: string) => `喵呜~ 移除协作者失败${username}哦`
+export const MissingRefMsg = '喵呜~ 引用分支或标签名称不能为空哦'
+export const MissingJobIdMsg = '喵呜~ 工作流作业ID不能为空'
+export const FailedToRepoWorkflowDispatchMsg = (workflow_id: string | number) => `喵呜~ 工作流${workflow_id}手动触发触发失败`
+export const FailedToEnableRepoWorkflowFailedMsg = (workflow_id: string | number) => `喵呜~ 工作流${workflow_id}启用失败`
+export const FailedToDisableRepoWorkflowFailedMsg = (workflow_id: string | number) => `喵呜~ 工作流${workflow_id}禁用失败`
+export const FailedToReRunRepoWorkflowFailedMsg = (job_id: number) => `喵呜~ 工作流作业${job_id}重新运行失败`
 
 /** 用户相关 */
 export const UserNotFoundMsg = '喵呜~ 这个用户不存在哦'

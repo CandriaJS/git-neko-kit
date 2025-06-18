@@ -1,7 +1,7 @@
 import type { RepoBaseParamType, workflowIdParamType } from '@/types/platform/base'
 
 /** 工作流状态 */
-export enum WorkflowState {
+export const enum WorkflowState {
   /** 工作流已激活 */
   Active = 'active',
   /** 工作流已删除 */
@@ -47,4 +47,52 @@ export interface GetRepoWorkflowsListResponseType {
   total: number
   /** 工作流列表 */
   workflows: WorkflowInfoResponseType[]
+}
+
+/** 运行仓库工作流参数类型 */
+export interface RunRepoWorkflow extends WorkflowInfoParamType {
+  /** 分支或者标签名称 */
+  ref: string
+  /** 工作流输入参数, 该参数最多10个 */
+  inputs?: Record<string, string | number>
+}
+/** 运行仓库工作流响应类型 */
+export interface RunRepoWorkflowResponseType {
+  /** 是否成功 */
+  success: boolean
+  /** 运行状态信息 */
+  message: string
+}
+
+/** 启用仓库工作流参数类型 */
+export type EnableRepoWorkflowParamType = WorkflowInfoParamType
+/** 启用仓库工作流响应类型 */
+export interface EnableRepoWorkflowResponseType {
+  /** 是否成功 */
+  success: boolean
+  /** 启用状态信息 */
+  message: string
+}
+
+/** 禁用仓库工作流参数类型 */
+export type DisEnableRepoWorkflowParamType = WorkflowInfoParamType
+/** 禁用仓库工作流响应类型 */
+export interface DisEnableRepoWorkflowResponseType {
+  /** 是否成功 */
+  success: boolean
+  /** 禁用状态信息 */
+  message: string
+}
+
+/** 重新运行仓库工作流参数类型 */
+export interface ReRunRepoWorkflowParamType extends Omit<WorkflowInfoParamType, 'workflow_id'> {
+  /** 工作流作业id */
+  job_id: number
+}
+/** 重新运行仓库工作流响应类型 */
+export interface ReRunRepoWorkflowResponseType {
+  /** 是否成功重新运行仓库工作流 */
+  success: boolean
+  /** 重新运行状态信息 */
+  message: string
 }

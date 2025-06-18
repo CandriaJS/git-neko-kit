@@ -1,16 +1,34 @@
 import {
+  DisableRepoWorkflowSuccessMsg,
+  EnableRepoWorkflowSuccessMsg,
+  FailedToDisableRepoWorkflowFailedMsg,
+  FailedToEnableRepoWorkflowFailedMsg,
+  FailedToRepoWorkflowDispatchMsg,
+  FailedToReRunRepoWorkflowFailedMsg,
   format_date,
+  MissingJobIdMsg,
+  MissingRefMsg,
   MissingRepoOwnerOrNameMsg,
   MissingWorkflowIdMsg,
+  ReRunRepoWorkflowSuccessMsg,
+  RunRepoWorkflowSuccessMsg,
   WorkflowOrRepoNotFoundMsg
 } from '@/common'
 import { get_base_url } from '@/models/base'
 import { GitHubClient } from '@/models/platform/github/client'
 import {
   type ApiResponseType,
+  type DisEnableRepoWorkflowParamType,
+  type DisEnableRepoWorkflowResponseType,
+  type EnableRepoWorkflowParamType,
+  type EnableRepoWorkflowResponseType,
   type GetRepoWorkflowsList,
   type GetRepoWorkflowsListResponseType,
   ProxyType,
+  type ReRunRepoWorkflowParamType,
+  type ReRunRepoWorkflowResponseType,
+  type RunRepoWorkflow,
+  type RunRepoWorkflowResponseType,
   type WorkflowInfoParamType,
   type WorkflowInfoResponseType
 } from '@/types'
@@ -125,6 +143,195 @@ export class Workflow extends GitHubClient {
       return res
     } catch (error) {
       throw new Error(`获取工作流列表失败: ${(error as Error).message}`)
+    }
+  }
+
+  /**
+   * 运行仓库工作流
+   * 权限：
+   * - 'actions': 'read-and-write'
+   * @param options 运行工作流参数
+   * - owner 仓库拥有者
+   * - repo 仓库名称
+   * - workflow_id 工作流id
+   * - ref 分支或者标签名称
+   * - inputs 工作流输入参数
+   * @returns 运行工作流结果对象
+   * @example
+   * ```ts
+   * const res = await workflow.run_repo_workflow()
+   * -> 运行工作流结果对象
+   * ```
+   */
+
+  public async run_repo_workflow (options: RunRepoWorkflow): Promise<ApiResponseType<RunRepoWorkflowResponseType>> {
+    if (!options.owner || !options.repo) throw new Error(MissingRepoOwnerOrNameMsg)
+    if (!options.workflow_id) throw new Error(MissingWorkflowIdMsg)
+    if (!options.ref) throw new Error(MissingRefMsg)
+    try {
+      this.setRequestConfig({
+        token: this.userToken
+      })
+      const { owner, repo, workflow_id } = options
+      const body: Record<string, string | number | Record<string, string | number>> = {
+        ref: options.ref
+      }
+      if (options.inputs) body.inputs = options.inputs
+      const res = await this.post(`/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`, body)
+      let workflowData: RunRepoWorkflowResponseType
+      if (res.statusCode === 204) {
+        workflowData = {
+          success: true,
+          message: RunRepoWorkflowSuccessMsg(workflow_id)
+        }
+      } else {
+        workflowData = {
+          success: false,
+          message: FailedToRepoWorkflowDispatchMsg(workflow_id)
+        }
+      }
+      res.data = workflowData
+      return res
+    } catch (error) {
+      throw new Error(`运行工作流失败: ${(error as Error).message}`)
+    }
+  }
+
+  /**
+   * 启用仓库工作流
+   * 权限：
+   * - 'actions': 'read-and-write'
+   * @param options 启用工作流参数
+   * - owner 仓库拥有者
+   * - repo 仓库名称
+   * - workflow_id 工作流id
+   * @returns 启用工作流结果对象
+   * @example
+   * ```ts
+   * const res = await workflow.enable_repo_workflow()
+   * -> 启用工作流结果对象
+   * ```
+   */
+
+  public async enable_repo_workflow (
+    options: EnableRepoWorkflowParamType
+  ): Promise<ApiResponseType<EnableRepoWorkflowResponseType>> {
+    if (!options.owner || !options.repo) throw new Error(MissingRepoOwnerOrNameMsg)
+    if (!options.workflow_id) throw new Error(MissingWorkflowIdMsg)
+    try {
+      this.setRequestConfig({
+        token: this.userToken
+      })
+      const { owner, repo, workflow_id } = options
+      const res = await this.put(`/repos/${owner}/${repo}/actions/workflows/${workflow_id}/enable`, null)
+      let workflowData: EnableRepoWorkflowResponseType
+      if (res.statusCode === 204) {
+        workflowData = {
+          success: true,
+          message: EnableRepoWorkflowSuccessMsg(workflow_id)
+        }
+      } else {
+        workflowData = {
+          success: false,
+          message: FailedToEnableRepoWorkflowFailedMsg(workflow_id)
+        }
+      }
+      res.data = workflowData
+      return res
+    } catch (error) {
+      throw new Error(`启用工作流失败: ${(error as Error).message}`)
+    }
+  }
+
+  /**
+   * 禁用仓库工作流
+   * 权限：
+   * - 'actions': 'read-and-write'
+   * @param options 禁用工作流参数
+   * - owner 仓库拥有者
+   * - repo 仓库名称
+   * - workflow_id 工作流id
+   * @returns 禁用工作流结果对象
+   * @example
+   * ```ts
+   * const res = await workflow.disable_repo_workflow()
+   * -> 禁用工作流结果对象
+   * ```
+   */
+
+  public async disable_repo_workflow (
+    options: DisEnableRepoWorkflowParamType
+  ): Promise<ApiResponseType<DisEnableRepoWorkflowResponseType>> {
+    if (!options.owner || !options.repo) throw new Error(MissingRepoOwnerOrNameMsg)
+    if (!options.workflow_id) throw new Error(MissingWorkflowIdMsg)
+    try {
+      this.setRequestConfig({
+        token: this.userToken
+      })
+      const { owner, repo, workflow_id } = options
+      const res = await this.put(`/repos/${owner}/${repo}/actions/workflows/${workflow_id}/disable`, null)
+      let workflowData: DisEnableRepoWorkflowResponseType
+      if (res.statusCode === 204) {
+        workflowData = {
+          success: true,
+          message: DisableRepoWorkflowSuccessMsg(workflow_id)
+        }
+      } else {
+        workflowData = {
+          success: false,
+          message: FailedToDisableRepoWorkflowFailedMsg(workflow_id)
+        }
+      }
+      res.data = workflowData
+      return res
+    } catch (error) {
+      throw new Error(`禁用工作流失败: ${(error as Error).message}`)
+    }
+  }
+
+  /**
+   * 重新运行仓库工作流
+   * 权限：
+   * - 'actions': 'read-and-write'
+   * @param options 重新运行工作流参数
+   * - owner 仓库拥有者
+   * - repo 仓库名称
+   * - job_id 工作流作业id
+   * @returns 重新运行工作流结果对象
+   * @example
+   * ```ts
+   * const res = await workflow.rerun_repo_workflow()
+   * -> 重新运行工作流结果对象
+   * ```
+   */
+
+  public async rerun_repo_workflow (
+    options: ReRunRepoWorkflowParamType
+  ): Promise<ApiResponseType<ReRunRepoWorkflowResponseType>> {
+    if (!options.owner || !options.repo) throw new Error(MissingRepoOwnerOrNameMsg)
+    if (!options.job_id) throw new Error(MissingJobIdMsg)
+    try {
+      this.setRequestConfig({
+        token: this.userToken
+      })
+      const { owner, repo, job_id } = options
+      const res = await this.post(`/repos/${owner}/${repo}/actions/jobs/${job_id}/rerun`, null)
+      let workflowData: ReRunRepoWorkflowResponseType
+      if (res.statusCode === 204) {
+        workflowData = {
+          success: true,
+          message: ReRunRepoWorkflowSuccessMsg(job_id)
+        }
+      } else {
+        workflowData = {
+          success: false,
+          message: FailedToReRunRepoWorkflowFailedMsg(job_id)
+        }
+      }
+      res.data = workflowData
+      return res
+    } catch (error) {
+      throw new Error(`重新运行工作流失败: ${(error as Error).message}`)
     }
   }
 }

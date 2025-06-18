@@ -10,6 +10,10 @@ export const WebHookSignatureValidMsg = '喵呜~ WebHook 签名成功'
 /** 仓库相关 */
 export const RepoOperationSuccessMsg = '喵呜~ 仓库操作成功'
 export const RemoveCollaboratorSuccessMsg = (username: string) => `喵呜~ 移除协作者成功${username}哦`
+export const RunRepoWorkflowSuccessMsg = (workflowId: string | number) => `喵呜~ 工作流运行成功${workflowId}哦`
+export const EnableRepoWorkflowSuccessMsg = (workflowId: string | number) => `喵呜~ 工作流启用成功${workflowId}哦`
+export const DisableRepoWorkflowSuccessMsg = (workflowId: string | number) => `喵呜~ 工作流禁用成功${workflowId}哦`
+export const ReRunRepoWorkflowSuccessMsg = (job_id: number) => `喵呜~ 工作流任务重新运行成功${job_id}哦`
 
 /** 议题与PR相关 */
 export const IssueLockSuccessMsg = '喵呜~ 议题锁定成功'
