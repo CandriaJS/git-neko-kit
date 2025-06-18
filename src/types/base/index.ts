@@ -1,4 +1,5 @@
 export * from '@/types/base/base'
+export * from '@/types/base/git'
 export * from '@/types/base/pkg'
 export * from '@/types/base/request'
 export * from '@/types/base/response'

@@ -1,5 +1,4 @@
 import * as lodash from 'lodash'
 export { lodash as default }
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// @ts-expect-error TS2498
 export * from 'lodash'

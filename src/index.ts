@@ -1,6 +1,8 @@
 import {
   format_date,
   get_langage_color,
+  get_local_git_repo_info,
+  get_local_git_repo_list,
   get_local_repo_default_branch,
   get_relative_time,
   get_remote_repo_default_branch
@@ -34,6 +36,8 @@ export {
   create_state_id,
   format_date,
   get_langage_color,
+  get_local_git_repo_info,
+  get_local_git_repo_list,
   get_local_repo_default_branch,
   get_relative_time,
   get_remote_repo_default_branch

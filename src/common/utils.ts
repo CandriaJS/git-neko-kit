@@ -1,6 +1,6 @@
-import { exec as execCmd } from 'node:child_process'
 import fs from 'node:fs'
 
+import { exec as execCmd, type ExecOptions, type ExecReturn, execSync as execSyncCmd } from '@candriajs/exec'
 import convert, { type RGB } from 'color-convert'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime.js'
@@ -10,15 +10,13 @@ import LanguageColors from 'language-colors'
 import { basePath } from '@/root'
 import type {
   ContributionResult,
-  ExecOptions,
-  ExecReturn,
-  RepoBaseParamType
+  GitRepoType
 } from '@/types'
 
 const localeCache = new Set<string>(['en'])
 
 /**
- * 执行 shell 命令
+ * 异步执行 shell 命令
  * @param cmd 命令
  * @param options 选项
  * @param options.log 是否打印日志 默认不打印
@@ -35,54 +33,36 @@ const localeCache = new Set<string>(['en'])
  * // -> 打印执行命令和结果
  * ```
  */
-export function exec<T extends boolean = false> (
+export async function exec<T extends boolean = false> (
   cmd: string,
   options?: ExecOptions<T>
 ): Promise<ExecReturn<T>> {
-  const logger = console
-  return new Promise((resolve) => {
-    if (options?.log) {
-      logger.info([
-        '[exec] 执行命令:',
-        `pwd: ${options?.cwd ?? process.cwd()}`,
-        `cmd: ${cmd}`,
-        `options: ${JSON.stringify(options)}`
-      ].join('\n'))
-    }
+  return await execCmd(cmd, options)
+}
 
-    execCmd(cmd, options, (error, stdout, stderr) => {
-      if (options?.log) {
-        const info = error as Error
-        if (info.message) info.message = `\x1b[91m${info.message}\x1b[0m`
-        logger.info([
-          '[exec] 执行结果:',
-          `stderr: ${stderr.toString()}`,
-          `stdout: ${stdout.toString()}`,
-          `error: ${JSON.stringify(info, null, 2)}`
-        ].join('\n'))
-      }
-
-      if (options?.booleanResult) {
-        return resolve((!error) as ExecReturn<T>)
-      }
-
-      stdout = stdout.toString()
-      stderr = stderr.toString()
-
-      if (options?.trim) {
-        stdout = stdout.trim()
-        stderr = stderr.trim()
-      }
-
-      const value = {
-        status: !error,
-        error,
-        stdout,
-        stderr
-      } as ExecReturn<T>
-      resolve(value)
-    })
-  })
+/**
+ * 同步执行 shell 命令
+ * @param cmd 命令
+ * @param options 选项
+ * @param options.log 是否打印日志 默认不打印
+ * @param options.booleanResult 是否只返回布尔值 表示命令是否成功执行 默认返回完整的结果
+ * @example
+ * ```ts
+ * const { status, error, stdout, stderr } = execSync('ls -al')
+ * // -> { status: true, error: null, stdout: '...', stderr: '...' }
+ *
+ * const status = execSync('ls -al', { booleanResult: true })
+ * // -> true
+ *
+ * const { status, error, stdout, stderr } = execSync('ls -al', { log: true })
+ * // -> 打印执行命令和结果
+ * ```
+ */
+export function execSync<T extends boolean = false> (
+  cmd: string,
+  options?: ExecOptions<T>
+): ExecReturn<T> {
+  return execSyncCmd(cmd, options)
 }
 
 /**
@@ -202,14 +182,14 @@ export async function get_relative_time (
  * @example
  * ```ts
  * console.log(parse_git_url('https://github.com/user/repo.git'))
- * -> { owner: 'user', repo: 'repo' }
+ * -> { owner: 'user', repo: 'repo', html_url: 'https://github.com/user/repo.git' }
  * console.log(parse_git_url('https://ghproxy.com/github.com/user/repo.git'))
- * -> { owner: 'user', repo: 'repo' }
+ * -> { owner: 'user', repo: 'repo', html_url: 'https://github.com/user/repo.git' }
  * console.log(parse_git_url('https://ghproxy.com/https://github.com/user/repo.git'))
- * -> { owner: 'user', repo: 'repo' }
+ * -> { owner: 'user', repo: 'repo', html_url: 'https://github.com/user/repo.git' }
  * ```
  */
-export function parse_git_url (url: string): RepoBaseParamType {
+export function parse_git_url (url: string): GitRepoType {
   const proxyRegex = /^https?:\/\/[^/]+\/(?:https?:\/\/)?([^/]+\/[^/]+\/[^/]+)/
   const proxyMatch = url.match(proxyRegex)
 
@@ -220,6 +200,7 @@ export function parse_git_url (url: string): RepoBaseParamType {
 
   const info = GitUrlParse(url)
   return {
+    html_url: info.href,
     owner: info.owner,
     repo: info.name
   }

@@ -65,7 +65,8 @@
     "test": "tsx test/index.ts"
   },
   "dependencies": {
-    "axios": "npm:@candriajs/axios@1.0.7",
+    "@candriajs/exec": "^1.0.4",
+    "axios": "npm:@candriajs/axios@1.0.14",
     "color-convert": "^3.1.0",
     "dayjs": "^1.11.13",
     "exec": "npm:@candriajs/exec@^1.0.2",
@@ -74,8 +75,8 @@
     "https-proxy-agent": "^7.0.6",
     "jsonwebtoken": "^9.0.2",
     "language-colors": "^2.1.55",
-    "lodash": "npm:@candriajs/lodash@1.0.5",
-    "simple-git": "^3.27.0",
+    "lodash": "npm:@candriajs/lodash@1.0.7",
+    "simple-git": "npm:@candriajs/simple-git@^1.0.2",
     "socks-proxy-agent": "^8.0.5",
     "uuid": "^11.1.0"
   },
