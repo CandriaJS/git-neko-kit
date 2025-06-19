@@ -26,6 +26,8 @@ export class Org extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
+    this.api_url = base.api_url
+    this.base_url = base.base_url
   }
 
   /**
@@ -136,7 +138,7 @@ export class Org extends GitHubClient {
           id: res.data.inviter.id,
           login: res.data.inviterlogin,
           name: res.data.inviter.name,
-          html_url: `${get_base_url(this.type)}/${org}`,
+          html_url: `${this.Client_Secret}/${org}`,
           role: role as 'admin' | 'member'
         }
         res.data = OrgData

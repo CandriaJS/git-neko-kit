@@ -358,8 +358,8 @@ export class GitHubClient {
         case ProxyType.Common:
         case ProxyType.Reverse: {
           const proxyType = proxy.type
-          this.base_url = get_base_url(type, { proxyUrl: proxy.address, proxyType })
           this.api_url = get_api_base_url(type, { proxyUrl: proxy.address, proxyType })
+          this.currentRequestConfig.url = this.api_url
           break
         }
         case ProxyProtocol.HTTP:
@@ -417,8 +417,19 @@ export class GitHubClient {
   }
 
   /**
+   * 获取当前请求的配置
+   * @returns 当前请求的配置对象
+   */
+  private getCurrentRequestConfig (): RequestConfigType {
+    return {
+      ...this.currentRequestConfig,
+      url: this.api_url
+    }
+  }
+
+  /**
    * 设置当前请求的配置
-   * @protected - 仅在类内部访问
+   * @protected - 仅在父类与子类中方法中可访问
    * @param config - 配置对象，包含以下属性:
    * - url: 请求的URL
    * - token: 认证令牌
@@ -435,13 +446,13 @@ export class GitHubClient {
    * @returns 返回一个新的 Request 实例
    */
   private createRequest (): Request {
-    const { url, token, tokenType } = this.currentRequestConfig
+    const { url, token, tokenType } = this.getCurrentRequestConfig()
     const proxyConfig = this.proxy?.type !== 'common' ? this.proxy : null
     const customHeaders = {
       'X-GitHub-Api-Version': '2022-11-28',
       Accept: 'application/vnd.github+json'
     }
-    return new Request(url ?? this.api_url, tokenType, token, proxyConfig, customHeaders)
+    return new Request(url!, tokenType, token, proxyConfig, customHeaders)
   }
 
   /**
@@ -458,6 +469,9 @@ export class GitHubClient {
   ): Promise<ApiResponseType> {
     try {
       if (!path) throw new Error(MissingRequestPathMsg)
+      this.setRequestConfig({
+        token: this.userToken
+      })
       const request = this.createRequest()
       const req = await request.get(path, parms, customHeaders)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
@@ -489,6 +503,9 @@ export class GitHubClient {
   ): Promise<ApiResponseType> {
     try {
       if (!path) throw new Error(MissingRequestPathMsg)
+      this.setRequestConfig({
+        token: this.userToken
+      })
       const request = this.createRequest()
       const req = await request.post(path, data, customHeaders)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
@@ -522,6 +539,9 @@ export class GitHubClient {
   ): Promise<ApiResponseType> {
     try {
       if (!path) throw new Error(MissingRequestPathMsg)
+      this.setRequestConfig({
+        token: this.userToken
+      })
       const request = this.createRequest()
       const req = await request.patch(path, params, data, customHeaders)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
@@ -553,6 +573,9 @@ export class GitHubClient {
   ): Promise<ApiResponseType> {
     try {
       if (!path) throw new Error(MissingRequestPathMsg)
+      this.setRequestConfig({
+        token: this.userToken
+      })
       const request = this.createRequest()
       const req = await request.put(path, data, customHeaders)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
@@ -586,6 +609,9 @@ export class GitHubClient {
   ): Promise<ApiResponseType> {
     try {
       if (!path) throw new Error(MissingRequestPathMsg)
+      this.setRequestConfig({
+        token: this.userToken
+      })
       const request = this.createRequest()
       const req = await request.delete(path, params, data, customHeaders)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {

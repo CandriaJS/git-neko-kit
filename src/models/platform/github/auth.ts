@@ -4,7 +4,6 @@ import {
   ExpiredAccessTokenMsg,
   FailedToFetchAccessTokenMsg,
   FailedToRefreshAccessTokenMsg,
-  format_date,
   InvalidAccessTokenMsg,
   MissingAccessCodeMsg,
   MissingAccessTokenMsg,
@@ -13,15 +12,17 @@ import {
   PermissionDeniedMsg,
   RefreshAccessTokenSuccessMsg
 } from '@/common'
+import { get_base_url } from '@/models'
 import { GitHubClient } from '@/models/platform/github/client'
-import type {
-  AccessCodeType,
-  AccessTokenType,
-  ApiResponseType,
-  CheckTokenResponseType,
-  RefreshTokenResponseType,
-  RefreshTokenType,
-  TokenResponseType
+import {
+  type AccessCodeType,
+  type AccessTokenType,
+  type ApiResponseType,
+  type CheckTokenResponseType,
+  ProxyType,
+  type RefreshTokenResponseType,
+  type RefreshTokenType,
+  type TokenResponseType
 } from '@/types'
 
 /**
@@ -39,6 +40,7 @@ export class Auth extends GitHubClient {
     super(base)
     this.userToken = base.userToken
     this.api_url = base.api_url
+    this.base_url = base.base_url
   }
 
   /**

@@ -64,7 +64,8 @@ export class Repo extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
-    this.base_url = get_base_url(this.type, { proxyType: ProxyType.Original })
+    this.api_url = base.api_url
+    this.base_url = base.base_url
   }
 
   /**
@@ -893,7 +894,7 @@ export class Repo extends GitHubClient {
       const { owner, repo } = options
       let default_branch
       try {
-        const github_url = this.base_url + '/' + owner + '/' + repo
+        const github_url = get_base_url(this.type, { proxyType: ProxyType.Original }) + '/' + owner + '/' + repo
         default_branch = await get_remote_repo_default_branch(github_url)
       } catch (error) {
         default_branch = (await this.get_repo_info({ owner, repo })).data.default_branch

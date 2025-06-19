@@ -22,11 +22,6 @@ import type {
  * - 检查webhook签名是否正确
  */
 export class WebHook extends GitHubClient {
-  constructor (base: GitHubClient) {
-    super(base)
-    this.userToken = base.userToken
-  }
-
   /**
    * 检查WebHook签名是否正确
    * 权限：无需任何权限

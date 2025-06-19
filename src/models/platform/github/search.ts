@@ -24,6 +24,8 @@ export class Search extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
+    this.base_url = base.base_url
+    this.api_url = base.api_url
   }
 
   /**

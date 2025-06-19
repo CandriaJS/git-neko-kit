@@ -34,7 +34,8 @@ export class User extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
-    this.base_url = get_base_url(this.type, { proxyType: ProxyType.Original })
+    this.base_url = base.base_url
+    this.api_url = base.api_url
   }
 
   /**
@@ -230,7 +231,7 @@ export class User extends GitHubClient {
         throw new Error(`${OrgNotSupportedMsg}获取贡献日历`)
       }
       this.setRequestConfig({
-        url: this.base_url
+        url: get_base_url(this.type, { proxyType: ProxyType.Original })
       })
       const res = await this.get(`/${options.username}`, {
         action: 'show',
