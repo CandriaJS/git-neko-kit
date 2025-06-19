@@ -1,5 +1,17 @@
 # 变更日志
 
+## [1.0.0](https://github.com/CandriaJS/git-neko-kit/compare/v0.9.0...v1.0.0) (2025-06-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* **git, npm:** 添加仓库默认分支信息
+
+### ✨ 新功能
+
+* **common:** 添加获取本地 NPM 包信息的功能 ([22a3565](https://github.com/CandriaJS/git-neko-kit/commit/22a356509333d30b3bbffe17af9b577a165c9baf))
+* **git, npm:** 添加仓库默认分支信息 ([c2c53b1](https://github.com/CandriaJS/git-neko-kit/commit/c2c53b179ec5e858ba68d3f8ab0f8b4c32e2b8ac))
+
 ## [0.9.0](https://github.com/CandriaJS/git-neko-kit/compare/v0.8.7...v0.9.0) (2025-06-19)
 
 
