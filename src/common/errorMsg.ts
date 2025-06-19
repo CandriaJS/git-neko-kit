@@ -115,5 +115,8 @@ export const MissingWebHookSecretMsg = '喵呜~ WebHook 签名密钥不能为空
 export const MissingWebHookPayloadMsg = '喵呜~ WebHook 请求体不能为空哦'
 export const MissingWebHookSignatureMsg = '喵呜~ WebHook 签名头不能为空哦'
 
+/** 搜索相关 */
+export const MIssingSearchQueryMsg = '喵呜~ 搜索查询不能为空哦'
+
 /** 其他 */
 export const RateLimitExceededMsg = '喵呜~ 访问速率受限啦 请等待1小时后再试 或 使用访问令牌提升限额'

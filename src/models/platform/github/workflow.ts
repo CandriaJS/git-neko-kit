@@ -10,11 +10,11 @@ import {
   MissingRefMsg,
   MissingRepoOwnerOrNameMsg,
   MissingWorkflowIdMsg,
+  PermissionDeniedMsg,
   ReRunRepoWorkflowSuccessMsg,
   RunRepoWorkflowSuccessMsg,
   WorkflowOrRepoNotFoundMsg
 } from '@/common'
-import { get_base_url } from '@/models/base'
 import { GitHubClient } from '@/models/platform/github/client'
 import {
   type ApiResponseType,
@@ -24,7 +24,6 @@ import {
   type EnableRepoWorkflowResponseType,
   type GetRepoWorkflowsList,
   type GetRepoWorkflowsListResponseType,
-  ProxyType,
   type ReRunRepoWorkflowParamType,
   type ReRunRepoWorkflowResponseType,
   type RunRepoWorkflow,
@@ -44,7 +43,6 @@ export class Workflow extends GitHubClient {
   constructor (base: GitHubClient) {
     super(base)
     this.userToken = base.userToken
-    this.base_url = get_base_url(this.type, { proxyType: ProxyType.Original })
   }
 
   /**
@@ -178,6 +176,8 @@ export class Workflow extends GitHubClient {
       }
       if (options.inputs) body.inputs = options.inputs
       const res = await this.post(`/repos/${owner}/${repo}/actions/workflows/${workflow_id}/dispatches`, body)
+      if (res.statusCode === 404) throw new Error(WorkflowOrRepoNotFoundMsg)
+      if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
       let workflowData: RunRepoWorkflowResponseType
       if (res.statusCode === 204) {
         workflowData = {
@@ -224,6 +224,8 @@ export class Workflow extends GitHubClient {
       })
       const { owner, repo, workflow_id } = options
       const res = await this.put(`/repos/${owner}/${repo}/actions/workflows/${workflow_id}/enable`, null)
+      if (res.statusCode === 404) throw new Error(WorkflowOrRepoNotFoundMsg)
+      if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
       let workflowData: EnableRepoWorkflowResponseType
       if (res.statusCode === 204) {
         workflowData = {
@@ -270,6 +272,8 @@ export class Workflow extends GitHubClient {
       })
       const { owner, repo, workflow_id } = options
       const res = await this.put(`/repos/${owner}/${repo}/actions/workflows/${workflow_id}/disable`, null)
+      if (res.statusCode === 404) throw new Error(WorkflowOrRepoNotFoundMsg)
+      if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
       let workflowData: DisEnableRepoWorkflowResponseType
       if (res.statusCode === 204) {
         workflowData = {
@@ -316,6 +320,8 @@ export class Workflow extends GitHubClient {
       })
       const { owner, repo, job_id } = options
       const res = await this.post(`/repos/${owner}/${repo}/actions/jobs/${job_id}/rerun`, null)
+      if (res.statusCode === 404) throw new Error(WorkflowOrRepoNotFoundMsg)
+      if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
       let workflowData: ReRunRepoWorkflowResponseType
       if (res.statusCode === 204) {
         workflowData = {

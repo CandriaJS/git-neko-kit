@@ -14,22 +14,6 @@ export interface GitUser extends Omit<UserInfoResponseType, 'bio' | 'blog' | 'fo
   /** 日期字符串 */
   date: string;
 }
-/**
- * 验证信息类型
- * 这个只有GitHub平台返回
- */
-// export interface Verification {
-//   /** 是否已验证 */
-//   verified: boolean;
-//   /** 验证原因 */
-//   reason: string;
-//   /** 验证负载 */
-//   payload: string | null;
-//   /** 验证签名 */
-//   signature: string | null;
-//   /** 验证时间 */
-//   verified_at: string | null;
-// }
 
 export interface Commit {
   /** 提交的URL */
@@ -58,8 +42,6 @@ export interface Commit {
     /** 树对象的URL */
     url: string;
   };
-  /** 验证信息 */
-  // verification: Verification;
 }
 
 export interface DiffEntry {
@@ -79,11 +61,6 @@ export interface DiffEntry {
   blob_url: string;
   /** 文件原始URL */
   raw_url: string;
-  /** gitcode不返回这个两个 */
-  // /** 文件内容URL */
-  // contents_url: string;
-  // /** 文件差异补丁 */
-  // patch: string;
 }
 
 export interface CommitStats {

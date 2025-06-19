@@ -24,6 +24,7 @@ import type { Issue } from '@/models/platform/github/issue'
 import type { Org } from '@/models/platform/github/org'
 import type { Pull_Request } from '@/models/platform/github/pull_request'
 import type { Repo } from '@/models/platform/github/repo'
+import type { Search } from '@/models/platform/github/search'
 import type { User } from '@/models/platform/github/user'
 import type { WebHook } from '@/models/platform/github/webhook'
 import type { Workflow } from '@/models/platform/github/workflow'
@@ -71,6 +72,7 @@ export class GitHubClient {
   declare org: Org
   declare pull_request: Pull_Request
   declare workflow: Workflow
+  declare search: Search
   public base_url: string
   public api_url: string
   public jwtToken: string
@@ -300,6 +302,20 @@ export class GitHubClient {
     const { Workflow } = await import('@/models/platform/github/workflow')
     this.workflow = new Workflow(this)
     return this.workflow
+  }
+
+  /**
+   * 获取Search实例
+   * @returns Search实例
+   * @example
+   * ```ts
+   * const search = await GitHubClient.get_search()
+   * ```
+   */
+  public async get_search (): Promise<Search> {
+    const { Search } = await import('@/models/platform/github/search')
+    this.search = new Search(this)
+    return this.search
   }
 
   /**
