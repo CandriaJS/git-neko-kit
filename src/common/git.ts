@@ -86,7 +86,8 @@ export async function get_local_git_repo_info (
         url: remoteUrl,
         html_url,
         owner,
-        repo
+        repo,
+        default_branch: await get_local_repo_default_branch(local_path)
       }
     }
     return null

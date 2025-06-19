@@ -9,6 +9,7 @@
     "gitcode",
     "git-api-kit"
   ],
+  "homepage": "https://git-neko-kit.pages.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CandriaJS/git-neko-kit.git"

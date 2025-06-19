@@ -16,6 +16,8 @@ export interface GitRepoInfoType {
   owner: string
   /** 仓库名称 */
   repo: string
+  /** 仓库的默认分支 */
+  default_branch: string | null
 }
 
 /** 获取本地路径的Git仓库信息列表 */

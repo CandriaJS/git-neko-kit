@@ -10,6 +10,8 @@ export interface NpmPackageInfoType {
   owner: string
   /** 仓库名称 */
   repo: string
+  /** 默认分支 */
+  default_branch: string
 }
 
 export interface NpmPackageInfoListOptionsType {

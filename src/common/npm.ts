@@ -5,6 +5,7 @@ import { isEmpty, isObject, isString } from 'lodash'
 import {
   exec,
   exists,
+  get_remote_repo_default_branch,
   LocalRepoPathNotFoundMsg,
   MissingLocalRepoPathMsg,
   parse_git_url,
@@ -38,14 +39,15 @@ function getRepoUrl (repository: PkgInfoType['repository']): string | undefined 
  * @param packagePath 包路径
  * @param repoUrl 包仓库地址
  */
-function createPackageInfo (packageJson: any, packagePath: string, repoUrl: string): NpmPackageInfoType {
+async function createPackageInfo (packageJson: any, packagePath: string, repoUrl: string): Promise<NpmPackageInfoType> {
   const parsed = parse_git_url(repoUrl)
   return {
     name: packageJson.name,
     path: packagePath,
     html_url: parsed.html_url,
     owner: parsed.owner,
-    repo: parsed.repo
+    repo: parsed.repo,
+    default_branch: await get_remote_repo_default_branch(repoUrl)
   }
 }
 
@@ -79,7 +81,7 @@ export async function get_local_npm_package_info (
         const packageJson = JSON.parse(stdout)
         const repoUrl = getRepoUrl(packageJson.repository)?.replace(/^git\+/, '')
         if (repoUrl) {
-          return createPackageInfo(packageJson, packagePath, repoUrl)
+          return await createPackageInfo(packageJson, packagePath, repoUrl)
         }
       }
     } catch {}
@@ -99,7 +101,7 @@ export async function get_local_npm_package_info (
       return null
     }
 
-    return createPackageInfo(packageJson, packagePath, repoUrl)
+    return await createPackageInfo(packageJson, packagePath, repoUrl)
   } catch {
     return null
   }
