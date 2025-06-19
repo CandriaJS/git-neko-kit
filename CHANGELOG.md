@@ -1,5 +1,24 @@
 # 变更日志
 
+## [0.9.0](https://github.com/CandriaJS/git-neko-kit/compare/v0.8.7...v0.9.0) (2025-06-19)
+
+
+### ✨ 新功能
+
+* **github:** 添加仓库工作流操作功能 ([7b4a1d2](https://github.com/CandriaJS/git-neko-kit/commit/7b4a1d2511856b7317031c6376911acd94cd1b0f))
+* **git:** 添加获取本地 Git 仓库信息列表功能 ([5fa4ca2](https://github.com/CandriaJS/git-neko-kit/commit/5fa4ca2a9cd92885366677b884bd9d3d5069eec2))
+* **models:** 添加 GitHub 搜索功能 ([9790882](https://github.com/CandriaJS/git-neko-kit/commit/97908822aeaef810b3c8874453d18fe70aa147c6))
+* **package:** 添加 exec 模块导出 ([2df83b8](https://github.com/CandriaJS/git-neko-kit/commit/2df83b8ef336715d49e0b455a3d88968a22d60ca))
+* **platform/github:** 添加 workflow 功能 ([e495e65](https://github.com/CandriaJS/git-neko-kit/commit/e495e655d6e91d1ca31270a33efb7808b2d54c94))
+
+
+### ♻️ 代码重构
+
+* **github:** 重构 GitHub Issue 日期格式化处理 ([9fec27b](https://github.com/CandriaJS/git-neko-kit/commit/9fec27bbd0c3c9322de46684c091fdd4986567f1))
+* **github:** 重构 GitHub 日期格式化处理 ([c73036b](https://github.com/CandriaJS/git-neko-kit/commit/c73036b5d692f354998212e5705002fad5ddff73))
+* **github:** 重构 GitHubClient 类的初始化和请求逻辑 ([d702460](https://github.com/CandriaJS/git-neko-kit/commit/d7024604412c24c3572084a029a2aaef30877309))
+* **proxy:** 重构代理配置相关代码 ([5fe94cf](https://github.com/CandriaJS/git-neko-kit/commit/5fe94cf6ff0f7f54504b1238e0a904de12522ed7))
+
 ## [0.8.7](https://github.com/CandriaJS/git-neko-kit/compare/v0.8.6...v0.8.7) (2025-06-16)
 
 
