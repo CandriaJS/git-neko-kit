@@ -1,5 +1,5 @@
 /** 本地Git仓库信息 */
-export interface LocalGitInfoType {
+export interface GitRepoInfoType {
   /** 文件夹名称 */
   name: string
   /** 文件夹路径 */
@@ -19,9 +19,13 @@ export interface LocalGitInfoType {
 }
 
 /** 获取本地路径的Git仓库信息列表 */
-export type LocalGitInfoListType = Array<LocalGitInfoType>
+export interface GitInfoListType {
+  /** 总数 */
+  total: number
+  items: Array<GitRepoInfoType>
+}
 
-export interface LocalGitInfoListOptionsType {
+export interface GitRepoInfoListOptionsType {
   /** 是否递归查找 */
   loop?: boolean
   /** 递归最大深度 */

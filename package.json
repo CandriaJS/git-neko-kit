@@ -13,6 +13,9 @@
     "type": "git",
     "url": "git+https://github.com/CandriaJS/git-neko-kit.git"
   },
+  "bugs": {
+    "url": "https://github.com/CandriaJS/git-neko-kit/issues"
+  },
   "license": "GNU AGPL-3.0",
   "author": "CandriaJS",
   "type": "module",

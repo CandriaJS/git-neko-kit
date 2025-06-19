@@ -70,6 +70,8 @@ export const OrgNotFoundMsg = '喵呜~ 这个组织不存在哦'
 export const MissingOrgParamMsg = '喵呜~ 组织名不能为空'
 export const OrgOrRepoNotFoundMsg = '喵呜~ 这个组织或仓库不存在哦'
 export const OrgOrUserNotFoundMsg = '喵呜~ 这个组织或用户不存在哦'
+export const OrgForUserNotFoundMsg = '喵呜~ 找不到用户管理的组织哦'
+export const FailedToRemoveOrgMemberMsg = (username: string) => `喵呜~ 移除组织成员失败${username}哦`
 
 /** 议题与拉取请求相关 */
 export const IssueNotFoundMsg = '喵呜~ 这个议题不存在哦'

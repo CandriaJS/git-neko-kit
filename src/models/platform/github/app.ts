@@ -14,7 +14,6 @@ import {
   RepoNotFoundMsg,
   RevokeAccessTokenSuccessMsg
 } from '@/common'
-import { get_base_url } from '@/models/base'
 import { GitHubClient } from '@/models/platform/github/client'
 import {
   type AccessTokenPermissionsType,
@@ -30,7 +29,6 @@ import {
   type GetAppInfoByUserParamType,
   type GetAppInfoByUserResponseType,
   type isAppInstalledInRepo,
-  ProxyType,
   type RepoInfoResponseType,
   type RevokeAccessTokenResponseType
 } from '@/types'

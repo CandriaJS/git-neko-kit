@@ -625,7 +625,7 @@ export class GitHubClient {
         data: req.data
       }
     } catch (error) {
-      throw new Error(`[GitHub] DELETE 请求${path}失败: ${(error as Error).message}`)
+      throw new Error(`[GitHub] DELETE请求 ${path} 失败: ${(error as Error).message}`)
     }
   }
 }

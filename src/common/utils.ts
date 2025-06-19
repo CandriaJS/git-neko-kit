@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import path from 'node:path'
 
 import { exec as execCmd, type ExecOptions, type ExecReturn, execSync as execSyncCmd } from '@candriajs/exec'
 import convert, { type RGB } from 'color-convert'
@@ -77,38 +78,72 @@ export function execSync<T extends boolean = false> (
  * -> false
  * ```
  */
-export async function exists (path: string) {
+export async function exists (path: string): Promise<boolean> {
   try {
-    await fs.promises.access(path)
+    await fs.promises.access(path, fs.constants.F_OK)
     return true
   } catch {
     return false
   }
 }
+
 /**
- * 读取 JSON 文件
+ * 同步读取 JSON 文件并转换为指定类型
+ * @template T - 返回数据的类型
  * @param file - 文件名
  * @param root - 根目录
- * @returns JSON 对象
+ * @returns JSON 数据
  * @example
  * ```ts
- * console.log(readJSON('package.json'))
- * -> { name: 'package-name', version: '1.0.0' }
+ * interface Config { name: string; version: string }
+ * const pkg = readJSONSync<Config>('package.json')
+ * -> {
+ *   name: 'test',
+ *   version: '1.0.0'
+ *  }
  * ```
  */
-export function readJSON (file: string = '', root: string = ''): any {
-  root = root || basePath
+export function readJSONSync<T = any> (filePath: string = ''): T {
   try {
-    const filePath = `${root}/${file}`
-    if (!fs.existsSync(filePath)) {
-      console.warn(`文件不存在: ${filePath}`)
-      return {}
+    const absPath = path.resolve(filePath).replace(/\\/g, '/')
+    if (!fs.existsSync(absPath)) {
+      return {} as T
     }
-    const data = fs.readFileSync(filePath, 'utf8')
-    return JSON.parse(data)
+    const data = fs.readFileSync(absPath, 'utf8')
+    return JSON.parse(data) as T
   } catch (error) {
-    console.error(`读取 JSON 文件失败: ${file}`, error as Error)
-    return {}
+    console.error(`读取 JSON 文件失败: ${filePath}`, error as Error)
+    return {} as T
+  }
+}
+
+/**
+ * 异步读取 JSON 文件并转换为指定类型
+ * @template T - 返回数据的类型
+ * @param file - 文件名
+ * @param root - 根目录
+ * @returns JSON 数据
+ * @example
+ * ```ts
+ * interface Config { name: string; version: string }
+ * const pkg = await readJSON<Config>('package.json')
+ * -> {
+ *   name: 'test',
+ *   version: '1.0.0'
+ *  }
+ * ```
+ */
+export async function readJSON<T = any> (filePath: string = ''): Promise<T> {
+  try {
+    const absPath = path.resolve(filePath).replace(/\\/g, '/')
+    if (!await exists(absPath)) {
+      return {} as T
+    }
+    const data = await fs.promises.readFile(absPath, 'utf8')
+    return JSON.parse(data) as T
+  } catch (error) {
+    console.error(`读取 JSON 文件失败: ${filePath}`, error as Error)
+    return {} as T
   }
 }
 
@@ -200,7 +235,7 @@ export function parse_git_url (url: string): GitRepoType {
 
   const info = GitUrlParse(url)
   return {
-    html_url: info.href,
+    html_url: info.toString('https').replace(/\.git$/, ''),
     owner: info.owner,
     repo: info.name
   }

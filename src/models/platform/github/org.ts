@@ -1,20 +1,29 @@
 import { isEmpty } from 'lodash'
 
 import {
+  FailedToRemoveOrgMemberMsg,
   MissingOrgParamMsg,
   MissingUserNameParamMsg,
+  OrgForUserNotFoundMsg,
   OrgNotFoundMsg,
   PermissionDeniedMsg,
+  RemoveOrgMemberSuccessMsg,
   RepoOrPermissionDeniedMsg
 } from '@/common'
-import { get_base_url } from '@/models/base/common'
 import { GitHubClient } from '@/models/platform/github/client'
 import type {
   AddMemberParamType,
   AddMemberResponseType,
   ApiResponseType,
+  GetOrgMemberInfoParamType,
+  GetOrgMemberInfoResponseType,
+  GetOrgMemberListParamType,
+  GetOrgMemberListResponseType,
+  GetOrgMemberListType,
   OrgInfoParamType,
-  OrgInfoResponseType
+  OrgInfoResponseType,
+  RemoveOrgMemberParamType,
+  RemoveOrgMemberResponseType
 } from '@/types'
 /**
  * Github 组织操作类
@@ -76,9 +85,140 @@ export class Org extends GitHubClient {
   }
 
   /**
+   * 获取组织成员信息
+   * 权限：
+   *  - Member: Read
+   * @description 该函数必需要授权访问，否则会获取失败
+   * @param options 组织信息参数
+   * - org 组织名称
+   * - username 成员名称
+   * @returns 组织信息
+   * @example
+   * ```ts
+   * console.log(await get_org_member_info({ org: 'CandriaJS', username: 'CandriaJS' }))
+   * -> {
+   * "state": "active",
+   * "role": "admin",
+   * "organization": {
+   * "id": 123456789,
+   * "login": "CandriaJS",
+   * "name": "CandriaJS",
+   * "html_url": "https://github.com/CandriaJS"
+   * },
+   * "user": {
+   * "id": 123456789,
+   * "login": "CandriaJS",
+   * "name": "CandriaJS",
+   * "avatar_url": "https://avatars.githubusercontent.com/u/123456789?v=4",
+   * "html_url": "https://github.com/CandriaJS"
+   * }
+   * }
+   * ```
+   */
+  public async get_org_member_info (
+    options: GetOrgMemberInfoParamType
+  ): Promise<ApiResponseType<GetOrgMemberInfoResponseType>> {
+    if (!options.org) throw new Error(MissingOrgParamMsg)
+    if (!options.username) throw new Error(MissingUserNameParamMsg)
+    try {
+      this.setRequestConfig({
+        token: this.userToken
+      })
+      const { org, username } = options
+      const res = await this.get(`/orgs/${org}/members/${username}`)
+      if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
+      if (res.statusCode === 404) throw new Error(OrgForUserNotFoundMsg)
+      if (res.data) {
+        const OrgData: GetOrgMemberInfoResponseType = {
+          state: res.data.state,
+          role: res.data.role,
+          organization: {
+            id: res.data.organization.id,
+            login: res.data.organization.login,
+            name: isEmpty(res.data.organization.name) ? null : res.data.organization.name,
+            html_url: res.data.organization.html_url
+          },
+          user: {
+            id: res.data.user.id,
+            login: res.data.user.login,
+            name: isEmpty(res.data.user.name) ? null : res.data.user.name,
+            avatar_url: res.data.user.avatar_url,
+            html_url: res.data.user.html_url
+          }
+        }
+        res.data = OrgData
+      }
+      return res
+    } catch (error) {
+      throw new Error(`[GitHub] 获取组织成员信息失败: ${(error as Error).message}`)
+    }
+  }
+
+  /**
+   * 获取组织成员列表
+   * 权限：
+   *  - Member: Read
+   * @description 该函数必需要授权访问，否则会获取失败
+   * @param options
+   * - org 组织名称
+   * - per_page 每页数量
+   * - page 页码
+   * @returns
+   * @example
+   * ```ts
+   * const res = await github.issue.get_org_member_list({ org: 'CandriaJS'})
+   * -> [
+   *      {
+   *         "id": 1234567890,
+   *         "login": "username",
+   *         "name": "username",
+   *         "role": "admin",
+   *         "avatar_url": "https://avatars.githubusercontent.com/u/1234567890?v=4",
+   *         "html_url": "https://github.com/username"
+   *       }
+   *     ]
+   * ```
+   */
+  public async get_org_member_list (
+    options: GetOrgMemberListParamType
+  ): Promise<ApiResponseType<GetOrgMemberListResponseType>> {
+    if (!options.org) throw new Error(MissingOrgParamMsg)
+    try {
+      this.setRequestConfig({
+        token: this.userToken
+      })
+      const { org } = options
+      const params: Record<string, number> = {}
+      if (options.per_page) params.per_page = options.per_page
+      if (options.page) params.page = options.page
+      const res = await this.get('/user/memberships/orgs', params)
+      if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
+      if (res.statusCode === 404) throw new Error(OrgForUserNotFoundMsg)
+      if (res.data) {
+        const orgData: GetOrgMemberListResponseType = res.data
+          .filter((item: Record<string, any>) => item.organization.login === org)
+          .map((item: Record<string, any>): GetOrgMemberListType => {
+            return {
+              id: item.user.id,
+              login: item.user.login,
+              name: isEmpty(item.user.name) ? null : item.user.name,
+              role: item.role,
+              avatar_url: item.user.avatar_url,
+              html_url: item.user.html_url
+            }
+          })
+        res.data = orgData
+      }
+      return res
+    } catch (error) {
+      throw new Error(`[GitHub] 获取组织成员列表失败: ${(error as Error).message}`)
+    }
+  }
+
+  /**
    * 添加组织成员
    * 权限:
-   * - Members  Read-And_Write
+   * - Members  Read-And-Write
    * @param options 组织参数
    * - org 组织名称
    * - username 成员名称
@@ -92,12 +232,8 @@ export class Org extends GitHubClient {
   public async add_member (
     options: AddMemberParamType
   ): Promise<ApiResponseType<AddMemberResponseType>> {
-    if (!options.org) {
-      throw new Error(MissingOrgParamMsg)
-    }
-    if (!options.username) {
-      throw new Error(MissingUserNameParamMsg)
-    }
+    if (!options.org) throw new Error(MissingOrgParamMsg)
+    if (!options.username) throw new Error(MissingUserNameParamMsg)
     try {
       this.setRequestConfig({
         token: this.userToken
@@ -146,6 +282,54 @@ export class Org extends GitHubClient {
       return res
     } catch (error) {
       throw new Error(`[GitHub] 添加组织成员失败: ${(error as Error).message}`)
+    }
+  }
+
+  /**
+   * 移除组织成员
+   * 权限:
+   * - Members  Read-And-Write
+   * @param options
+   * - org 组织名
+   * - username 成员名
+   * @returns
+   * @example
+   * ```ts
+   * const res = await github.remove_org_member({ org: 'org', username: 'loli'})
+   * -> {
+   * "success": true,
+   * "message": "喵呜, 移除组织成员loli成功"
+   * }
+   * ```
+   */
+  public async remove_org_member (
+    options: RemoveOrgMemberParamType
+  ): Promise<ApiResponseType<RemoveOrgMemberResponseType>> {
+    if (!options.org) throw new Error(MissingOrgParamMsg)
+    if (!options.username) throw new Error(MissingUserNameParamMsg)
+    try {
+      this.setRequestConfig({
+        token: this.userToken
+      })
+      const { org, username } = options
+      const res = await this.delete(`/orgs/${org}/members/${username}`)
+      if (res.statusCode === 403) throw new Error(PermissionDeniedMsg)
+      let orgData: RemoveOrgMemberResponseType
+      if (res.statusCode === 204) {
+        orgData = {
+          success: true,
+          message: RemoveOrgMemberSuccessMsg(username)
+        }
+      } else {
+        orgData = {
+          success: false,
+          message: FailedToRemoveOrgMemberMsg(username)
+        }
+      }
+      res.data = orgData
+      return res
+    } catch (error) {
+      throw new Error(`[GitHub] 移除组织成员失败: ${(error as Error).message}`)
     }
   }
 }

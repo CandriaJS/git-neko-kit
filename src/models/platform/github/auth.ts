@@ -12,14 +12,12 @@ import {
   PermissionDeniedMsg,
   RefreshAccessTokenSuccessMsg
 } from '@/common'
-import { get_base_url } from '@/models'
 import { GitHubClient } from '@/models/platform/github/client'
 import {
   type AccessCodeType,
   type AccessTokenType,
   type ApiResponseType,
   type CheckTokenResponseType,
-  ProxyType,
   type RefreshTokenResponseType,
   type RefreshTokenType,
   type TokenResponseType

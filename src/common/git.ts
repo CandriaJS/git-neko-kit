@@ -15,9 +15,9 @@ import {
   parse_git_url
 } from '@/common/utils'
 import type {
-  LocalGitInfoListOptionsType,
-  LocalGitInfoListType,
-  LocalGitInfoType
+  GitInfoListType,
+  GitRepoInfoListOptionsType,
+  GitRepoInfoType
 } from '@/types'
 
 /**
@@ -71,7 +71,7 @@ async function is_installed_git (): Promise<boolean> {
  */
 export async function get_local_git_repo_info (
   local_path: string
-): Promise<LocalGitInfoType | null> {
+): Promise<GitRepoInfoType | null> {
   try {
     if (!local_path) throw new Error(MissingLocalRepoPathMsg)
     if (!await exists(path.join(local_path)) || !await exists(path.join(local_path, '.git'))) return null
@@ -102,51 +102,57 @@ export async function get_local_git_repo_info (
  * - loop 是否递归查找
  * - maxDepth 递归最大深度
  * - dir 忽略的文件夹名称列表
- * @returns
+ * @returns LocalGitInfoListType 仓库信息列表
  * @example
  * ```ts
  * // 无数据
  * const res = await get_local_git_repo_list('D:\\project\\GitHub', { loop: true, maxDepth: 5, dir: ['node_modules'] })
- * -> []
+ * -> {
+ *   total: 0,
+ *   items: []
+ * }
+ *
  * // 有数据
  * const res = await get_local_git_repo_list('D:\\project\\GitHub', { loop: true, maxDepth: 5, dir: ['node_modules'] })
- * -> [
- * {
- * "name": "GitHub",
- * "path": "D:\\project\\GitHub\\GitHub",
- * "url": "https://github.com/GitHub/GitHub.git",
- * "html_url": "https://github.com/GitHub/GitHub",
- * "owner": "GitHub",
- * "repo": "GitHub"
+ * -> {
+ *   total: 1,
+ *   items: [{
+ *     name: "GitHub",
+ *     path: "D:\\project\\GitHub\\GitHub",
+ *     url: "https://github.com/GitHub/GitHub.git",
+ *     html_url: "https://github.com/GitHub/GitHub",
+ *     owner: "GitHub",
+ *     repo: "GitHub"
+ *   }]
  * }
- * ]
+ * ```
  */
-export async function get_local_git_repo_list (
-  local_path: string,
-  options: LocalGitInfoListOptionsType
-  = {
+export async function get_local_git_repos_list (
+  dirpath: string,
+  options: GitRepoInfoListOptionsType = {
     loop: false,
     maxDepth: 5,
     dir: []
   }
-): Promise<LocalGitInfoListType> {
+): Promise<GitInfoListType> {
   const { loop = false, maxDepth = 5, dir = [] } = options
 
   const searchRepo = async (
     dirPath: string,
     currentDepth: number = 0
-  ): Promise<LocalGitInfoListType> => {
+  ): Promise<GitRepoInfoType[]> => {
     try {
       if (!await exists(dirPath)) return []
       const stat = await fs.promises.stat(dirPath)
       if (!stat.isDirectory()) return []
 
-      const result: LocalGitInfoListType = []
+      const items: GitRepoInfoType[] = []
       const currentRepoInfo = await get_local_git_repo_info(dirPath)
 
       if (currentRepoInfo) {
-        result.push(currentRepoInfo)
+        items.push(currentRepoInfo)
       }
+
       if (loop && currentDepth < maxDepth) {
         const dirItems = await fs.promises.readdir(dirPath, { withFileTypes: true })
 
@@ -162,20 +168,26 @@ export async function get_local_git_repo_list (
             })
         )
 
-        result.push(...subResults.flat())
+        items.push(...subResults.flat())
       }
 
-      return result
+      return items
     } catch (error) {
       return []
     }
   }
 
   try {
-    if (!local_path) throw new Error(MissingLocalRepoPathMsg)
+    if (!dirpath) throw new Error(MissingLocalRepoPathMsg)
+    dirpath = path.resolve(dirpath).replace(/\\/g, '/')
+    if (!await exists(dirpath)) throw new Error(LocalRepoPathNotFoundMsg(dirpath))
     if (!await is_installed_git()) throw new Error(GitClientNotInstalledMsg)
 
-    return await searchRepo(local_path)
+    const items = await searchRepo(dirpath)
+    return {
+      total: items.length,
+      items
+    }
   } catch (error) {
     throw new Error(`获取本地目录git仓库列表失败: ${(error as Error).message}`)
   }

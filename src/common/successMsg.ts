@@ -15,6 +15,9 @@ export const EnableRepoWorkflowSuccessMsg = (workflowId: string | number) => `�
 export const DisableRepoWorkflowSuccessMsg = (workflowId: string | number) => `喵呜~ 工作流禁用成功${workflowId}哦`
 export const ReRunRepoWorkflowSuccessMsg = (job_id: number) => `喵呜~ 工作流任务重新运行成功${job_id}哦`
 
+/** 组织相关 */
+export const RemoveOrgMemberSuccessMsg = (username: string) => `喵呜~ 移除组织成员${username}成功`
+
 /** 议题与PR相关 */
 export const IssueLockSuccessMsg = '喵呜~ 议题锁定成功'
 export const IssueUnlockSuccessMsg = '喵呜~ 议题解锁成功'

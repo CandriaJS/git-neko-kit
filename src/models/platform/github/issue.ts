@@ -19,7 +19,6 @@ import {
   PermissionDeniedMsg,
   RepoNotFoundMsg
 } from '@/common'
-import { get_base_url } from '@/models/base'
 import { GitHubClient } from '@/models/platform/github/client'
 import {
   type ApiResponseType,
@@ -44,7 +43,6 @@ import {
   type LockIssueResponseType,
   type OpenIssueParamType,
   type OpenIssueResponseType,
-  ProxyType,
   type RemoveIssueCommentParamType,
   type RemoveIssueCommentResponseType,
   type RemoveSubIssueParamType,
