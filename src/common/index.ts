@@ -1,5 +1,6 @@
 export * from '@/common/errorMsg'
 export * from '@/common/git'
+export * from '@/common/markdown'
 export * from '@/common/npm'
 export * from '@/common/successMsg'
 export * from '@/common/utils'

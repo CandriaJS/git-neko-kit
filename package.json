@@ -26,6 +26,11 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs"
     },
+    "./markdown": {
+      "import": "./dist/exports/markdown.mjs",
+      "types": "./dist/exports/markdown.d.ts",
+      "require": "./dist/exports/markdown.cjs"
+    },
     "./exec": {
       "types": "./dist/exports/exec.d.ts",
       "import": "./dist/exports/exec.mjs",
@@ -75,6 +80,7 @@
   },
   "dependencies": {
     "@candriajs/exec": "^1.0.4",
+    "@mdit/plugin-tasklist": "^0.22.1",
     "axios": "npm:@candriajs/axios@1.0.14",
     "color-convert": "^3.1.0",
     "dayjs": "^1.11.13",
@@ -85,6 +91,8 @@
     "jsonwebtoken": "^9.0.2",
     "language-colors": "^2.1.55",
     "lodash": "npm:@candriajs/lodash@1.0.7",
+    "markdown-it": "^14.1.0",
+    "markdown-it-emoji": "^3.0.0",
     "simple-git": "npm:@candriajs/simple-git@^1.0.2",
     "socks-proxy-agent": "^8.0.5",
     "uuid": "^11.1.0"
@@ -93,6 +101,8 @@
     "@types/color": "^4.2.0",
     "@types/git-url-parse": "^9.0.3",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/markdown-it": "^14.1.2",
+    "@types/markdown-it-emoji": "^3.0.1",
     "@types/node": "^22.13.13",
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
