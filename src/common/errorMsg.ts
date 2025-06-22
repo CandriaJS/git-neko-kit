@@ -34,6 +34,7 @@ export const FailedToRefreshAccessTokenMsg = '喵呜~ 访问令牌刷新失败'
 export const FailedToFetchAccessTokenMsg = '喵呜~ 获取访问令牌失败'
 export const PermissionDeniedMsg = '喵呜~ 访问被拒绝啦，可能是令牌过期了或权限不足'
 export const InvalidPullRequestMergeMethodMsg = '喵呜~ 拉取请求合并方式不允许'
+export const UnauthorizedMsg = '喵呜~ 访问被拒绝，请检查令牌是否正确'
 
 /** 应用程序相关 */
 export const MissingAppInstallIdMsg = '喵呜~ 应用安装ID不能为空'

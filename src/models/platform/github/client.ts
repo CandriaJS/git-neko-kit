@@ -13,7 +13,8 @@ import {
   MissingPrivateKeyMsg,
   MissingRequestPathMsg,
   ProxyTypeNotSupportedMsg,
-  RateLimitExceededMsg
+  RateLimitExceededMsg,
+  UnauthorizedMsg
 } from '@/common'
 import { get_api_base_url, get_base_url } from '@/models/base/common'
 import { Request } from '@/models/base/request'
@@ -474,6 +475,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.get(path, parms, customHeaders)
+      if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
       }
@@ -508,6 +510,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.post(path, data, customHeaders)
+      if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
       }
@@ -544,6 +547,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.patch(path, params, data, customHeaders)
+      if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
       }
@@ -578,6 +582,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.put(path, data, customHeaders)
+      if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
       }
@@ -614,6 +619,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.delete(path, params, data, customHeaders)
+      if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
       }

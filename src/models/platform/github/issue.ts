@@ -132,20 +132,27 @@ export class Issue extends GitHubClient {
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
-          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          !isEmpty(res.data.milestone.closed_at)
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.created_at)
+              : res.data.milestone.created_at
+            : null,
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.updated_at)
+              : res.data.milestone.updated_at
+            : null,
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          !isEmpty(res.data.milestone.due_on)
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
             : null
         ])
-
         const IssueData: IssueInfoResponseType = {
           id: res.data.id,
           html_url: res.data.html_url,
@@ -432,14 +439,22 @@ export class Issue extends GitHubClient {
                 ? await format_date(res.data.closed_at)
                 : res.data.closed_at
               : null,
-            this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-            this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-            !isEmpty(res.data.milestone.closed_at)
+            !isEmpty(res.data.milestone)
+              ? this.format
+                ? await format_date(res.data.milestone.created_at)
+                : res.data.milestone.created_at
+              : null,
+            !isEmpty(res.data.milestone)
+              ? this.format
+                ? await format_date(res.data.milestone.updated_at)
+                : res.data.milestone.updated_at
+              : null,
+            !isEmpty(res.data.milestone)
               ? this.format
                 ? await format_date(res.data.milestone.closed_at)
                 : res.data.milestone.closed_at
               : null,
-            !isEmpty(res.data.milestone.due_on)
+            !isEmpty(res.data.milestone)
               ? this.format
                 ? await format_date(res.data.milestone.due_on)
                 : res.data.milestone.due_on
@@ -597,14 +612,22 @@ export class Issue extends GitHubClient {
                 ? await format_date(res.data.closed_at)
                 : res.data.closed_at
               : null,
-            this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-            this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-            !isEmpty(res.data.milestone.closed_at)
+            !isEmpty(res.data.milestone)
+              ? this.format
+                ? await format_date(res.data.milestone.created_at)
+                : res.data.milestone.created_at
+              : null,
+            !isEmpty(res.data.milestone)
+              ? this.format
+                ? await format_date(res.data.milestone.updated_at)
+                : res.data.milestone.updated_at
+              : null,
+            !isEmpty(res.data.milestone)
               ? this.format
                 ? await format_date(res.data.milestone.closed_at)
                 : res.data.milestone.closed_at
               : null,
-            !isEmpty(res.data.milestone.due_on)
+            !isEmpty(res.data.milestone)
               ? this.format
                 ? await format_date(res.data.milestone.due_on)
                 : res.data.milestone.due_on
@@ -745,14 +768,22 @@ export class Issue extends GitHubClient {
                 ? await format_date(res.data.closed_at)
                 : res.data.closed_at
               : null,
-            this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-            this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-            !isEmpty(res.data.milestone.closed_at)
+            !isEmpty(res.data.milestone)
+              ? this.format
+                ? await format_date(res.data.milestone.created_at)
+                : res.data.milestone.created_at
+              : null,
+            !isEmpty(res.data.milestone)
+              ? this.format
+                ? await format_date(res.data.milestone.updated_at)
+                : res.data.milestone.updated_at
+              : null,
+            !isEmpty(res.data.milestone)
               ? this.format
                 ? await format_date(res.data.milestone.closed_at)
                 : res.data.milestone.closed_at
               : null,
-            !isEmpty(res.data.milestone.due_on)
+            !isEmpty(res.data.milestone)
               ? this.format
                 ? await format_date(res.data.milestone.due_on)
                 : res.data.milestone.due_on
@@ -907,14 +938,22 @@ export class Issue extends GitHubClient {
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
-          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          !isEmpty(res.data.milestone.closed_at)
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.created_at)
+              : res.data.milestone.created_at
+            : null,
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.updated_at)
+              : res.data.milestone.updated_at
+            : null,
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          !isEmpty(res.data.milestone.due_on)
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -1761,14 +1800,22 @@ export class Issue extends GitHubClient {
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
-          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          !isEmpty(res.data.milestone.closed_at)
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.created_at)
+              : res.data.milestone.created_at
+            : null,
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.updated_at)
+              : res.data.milestone.updated_at
+            : null,
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          !isEmpty(res.data.milestone.due_on)
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -1919,14 +1966,22 @@ export class Issue extends GitHubClient {
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
-          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          !isEmpty(res.data.milestone.closed_at)
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.created_at)
+              : res.data.milestone.created_at
+            : null,
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.updated_at)
+              : res.data.milestone.updated_at
+            : null,
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          !isEmpty(res.data.milestone.due_on)
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -2085,14 +2140,22 @@ export class Issue extends GitHubClient {
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
-          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          !isEmpty(res.data.milestone.closed_at)
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.created_at)
+              : res.data.milestone.created_at
+            : null,
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.updated_at)
+              : res.data.milestone.updated_at
+            : null,
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          !isEmpty(res.data.milestone.due_on)
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
