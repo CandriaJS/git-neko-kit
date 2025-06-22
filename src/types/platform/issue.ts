@@ -1,4 +1,4 @@
-import type { IssueNumberParamType, RepoBaseParamType } from '@/types/platform/base'
+import type { CommentIdParamType, IssueNumberParamType, RepoBaseParamType } from '@/types/platform/base'
 import type { UserInfoResponseType } from '@/types/platform/user'
 
 /** 议题用户信息响应类型 */
@@ -46,8 +46,8 @@ export interface MilestoneType {
 export type IssueInfoParamType = RepoBaseParamType & IssueNumberParamType
 /** 议题详情响应类型 */
 export interface IssueInfoResponseType {
-  /** 议题ID */
-  id: IssueNumberParamType['issue_number'];
+  /** 问题id */
+  id: IssueNumberParamType['issue_number']
   /** 议题HTML页面URL */
   html_url: string;
   /** 议题编号 */
@@ -83,7 +83,7 @@ export interface IssueInfoResponseType {
 }
 
 /** 议题列表参数类型 */
-export type RepoIssueListParamType = RepoBaseParamType & {
+export interface RepoIssueListParamType extends RepoBaseParamType {
   /**
    * 里程碑筛选
    * @default *
@@ -188,9 +188,7 @@ export type CreteIssueParamType = RepoBaseParamType & {
 export type CreateIssueResponseType = IssueInfoResponseType
 
 /** 更新议题参数类型 */
-export interface UpdateIssueParamType extends Omit<CreteIssueParamType, 'title' | 'type'> {
-  /** 问题ID */
-  issue_number: IssueNumberParamType['issue_number']
+export interface UpdateIssueParamType extends Omit<CreteIssueParamType, 'title' | 'type'>, IssueNumberParamType {
   /** 问题的名称 */
   title?: string | null
   /** 问题的内容 */
@@ -213,9 +211,7 @@ export type CloseIssueParamType = OpenIssueParamType
 export type CloseIssueResponseType = IssueInfoResponseType
 
 /** 锁定议题参数类型 */
-export interface LockIssueParamType extends RepoBaseParamType {
-  /** 议题ID */
-  issue_number: IssueNumberParamType['issue_number']
+export interface LockIssueParamType extends RepoBaseParamType, IssueNumberParamType {
   /**
    * 锁定原因
    * 可以是以下之一：
@@ -245,10 +241,7 @@ export interface UnLockIssueResponseType {
 }
 
 /** 议题评论信息参数类型 */
-export interface IssueCommentInfoParamType extends RepoBaseParamType {
-  /** 评论id,评论唯一标识符 */
-  comment_id: string | number;
-}
+export type IssueCommentInfoParamType = RepoBaseParamType & CommentIdParamType
 /** 议题评论信息响应类型 */
 export interface IssueCommentInfoResponseType {
   /** 评论ID */
@@ -316,7 +309,7 @@ export type RepoCommentsListResponseType = IssueCommentInfoResponseType[]
 /** 议题评论列表参数类型 */
 export interface IssueCommentsListParamType extends RepoBaseParamType {
   /** 议题ID */
-  issue_number: number;
+  issue_number: IssueNumberParamType['issue_number'];
 
   /**
    * 筛选此时间之后更新的评论
