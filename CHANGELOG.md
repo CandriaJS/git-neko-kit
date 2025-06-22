@@ -1,5 +1,18 @@
 # 变更日志
 
+## [1.1.0](https://github.com/CandriaJS/git-neko-kit/compare/v1.0.0...v1.1.0) (2025-06-22)
+
+
+### ✨ 新功能
+
+* **common:** 添加 markdown 渲染功能 ([4b71cf2](https://github.com/CandriaJS/git-neko-kit/commit/4b71cf24675bcb78ec565204be1903d5349f92bc))
+
+
+### 🐛 错误修复
+
+* **github:** 优化 Issue 类中对 milestone 数据的处理 ([9c8d5dd](https://github.com/CandriaJS/git-neko-kit/commit/9c8d5dd5100091be49e349215c09b87943d9b5b2))
+* 修复议题ID类型 ([e4456c0](https://github.com/CandriaJS/git-neko-kit/commit/e4456c08ee101702cb61904ac4a582c68dc4075f))
+
 ## [1.0.0](https://github.com/CandriaJS/git-neko-kit/compare/v0.9.0...v1.0.0) (2025-06-19)
 
 
