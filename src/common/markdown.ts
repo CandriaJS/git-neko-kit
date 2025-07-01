@@ -1,6 +1,7 @@
 import { tasklist } from '@mdit/plugin-tasklist'
 import MarkdownIt from 'markdown-it'
 import { full as emoji } from 'markdown-it-emoji'
+
 /**
  * 获取markdown渲染器
  * @description 这个是经过配置的markdown渲染器
@@ -51,5 +52,6 @@ export async function get_markdown_render (): Promise<MarkdownIt> {
  */
 export async function render_markdown (md: string): Promise<string> {
   const render = await get_markdown_render()
+  md = md.replace(/\[([^[\]]+?)\]\s*:/g, '\\[$1\\]:')
   return Promise.resolve(render.render(md))
 }
