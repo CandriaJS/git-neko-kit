@@ -8,7 +8,6 @@ import relativeTime from 'dayjs/plugin/relativeTime.js'
 import GitUrlParse from 'git-url-parse'
 import LanguageColors from 'language-colors'
 
-import { basePath } from '@/root'
 import type {
   ContributionResult,
   GitRepoType
@@ -192,21 +191,39 @@ export async function format_date (
 /**
  * 获取相对时间
  * @param dateString - 日期字符串
- * @param locale - 语言环境，默认为 'zh-cn'
- * @returns 相对时间
+ * @param options - 可选参数对象
+ * @param options.locale - 语言环境，默认为 'zh-cn'
+ * @param options.useAbsoluteIfOver30Days - 是否在超过30天时返回绝对时间
+ * @returns 相对时间或绝对时间
  * @example
- * ```ta
+ * ```ts
  * console.log(await get_relative_time('2023-04-01 12:00:00'))
- * ->  1 小时前
+ * -> "1 小时前"
+ *
+ * // 如果当前时间距离该日期已超过30天，则返回绝对时间
+ * console.log(await get_relative_time('2023-01-01 12:00:00', { useAbsoluteIfOver30Days: true }))
+ * -> "2025-07-01 13:00:00"
  * ```
  */
 export async function get_relative_time (
   dateString: string,
-  locale: string = 'zh-cn'):
-  Promise<string> {
+  options?: {
+    locale?: string,
+    useAbsoluteIfOver30Days?: boolean
+  }
+): Promise<string> {
+  const { locale = 'zh-cn', useAbsoluteIfOver30Days = false } = options ?? {}
   await load_locale(locale)
   dayjs.extend(relativeTime)
-  return dayjs(dateString).fromNow()
+  const date = dayjs(dateString).locale(locale)
+  const now = dayjs()
+  const diffInDays = now.diff(date, 'day')
+
+  if (useAbsoluteIfOver30Days && diffInDays > 30) {
+    return date.format('YYYY-MM-DD HH:mm:ss')
+  }
+
+  return date.fromNow()
 }
 
 /**
