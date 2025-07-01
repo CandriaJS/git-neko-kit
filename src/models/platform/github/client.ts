@@ -366,7 +366,6 @@ export class GitHubClient {
         case ProxyProtocol.HTTP:
         case ProxyProtocol.HTTPS:
         case ProxyProtocol.SOCKS:
-        case ProxyProtocol.SOCKS5:
           proxy.address = `${url.protocol}//${url.host}`
           break
       }

@@ -24,9 +24,7 @@ export enum ProxyProtocol {
   /** HTTPS */
   HTTPS = 'https',
   /** SOCKS */
-  SOCKS = 'socks',
-  /** SOCKS5 */
-  SOCKS5 = 'socks5'
+  SOCKS = 'socks'
 }
 
 /**
@@ -43,6 +41,5 @@ export type ProxyParamsType =
   | BaseProxyType<ProxyProtocol.HTTP>
   | BaseProxyType<ProxyProtocol.HTTPS>
   | BaseProxyType<ProxyProtocol.SOCKS>
-  | BaseProxyType<ProxyProtocol.SOCKS5>
   | BaseProxyType<ProxyType.Common>
   | BaseProxyType<ProxyType.Reverse>

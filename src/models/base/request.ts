@@ -78,7 +78,6 @@ export class Request {
           break
           /** SOCKS代理配置 */
         case 'socks':
-        case 'socks5':
         {
           const socksAgent = new SocksProxyAgent(proxyAddress)
           config.httpAgent = socksAgent
