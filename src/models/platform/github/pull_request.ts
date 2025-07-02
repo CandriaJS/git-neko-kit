@@ -108,25 +108,33 @@ export class Pull_Request extends GitHubClient {
           milestoneDueOn
         ] = await Promise.all([
           this.format ? format_date(res.data.created_at) : res.data.created_at,
-          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
           !isEmpty(res.data.merged_at)
             ? this.format
               ? await format_date(res.data.merged_at)
               : res.data.merged_at
             : null,
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
           !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
-          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          !isEmpty(res.data.milestone.closed_at)
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.created_at)
+              : res.data.milestone.created_at
+            : null,
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.updated_at)
+              : res.data.milestone.updated_at
+            : null,
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          !isEmpty(res.data.milestone.due_on)
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -472,25 +480,33 @@ export class Pull_Request extends GitHubClient {
           milestoneDueOn
         ] = await Promise.all([
           this.format ? format_date(res.data.created_at) : res.data.created_at,
-          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
-          res.data.merged_at
+          !isEmpty(res.data.merged_at)
             ? this.format
               ? await format_date(res.data.merged_at)
               : res.data.merged_at
             : null,
-          res.data.closed_at
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+          !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
-          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          res.data.milestone.closed_at
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.created_at)
+              : res.data.milestone.created_at
+            : null,
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.updated_at)
+              : res.data.milestone.updated_at
+            : null,
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          res.data.milestone.due_on
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
@@ -650,25 +666,33 @@ export class Pull_Request extends GitHubClient {
           milestoneDueOn
         ] = await Promise.all([
           this.format ? format_date(res.data.created_at) : res.data.created_at,
-          this.format ? format_date(res.data.updated_at) : res.data.updated_at,
-          res.data.merged_at
+          !isEmpty(res.data.merged_at)
             ? this.format
               ? await format_date(res.data.merged_at)
               : res.data.merged_at
             : null,
-          res.data.closed_at
+          this.format ? await format_date(res.data.updated_at) : res.data.updated_at,
+          !isEmpty(res.data.closed_at)
             ? this.format
               ? await format_date(res.data.closed_at)
               : res.data.closed_at
             : null,
-          this.format ? await format_date(res.data.milestone.created_at) : res.data.milestone.created_at,
-          this.format ? await format_date(res.data.milestone.updated_at) : res.data.milestone.updated_at,
-          res.data.milestone.closed_at
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.created_at)
+              : res.data.milestone.created_at
+            : null,
+          !isEmpty(res.data.milestone)
+            ? this.format
+              ? await format_date(res.data.milestone.updated_at)
+              : res.data.milestone.updated_at
+            : null,
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.closed_at)
               : res.data.milestone.closed_at
             : null,
-          res.data.milestone.due_on
+          !isEmpty(res.data.milestone)
             ? this.format
               ? await format_date(res.data.milestone.due_on)
               : res.data.milestone.due_on
