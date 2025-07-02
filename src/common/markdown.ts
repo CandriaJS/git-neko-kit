@@ -35,19 +35,18 @@ export async function get_markdown_render (): Promise<MarkdownIt> {
  * 2. 有序列表项2
  * `);
  *
- * // 输出结果:
- * // <h1>标题</h1>
- * // <ul style="list-style: none;">
- * //   <li>无序列表项1</li>
- * //   <li>无序列表项2</li>
- * //   <ul style="list-style: none;">
- * //     <li>子列表项</li>
- * //   </ul>
- * // </ul>
- * // <ol style="list-style: none;">
- * //   <li>有序列表项1</li>
- * //   <li>有序列表项2</li>
- * // </ol>
+ * -> <h1>标题</h1>
+ *  <ul style="list-style: none;">
+ *    <li>无序列表项1</li>
+ *    <li>无序列表项2</li>
+ *    <ul style="list-style: none;">
+ *      <li>子列表项</li>
+ *    </ul>
+ *  </ul>
+ *  <ol style="list-style: none;">
+ *    <li>有序列表项1</li>
+ *    <li>有序列表项2</li>
+ * </ol>
  * ```
  */
 export async function render_markdown (md: string): Promise<string> {
