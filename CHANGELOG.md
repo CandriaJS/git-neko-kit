@@ -1,5 +1,28 @@
 # 变更日志
 
+## [1.1.1](https://github.com/CandriaJS/git-neko-kit/compare/v1.1.0...v1.1.1) (2025-07-02)
+
+
+### 🐛 错误修复
+
+* **markdown:** 修复 Markdown 渲染中的链接格式问题 ([fd19135](https://github.com/CandriaJS/git-neko-kit/commit/fd19135c650c171dfdd66997b8cbbfdeb82e492d))
+* **models:** 修复 PR 查询时的空值异常 ([f4c7f8e](https://github.com/CandriaJS/git-neko-kit/commit/f4c7f8e5190c78c8011b7dddd0610c2ff41912fe))
+
+
+### ⚡️ 性能优化
+
+* **utils:** 优化 get_relative_time 函数功能 ([c59a79e](https://github.com/CandriaJS/git-neko-kit/commit/c59a79e0d1be64bec0dfe33c43289d6953b30486))
+
+
+### 📝 文档更新
+
+* **common:** 更新 markdown.ts 文件中的示例输出 ([c42c42a](https://github.com/CandriaJS/git-neko-kit/commit/c42c42a2806b0708fb8b001d224d96c73a128b43))
+
+
+### ♻️ 代码重构
+
+* **platform:** 优化代理配置 ([2775a6d](https://github.com/CandriaJS/git-neko-kit/commit/2775a6d48112aa56ef458b55cbf00fe3308e28ee))
+
 ## [1.1.0](https://github.com/CandriaJS/git-neko-kit/compare/v1.0.0...v1.1.0) (2025-06-22)
 
 
