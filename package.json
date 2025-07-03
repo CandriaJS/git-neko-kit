@@ -84,6 +84,7 @@
     "axios": "npm:@candriajs/axios@1.0.14",
     "color-convert": "^3.1.0",
     "dayjs": "^1.11.13",
+    "diff2html": "^3.4.51",
     "exec": "npm:@candriajs/exec@^1.0.2",
     "git-url-parse": "^16.0.1",
     "http-proxy-agent": "^7.0.2",

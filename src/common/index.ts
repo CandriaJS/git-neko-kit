@@ -1,3 +1,4 @@
+export * from '@/common/diff'
 export * from '@/common/errorMsg'
 export * from '@/common/git'
 export * from '@/common/markdown'

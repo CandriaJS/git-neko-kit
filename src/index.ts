@@ -8,6 +8,7 @@ import {
   get_local_repo_default_branch,
   get_relative_time,
   get_remote_repo_default_branch,
+  render_diff,
   render_markdown
 } from '@/common'
 import { create_state_id } from '@/models'
@@ -46,6 +47,7 @@ export {
   get_local_repo_default_branch,
   get_relative_time,
   get_remote_repo_default_branch,
+  render_diff,
   render_markdown
 }
 export default Client

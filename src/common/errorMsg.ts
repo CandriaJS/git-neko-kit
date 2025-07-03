@@ -123,3 +123,5 @@ export const MIssingSearchQueryMsg = '喵呜~ 搜索查询不能为空哦'
 
 /** 其他 */
 export const RateLimitExceededMsg = '喵呜~ 访问速率受限啦 请等待1小时后再试 或 使用访问令牌提升限额'
+export const NetworkErrorMsg = '喵呜~ 网络错误，请检查网络连接或代理设置'
+export const MissingDiffMsg = '喵呜~ Diff 内容不能为空'

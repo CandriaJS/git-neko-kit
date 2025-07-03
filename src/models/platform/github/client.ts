@@ -12,6 +12,7 @@ import {
   MissingClientSecretMsg,
   MissingPrivateKeyMsg,
   MissingRequestPathMsg,
+  NetworkErrorMsg,
   ProxyTypeNotSupportedMsg,
   RateLimitExceededMsg,
   UnauthorizedMsg
@@ -417,17 +418,6 @@ export class GitHubClient {
   }
 
   /**
-   * 获取当前请求的配置
-   * @returns 当前请求的配置对象
-   */
-  private getCurrentRequestConfig (): RequestConfigType {
-    return {
-      ...this.currentRequestConfig,
-      url: this.api_url
-    }
-  }
-
-  /**
    * 设置当前请求的配置
    * @protected - 仅在父类与子类中方法中可访问
    * @param config - 配置对象，包含以下属性:
@@ -446,7 +436,7 @@ export class GitHubClient {
    * @returns 返回一个新的 Request 实例
    */
   private createRequest (): Request {
-    const { url, token, tokenType } = this.getCurrentRequestConfig()
+    const { url, token, tokenType } = this.currentRequestConfig
     const proxyConfig = this.proxy?.type !== 'common' ? this.proxy : null
     const customHeaders = {
       'X-GitHub-Api-Version': '2022-11-28',
@@ -474,6 +464,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.get(path, parms, customHeaders)
+      if (req.statusCode === 500 && req.msg === 'Network Error') throw new Error(NetworkErrorMsg)
       if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
@@ -509,6 +500,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.post(path, data, customHeaders)
+      if (req.statusCode === 500 && req.msg === 'Network Error') throw new Error(NetworkErrorMsg)
       if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
@@ -546,6 +538,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.patch(path, params, data, customHeaders)
+      if (req.statusCode === 500 && req.msg === 'Network Error') throw new Error(NetworkErrorMsg)
       if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
@@ -581,6 +574,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.put(path, data, customHeaders)
+      if (req.statusCode === 500 && req.msg === 'Network Error') throw new Error(NetworkErrorMsg)
       if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)
@@ -618,6 +612,7 @@ export class GitHubClient {
       })
       const request = this.createRequest()
       const req = await request.delete(path, params, data, customHeaders)
+      if (req.statusCode === 500 && req.msg === 'Network Error') throw new Error(NetworkErrorMsg)
       if (req.statusCode === 401) throw new Error(UnauthorizedMsg)
       if ((req.statusCode === 403 || req.statusCode === 429) && req.headers['x-ratelimit-remaining'] === '0') {
         throw new Error(RateLimitExceededMsg)

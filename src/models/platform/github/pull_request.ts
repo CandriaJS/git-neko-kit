@@ -34,6 +34,8 @@ import type {
   GetPullRequestCommentInfoResponseType,
   GetPullRequestCommentsListParamType,
   GetPullRequestCommentsListResponseType,
+  GetPullRequestDiffParamType,
+  GetPullRequestDiffResponseType,
   GetPullRequestFilesListParamType,
   GetPullRequestFilesListResponseType,
   IssueLabelType,
@@ -870,6 +872,25 @@ export class Pull_Request extends GitHubClient {
       return res
     } catch (error) {
       throw new Error(`[GitHub] 合并拉取请求失败: ${(error as Error).message}`)
+    }
+  }
+
+  public async get_pull_request_diff (
+    options: GetPullRequestDiffParamType
+  ): Promise<ApiResponseType<GetPullRequestDiffResponseType>> {
+    if (!(options.owner || options.repo)) throw new Error(MissingRepoOwnerOrNameMsg)
+    if (!options.pr_number) throw new Error(MissingPullRequestNumberMsg)
+    try {
+      this.setRequestConfig({
+        url: this.base_url
+      })
+      const { owner, repo, pr_number } = options
+      const res = await this.get(`/${owner}/${repo}/pull/${pr_number}.diff`, null, {
+        Accept: 'text/plain'
+      })
+      return res
+    } catch (error) {
+      throw new Error(`[GitHub] 获取拉取请求diff失败: ${(error as Error).message}`)
     }
   }
 

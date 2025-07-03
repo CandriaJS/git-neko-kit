@@ -263,6 +263,11 @@ export interface GetPullRequestFilesListParamType extends RepoBaseParamType, Pul
 /** 获取拉取请求文件列表响应类型 */
 export type GetPullRequestFilesListResponseType = Array<PullRequestFilesListType>
 
+/** 获取拉取请求差异内容参数类型 */
+export type GetPullRequestDiffParamType = RepoBaseParamType & PullRequestNumberParamType
+/** 获取拉取请求差异内容响应类型 */
+export type GetPullRequestDiffResponseType = string
+
 /** 获取拉取请求评论信息参数类型 */
 export type GetPullRequestCommentInfoParamType = RepoBaseParamType & CommentIdParamType
 

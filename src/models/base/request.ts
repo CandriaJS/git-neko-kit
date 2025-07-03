@@ -54,10 +54,11 @@ export class Request {
     data?: any,
     customHeaders?: Record<string, string>
   ): Promise<ResponseType> {
-    const url = `${this.baseUrl}/${path}`.replace(/\/+/g, '/')
+    const url = `${this.baseUrl.replace(/\/+$/, '')}/${path.replace(/^\/+|\/+$/g, '')}`
     const config: AxiosRequestConfig = {
       headers: this.createHeaders(customHeaders),
       params,
+      maxRedirects: 2,
       validateStatus: () => true
     }
 
