@@ -8,7 +8,8 @@ export const options: Options =({
   entry: ['src/index.ts', 'src/root.ts'],      // 入口文件
   format: ['cjs', 'esm'],       // ESM格式
   nodeProtocol: true, // 转换node:protocol
-  unbundle: false,                 // 打包依赖
+  unbundle: false,                 // 保持目录结构
+  fixedExtension: true,             // 统一扩展名
   dts: true,                    // 生成类型声明文件
   clean: true,                  // 清理dist目录
   minify: true,                 // 压缩生产环境代码
@@ -30,8 +31,9 @@ export const options: Options =({
 export const expOptions: Options = ({
   entry: ['src/exports/*.ts'],      // 入口文件
   format: ['cjs', 'esm'],       // ESM格式
-  unbundle: false,                 // 打包依赖
+  unbundle: false,                 // 保持目录结构
   nodeProtocol: true, // 转换node:protocol
+  fixedExtension: true,             // 统一扩展名
   dts: true,                    // 生成类型声明文件
   clean: true,                  // 清理dist目录
   minify: true,                 // 压缩生产环境代码

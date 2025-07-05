@@ -1,4 +1,4 @@
-import { capitalize, isEmpty } from 'lodash'
+import { capitalize, isEmpty } from 'radash'
 
 import {
   DeleteReleaseSuccessMsg,
