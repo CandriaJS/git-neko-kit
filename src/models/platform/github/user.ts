@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-import { capitalize } from 'lodash'
+import { capitalize } from 'radash'
 
 import {
   get_contribution_data,

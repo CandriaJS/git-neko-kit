@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash'
+import { isEmpty, tryit } from 'radash'
 
 import {
   FailedToRemoveCollaboratorMsg,
@@ -892,12 +892,13 @@ export class Repo extends GitHubClient {
     if (!options.owner || !options.repo) throw new Error(MissingRepoOwnerOrNameMsg)
     try {
       const { owner, repo } = options
+      const github_url = get_base_url(this.type, { proxyType: ProxyType.Original }) + '/' + owner + '/' + repo
       let default_branch
-      try {
-        const github_url = get_base_url(this.type, { proxyType: ProxyType.Original }) + '/' + owner + '/' + repo
-        default_branch = await get_remote_repo_default_branch(github_url)
-      } catch (error) {
+      const [error, response] = await tryit(get_remote_repo_default_branch)(github_url)
+      if (error) {
         default_branch = (await this.get_repo_info({ owner, repo })).data.default_branch
+      } else {
+        default_branch = response
       }
 
       return default_branch

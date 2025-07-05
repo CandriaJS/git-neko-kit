@@ -50,11 +50,6 @@
       "types": "./dist/exports/dayjs.d.ts",
       "import": "./dist/exports/dayjs.mjs",
       "require": "./dist/exports/dayjs.cjs"
-    },
-    "./lodash": {
-      "types": "./dist/exports/lodash.d.ts",
-      "import": "./dist/exports/lodash.mjs",
-      "require": "./dist/exports/lodash.cjs"
     }
   },
   "main": "./dist/index.mjs",
@@ -91,9 +86,9 @@
     "https-proxy-agent": "^7.0.6",
     "jsonwebtoken": "^9.0.2",
     "language-colors": "^2.1.55",
-    "lodash": "npm:@candriajs/lodash@1.0.7",
     "markdown-it": "^14.1.0",
     "markdown-it-emoji": "^3.0.0",
+    "radash": "^12.1.1",
     "simple-git": "npm:@candriajs/simple-git@^1.0.2",
     "socks-proxy-agent": "^8.0.5",
     "uuid": "^11.1.0"
