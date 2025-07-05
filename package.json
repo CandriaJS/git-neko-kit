@@ -22,42 +22,42 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
+      "import": "./dist/index.js",
       "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs"
     },
     "./markdown": {
-      "import": "./dist/exports/markdown.mjs",
+      "import": "./dist/exports/markdown.js",
       "types": "./dist/exports/markdown.d.ts",
       "require": "./dist/exports/markdown.cjs"
     },
     "./exec": {
       "types": "./dist/exports/exec.d.ts",
-      "import": "./dist/exports/exec.mjs",
+      "import": "./dist/exports/exec.js",
       "require": "./dist/exports/exec.cjs"
     },
     "./axios": {
       "types": "./dist/exports/axios.d.ts",
-      "import": "./dist/exports/axios.mjs",
+      "import": "./dist/exports/axios.js",
       "require": "./dist/exports/axios.cjs"
     },
     "./simple-git": {
       "types": "./dist/exports/simple-git.d.ts",
-      "import": "./dist/exports/simple-git.mjs",
+      "import": "./dist/exports/simple-git.js",
       "require": "./dist/exports/simple-git.cjs"
     },
     "./dayjs": {
       "types": "./dist/exports/dayjs.d.ts",
-      "import": "./dist/exports/dayjs.mjs",
+      "import": "./dist/exports/dayjs.js",
       "require": "./dist/exports/dayjs.cjs"
     },
     "./lodash": {
       "types": "./dist/exports/lodash.d.ts",
-      "import": "./dist/exports/lodash.mjs",
+      "import": "./dist/exports/lodash.js",
       "require": "./dist/exports/lodash.cjs"
     }
   },
-  "main": "./dist/index.mjs",
+  "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/*",
@@ -65,7 +65,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc --noEmit && tsup && tsup --tsconfig tsconfig.module.json --config tsup.modules.ts",
+    "build": "tsc --noEmit && tsdown",
     "build:docs": "pnpm run build:typedoc && pnpm run docs:build",
     "build:pages": "vitepress build docs",
     "build:typedoc": "typedoc --options typedoc.json",
@@ -114,7 +114,7 @@
     "globals": "^16.0.0",
     "neostandard": "^0.12.1",
     "tsc-alias": "^1.8.11",
-    "tsup": "^8.4.0",
+    "tsdown": "^0.12.9",
     "tsx": "^4.19.3",
     "typedoc": "^0.28.1",
     "typedoc-plugin-markdown": "^4.6.1",
@@ -126,5 +126,14 @@
     "vuepress": "2.0.0-rc.20",
     "vuepress-theme-plume": "1.0.0-rc.140"
   },
-  "packageManager": "pnpm@9.13.2"
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver",
+      "@parcel/watcher"
+    ]
+  }
 }
