@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import { isEmpty, isObject, isString } from 'lodash'
+import { isEmpty, isObject, isString } from 'radash'
 
 import {
   exec,

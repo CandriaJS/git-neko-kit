@@ -22,42 +22,37 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts",
       "require": "./dist/index.cjs"
     },
     "./markdown": {
-      "import": "./dist/exports/markdown.js",
+      "import": "./dist/exports/markdown.mjs",
       "types": "./dist/exports/markdown.d.ts",
       "require": "./dist/exports/markdown.cjs"
     },
     "./exec": {
       "types": "./dist/exports/exec.d.ts",
-      "import": "./dist/exports/exec.js",
+      "import": "./dist/exports/exec.mjs",
       "require": "./dist/exports/exec.cjs"
     },
     "./axios": {
       "types": "./dist/exports/axios.d.ts",
-      "import": "./dist/exports/axios.js",
+      "import": "./dist/exports/axios.mjs",
       "require": "./dist/exports/axios.cjs"
     },
     "./simple-git": {
       "types": "./dist/exports/simple-git.d.ts",
-      "import": "./dist/exports/simple-git.js",
+      "import": "./dist/exports/simple-git.mjs",
       "require": "./dist/exports/simple-git.cjs"
     },
     "./dayjs": {
       "types": "./dist/exports/dayjs.d.ts",
-      "import": "./dist/exports/dayjs.js",
+      "import": "./dist/exports/dayjs.mjs",
       "require": "./dist/exports/dayjs.cjs"
-    },
-    "./lodash": {
-      "types": "./dist/exports/lodash.d.ts",
-      "import": "./dist/exports/lodash.js",
-      "require": "./dist/exports/lodash.cjs"
     }
   },
-  "main": "./dist/index.js",
+  "main": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/*",
@@ -91,9 +86,9 @@
     "https-proxy-agent": "^7.0.6",
     "jsonwebtoken": "^9.0.2",
     "language-colors": "^2.1.55",
-    "lodash": "npm:@candriajs/lodash@1.0.7",
     "markdown-it": "^14.1.0",
     "markdown-it-emoji": "^3.0.0",
+    "radash": "^12.1.1",
     "simple-git": "npm:@candriajs/simple-git@^1.0.2",
     "socks-proxy-agent": "^8.0.5",
     "uuid": "^11.1.0"

@@ -9,6 +9,7 @@ export const options: Options =({
   format: ['cjs', 'esm'],       // ESM格式
   nodeProtocol: true, // 转换node:protocol
   unbundle: false,                 // 打包依赖
+  fixedExtension: true,             // 统一扩展名
   dts: true,                    // 生成类型声明文件
   clean: true,                  // 清理dist目录
   minify: true,                 // 压缩生产环境代码
@@ -32,6 +33,7 @@ export const expOptions: Options = ({
   format: ['cjs', 'esm'],       // ESM格式
   unbundle: false,                 // 打包依赖
   nodeProtocol: true, // 转换node:protocol
+  fixedExtension: true,             // 统一扩展名
   dts: true,                    // 生成类型声明文件
   clean: true,                  // 清理dist目录
   minify: true,                 // 压缩生产环境代码
