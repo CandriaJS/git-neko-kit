@@ -60,7 +60,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc --noEmit && tsup && tsup --tsconfig tsconfig.module.json --config tsup.modules.ts",
+    "build": "tsc --noEmit && tsdown",
     "build:docs": "pnpm run build:typedoc && pnpm run docs:build",
     "build:pages": "vitepress build docs",
     "build:typedoc": "typedoc --options typedoc.json",
@@ -109,7 +109,7 @@
     "globals": "^16.0.0",
     "neostandard": "^0.12.1",
     "tsc-alias": "^1.8.11",
-    "tsup": "^8.4.0",
+    "tsdown": "^0.12.9",
     "tsx": "^4.19.3",
     "typedoc": "^0.28.1",
     "typedoc-plugin-markdown": "^4.6.1",
@@ -121,5 +121,14 @@
     "vuepress": "2.0.0-rc.20",
     "vuepress-theme-plume": "1.0.0-rc.140"
   },
-  "packageManager": "pnpm@9.13.2"
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver",
+      "@parcel/watcher"
+    ]
+  }
 }
