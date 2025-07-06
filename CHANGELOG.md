@@ -1,5 +1,22 @@
 # 变更日志
 
+## [1.2.0](https://github.com/CandriaJS/git-neko-kit/compare/v1.1.1...v1.2.0) (2025-07-06)
+
+
+### ✨ 新功能
+
+* **common:** 添加差异渲染函数 ([26064ac](https://github.com/CandriaJS/git-neko-kit/commit/26064ac1e2c1784785e06d6448b3e41c4f18646a))
+
+
+### ♻️ 代码重构
+
+* **deps:** 用 radash 替代 lodash ([aa365e4](https://github.com/CandriaJS/git-neko-kit/commit/aa365e4b913d35d18ea8846d10979e264671f0d8))
+
+
+### 📦️ 构建系统
+
+* 重构构建配置并迁移至 tsdown ([#77](https://github.com/CandriaJS/git-neko-kit/issues/77)) ([0996820](https://github.com/CandriaJS/git-neko-kit/commit/09968208aafa3fb2b80b1527cb8d2a850f63da3e))
+
 ## [1.1.1](https://github.com/CandriaJS/git-neko-kit/compare/v1.1.0...v1.1.1) (2025-07-02)
 
 
