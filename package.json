@@ -130,5 +130,6 @@
       "unrs-resolver",
       "@parcel/watcher"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.12.4"
 }

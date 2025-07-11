@@ -244,7 +244,7 @@ export async function get_remote_repo_default_branch (remote_url: string): Promi
     const { owner, repo: RepoName } = parse_git_url(git_url.href)
     if (!(owner || RepoName)) throw new Error(MissingRepoUrlMsg(git_url.href))
     const repo = simpleGit()
-    const remoteInfo = await repo.raw(['ls-remote', '--symref', remote_url, 'HEAD'])
+    const remoteInfo = await repo.listRemote(['--symref', remote_url, 'HEAD'])
     const defaultBranchMatch = remoteInfo.match(/^ref: refs\/heads\/([^\t\n]+)/m)
     if (!defaultBranchMatch) {
       throw new Error('喵呜~, 无法从远程仓库获取默认分支信息')
