@@ -1,135 +1,33 @@
 {
-  "name": "@candriajs/git-neko-kit",
-  "version": "1.2.1",
-  "description": "Github, Gitee, GitCode API封装库",
-  "keywords": [
-    "git",
-    "github",
-    "gitee",
-    "gitcode",
-    "git-api-kit"
-  ],
-  "homepage": "https://git-neko-kit.pages.dev",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CandriaJS/git-neko-kit.git"
-  },
-  "bugs": {
-    "url": "https://github.com/CandriaJS/git-neko-kit/issues"
-  },
+  "name": "@candriajs/git-neko-kit-project",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
   "license": "GNU AGPL-3.0",
   "author": "CandriaJS",
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs"
-    },
-    "./markdown": {
-      "import": "./dist/exports/markdown.mjs",
-      "types": "./dist/exports/markdown.d.ts",
-      "require": "./dist/exports/markdown.cjs"
-    },
-    "./exec": {
-      "types": "./dist/exports/exec.d.ts",
-      "import": "./dist/exports/exec.mjs",
-      "require": "./dist/exports/exec.cjs"
-    },
-    "./axios": {
-      "types": "./dist/exports/axios.d.ts",
-      "import": "./dist/exports/axios.mjs",
-      "require": "./dist/exports/axios.cjs"
-    },
-    "./simple-git": {
-      "types": "./dist/exports/simple-git.d.ts",
-      "import": "./dist/exports/simple-git.mjs",
-      "require": "./dist/exports/simple-git.cjs"
-    },
-    "./dayjs": {
-      "types": "./dist/exports/dayjs.d.ts",
-      "import": "./dist/exports/dayjs.mjs",
-      "require": "./dist/exports/dayjs.cjs"
-    }
-  },
-  "main": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/*",
-    "package.json",
-    "README.md"
-  ],
+  "main": "",
   "scripts": {
-    "build": "tsc --noEmit && tsdown",
-    "build:docs": "pnpm run build:typedoc && pnpm run docs:build",
-    "build:pages": "vitepress build docs",
+    "build:core": "pnpm --filter @candriajs/git-neko-kit run build",
     "build:typedoc": "typedoc --options typedoc.json",
-    "dev": "tsx src/index.ts",
-    "docs:build": "vuepress build docs",
-    "docs:dev": "vuepress dev docs --port 5500",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "sort": "sort-package-json",
-    "start": "node dist/index.js",
-    "test": "tsx test/index.ts"
-  },
-  "dependencies": {
-    "@candriajs/exec": "^1.0.4",
-    "@mdit/plugin-tasklist": "^0.22.1",
-    "axios": "npm:@candriajs/axios@1.0.14",
-    "color-convert": "^3.1.0",
-    "dayjs": "^1.11.13",
-    "diff2html": "^3.4.51",
-    "exec": "npm:@candriajs/exec@^1.0.2",
-    "git-url-parse": "^16.0.1",
-    "http-proxy-agent": "^7.0.2",
-    "https-proxy-agent": "^7.0.6",
-    "jsonwebtoken": "^9.0.2",
-    "language-colors": "^2.1.55",
-    "markdown-it": "^14.1.0",
-    "markdown-it-emoji": "^3.0.0",
-    "radash": "^12.1.1",
-    "simple-git": "npm:@candriajs/simple-git@^1.0.2",
-    "socks-proxy-agent": "^8.0.5",
-    "uuid": "^11.1.0"
+    "build:docs": "pnpm run build:typedoc && pnpm run docs:build",
+    "build:pages": "vitepress build docs"
   },
   "devDependencies": {
-    "@types/color": "^4.2.0",
-    "@types/git-url-parse": "^9.0.3",
-    "@types/jsonwebtoken": "^9.0.9",
-    "@types/markdown-it": "^14.1.2",
-    "@types/markdown-it-emoji": "^3.0.1",
-    "@types/node": "^22.13.13",
-    "@typescript-eslint/eslint-plugin": "^8.28.0",
-    "@typescript-eslint/parser": "^8.28.0",
-    "@vuepress/bundler-vite": "2.0.0-rc.20",
-    "eslint": "^9.26.0",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
-    "eslint-plugin-tsdoc": "^0.4.0",
-    "globals": "^16.0.0",
-    "neostandard": "^0.12.1",
-    "tsc-alias": "^1.8.11",
+    "@biomejs/biome": "2.1.2",
+    "@types/node": "^18.19.84",
     "tsdown": "^0.12.9",
-    "tsx": "^4.19.3",
     "typedoc": "^0.28.1",
     "typedoc-plugin-markdown": "^4.6.1",
     "typedoc-plugin-missing-exports": "^4.0.0",
     "typedoc-vitepress-theme": "^1.1.2",
+    "tsc-alias": "^1.8.11",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.28.0",
     "vue": "^3.5.13",
     "vuepress": "2.0.0-rc.20",
-    "vuepress-theme-plume": "1.0.0-rc.140"
+    "vuepress-theme-plume": "1.0.0-rc.140",
+    "@vuepress/bundler-vite": "2.0.0-rc.20"
   },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "unrs-resolver",
-      "@parcel/watcher"
-    ]
-  },
-  "packageManager": "pnpm@10.12.4"
+  "packageManager": "pnpm@10.13.1"
 }

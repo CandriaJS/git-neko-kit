@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "rootDir": "./src",
+    "types": [
+      "node"
+    ],
+  },
+  "exclude": [
+    "tsdown.config.*.ts",
+    "dist",
+  ],
+  "include": [
+    "src"
+  ]
+}

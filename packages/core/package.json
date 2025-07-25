@@ -1,0 +1,74 @@
+{
+  "name": "@candriajs/git-neko-kit",
+  "version": "1.2.1",
+  "description": "Github, Gitee, GitCode API封装库",
+  "keywords": [
+    "git",
+    "github",
+    "gitee",
+    "gitcode",
+    "git-api-kit"
+  ],
+  "homepage": "https://git-neko-kit.pages.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CandriaJS/git-neko-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CandriaJS/git-neko-kit/issues"
+  },
+  "license": "GNU AGPL-3.0",
+  "author": "CandriaJS",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs"
+    },
+    "./axios": {
+      "types": "./dist/exports/axios.d.ts",
+      "import": "./dist/exports/axios.mjs",
+      "require": "./dist/exports/axios.cjs"
+    },
+    "./dayjs": {
+      "types": "./dist/exports/dayjs.d.ts",
+      "import": "./dist/exports/dayjs.mjs",
+      "require": "./dist/exports/dayjs.cjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/*",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsdown"
+  },
+  "dependencies": {
+    "axios": "npm:@candriajs/axios@1.0.14",
+    "color-convert": "^3.1.0",
+    "dayjs": "^1.11.13",
+    "http-proxy-agent": "^7.0.2",
+    "https-proxy-agent": "^7.0.6",
+    "jsonwebtoken": "^9.0.2",
+    "language-colors": "^2.1.55",
+    "radashi": "^12.6.0",
+    "socks-proxy-agent": "^8.0.5",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/color": "^4.2.0",
+    "@types/git-url-parse": "^9.0.3",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/markdown-it": "^14.1.2",
+    "@types/markdown-it-emoji": "^3.0.1",
+    "@candriajs/git-neko-kit-utils": "workspace:*"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@10.12.4"
+}

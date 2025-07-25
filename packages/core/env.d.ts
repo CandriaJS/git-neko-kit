@@ -1,0 +1,1 @@
+/// <reference types="@candriajs/git-neko-kit-utils" />

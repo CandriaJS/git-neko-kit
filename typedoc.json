@@ -2,7 +2,7 @@
   "$schema": "https://typedoc.org/schema.json",
 
   /** 指定文档生成的入口文件 */
-  "entryPoints": ["./src/index.ts"],
+  "entryPoints": ["./packages/core/src/index.ts", "./packages/utils/src/index.ts"],
 
   /** 指定文档输出目录 */
   "out": "./docs/docs",

@@ -6,7 +6,8 @@
   "editor.formatOnPaste": true,
   "editor.formatOnSaveMode": "file",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always"
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
   },
   "files.autoSave": "afterDelay",
   "explorer.fileNesting.enabled": true,

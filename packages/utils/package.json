@@ -1,0 +1,73 @@
+{
+  "name": "@candriajs/git-neko-kit-utils",
+  "version": "1.0.0",
+  "description": "Github, Gitee, GitCode API封装库, utils模块",
+  "keywords": [
+    "git",
+    "github",
+    "gitee",
+    "gitcode",
+    "git-api-kit",
+    "utils"
+  ],
+  "homepage": "https://git-neko-kit.pages.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CandriaJS/git-neko-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CandriaJS/git-neko-kit/issues"
+  },
+  "license": "GNU AGPL-3.0",
+  "author": "CandriaJS",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/*",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsdown"
+  },
+  "dependencies": {
+    "@candriajs/exec": "^1.0.4",
+    "@mdit/plugin-tasklist": "^0.22.1",
+    "axios": "npm:@candriajs/axios@1.0.14",
+    "color-convert": "^3.1.0",
+    "dayjs": "^1.11.13",
+    "diff2html": "^3.4.51",
+    "git-url-parse": "^16.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "language-colors": "^2.1.55",
+    "markdown-it": "^14.1.0",
+    "markdown-it-emoji": "^3.0.0",
+    "radashi": "^12.6.0",
+    "simple-git": "npm:@candriajs/simple-git@^1.0.2",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/color": "^4.2.0",
+    "@types/git-url-parse": "^9.0.3",
+    "@types/markdown-it": "^14.1.2",
+    "@types/markdown-it-emoji": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "unrs-resolver",
+      "@parcel/watcher"
+    ]
+  }
+}
