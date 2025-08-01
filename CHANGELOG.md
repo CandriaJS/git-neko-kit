@@ -1,5 +1,17 @@
 # 变更日志
 
+## [1.2.2](https://github.com/CandriaJS/git-neko-kit/compare/v1.2.1...v1.2.2) (2025-08-01)
+
+
+### ♻️ 代码重构
+
+* **git:** 优化获取远程仓库默认分支的代码 ([89e905a](https://github.com/CandriaJS/git-neko-kit/commit/89e905af8a46f1eaaf2c71c10b348655de87787c))
+
+
+### 📦️ 构建系统
+
+* **linter:** 用 Biome 替代 ESLint 进行代码格式和规范检查 ([68e1dc1](https://github.com/CandriaJS/git-neko-kit/commit/68e1dc12fd1bcb6fcbe1a2aa6869f49f3640b1b1))
+
 ## [1.2.1](https://github.com/CandriaJS/git-neko-kit/compare/v1.2.0...v1.2.1) (2025-07-06)
 
 
