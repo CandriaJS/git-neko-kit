@@ -42,16 +42,15 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: 设置 pnpm
-        uses: pnpm/action-setup@v4
+      - name: 设置 Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          version: 9.13.2
-          run_install: |
-            - args: [--no-frozen-lockfile]
+          bun-version: latest
 
       - name: 构建
         run: |
-          pnpm build:docs
+          bun install
+          bun run build:docs
 
       - name: 上传构建产物
         uses: actions/upload-artifact@v4

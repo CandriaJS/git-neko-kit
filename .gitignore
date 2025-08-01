@@ -1,7 +1,5 @@
 test/
-
 node_modules/
-pnpm-lock.yaml
 dist/
 docs/docs/
 docs/.vuepress/dist/

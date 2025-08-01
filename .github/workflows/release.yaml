@@ -53,26 +53,25 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: 设置 pnpm
-        uses: pnpm/action-setup@v4
+      - name: 设置 Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          version: 9.13.2
-          run_install: |
-            - args: [--no-frozen-lockfile]
+          bun-version: latest
 
       - name: 获取包名
         id: get-package-name
         run: |
-          PACKAGE_NAME=$(pnpm pkg get name | tr -d '"')
-          PACKAGE_SHORT_NAME=$(pnpm pkg get name | tr -d '"' | awk -F'/' '{print $2}')
+          PACKAGE_NAME=$(bun pm pkg get name  | tr -d '"')
+          PACKAGE_SHORT_NAME=$(bun pm pkg get name  | tr -d '"' | awk -F'/' '{print $2}')
           echo "PACKAGE_SHORT_NAME=$PACKAGE_SHORT_NAME" >> $GITHUB_OUTPUT
           echo "PACKAGE_NAME=$PACKAGE_NAME" >> $GITHUB_OUTPUT
 
       - name: 构建
         id: build-package
         run: |
-          pnpm build
-          pnpm pkg delete devDependencies
+          bun install
+          bun run  build
+          bun pm pkg delete devDependencies
           mkdir -p ${{ runner.temp }}/temp/
           cp -r package.json README.md CHANGELOG.md dist ${{ runner.temp }}/temp/
 

@@ -26,11 +26,9 @@ class Client {
   }
 }
 
+/** 客户端模块 */
 export {
-  Client
-}
-/** GitHub 模块 */
-export {
+  Client,
   GitHubClient
 }
 export * as github from '@/models/platform/github'
